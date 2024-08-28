@@ -11,3 +11,4 @@ export { default as InstagramIcon } from "./InstagramIcon.svg?react";
 export { default as WhatsAppIcon } from "./WhatsAppIcon.svg?react";
 export { default as StarIcon } from "./StarIcon.svg?react";
 export { default as TestIcon } from "./testIcon.svg?react";
+export { default as ChevronRight } from "./ChevronRight.svg?react";
