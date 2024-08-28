@@ -1,0 +1,13 @@
+export { default as PhoneIcon } from "./Phone.svg?react";
+export { default as MailIcon } from "./MailIcon.svg?react";
+export { default as SearchIcon } from "./SearchIcon.svg?react";
+export { default as MenuIcon } from "./MenuIcon.svg?react";
+export { default as OffersIcon } from "./OffersIcon.svg?react";
+export { default as LocationIcon } from "./LocationIcon.svg?react";
+export { default as UserIcon } from "./UserIcon.svg?react";
+export { default as CartIcon } from "./CartIcon.svg?react";
+export { default as FacebookIcon } from "./FacebookIcon.svg?react";
+export { default as InstagramIcon } from "./InstagramIcon.svg?react";
+export { default as WhatsAppIcon } from "./WhatsAppIcon.svg?react";
+export { default as StarIcon } from "./StarIcon.svg?react";
+export { default as TestIcon } from "./testIcon.svg?react";
