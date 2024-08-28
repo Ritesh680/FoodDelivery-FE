@@ -6,3 +6,7 @@ body {
 	width: 100vw;
 	overflow-x: hidden;
 }
+
+#menu-toggle:checked + #menu {
+	display: block;
+}

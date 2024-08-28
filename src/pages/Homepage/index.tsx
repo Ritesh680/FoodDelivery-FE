@@ -56,7 +56,7 @@ const HomePage = () => {
 			/>
 			<Banner bannerItems={BannerItems} />
 
-			<div className="flex justify-center gap-[95px] pt-[93px] px-[188px] pb-[50px] bg-white">
+			<div className="flex justify-center gap-16 lg:gap-[95px] pt-[93px] lg:px-[188px] lg:pb-[50px] bg-white flex-wrap">
 				{[...Array(5)].map((_, index) => (
 					<FoodCategoryContainer key={index} />
 				))}
