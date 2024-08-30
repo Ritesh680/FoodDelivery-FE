@@ -49,7 +49,7 @@ const HomePage = () => {
 
 	return (
 		<div className="bg-gray-100 flex flex-col gap-5">
-			<div className="w-full lg:mx-16 lg:mt-16 mt-5 px-5 h-[170px] lg:h-[500px]">
+			<div className="w-full lg:px-16 lg:mt-16 mt-5 px-5 h-[170px] lg:h-[500px]">
 				<img
 					src="image1.png"
 					alt="Logo"

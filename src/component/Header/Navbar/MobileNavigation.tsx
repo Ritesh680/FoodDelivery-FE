@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { NavItems } from "../../../constants";
+import { MobileNavItems } from "../../../constants";
 
 function MobileNavigation() {
-	const [activeTab, setActiveTab] = useState(NavItems[0].name.toLowerCase());
+	const [activeTab, setActiveTab] = useState(
+		MobileNavItems[0].name.toLowerCase()
+	);
 	const navigate = useNavigate();
 
 	const handleTabChange = (tab: string) => {
@@ -15,7 +17,7 @@ function MobileNavigation() {
 		<div className="flex flex-col h-screen z-[99]">
 			<div className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg z-[99]">
 				<div className="flex justify-around p-2">
-					{NavItems.map((item, index) => (
+					{MobileNavItems.map((item, index) => (
 						<button
 							key={index}
 							className={`flex-1 py-2 text-center flex flex-col gap-1 items-center ${
@@ -24,7 +26,7 @@ function MobileNavigation() {
 									: "text-gray-500"
 							}`}
 							onClick={() => handleTabChange(item.name.toLowerCase())}>
-							{<item.icon className="text-black text-xl" />}
+							{<item.icon className=" text-blue-500 text-xl" />}
 							<div className="text-sm">{item.name}</div>
 						</button>
 					))}

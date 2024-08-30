@@ -13,3 +13,11 @@ export const NavItems = [
 	{ name: "Login", icon: UserIcon, href: "/login" },
 	{ name: "Cart", icon: CartIcon, href: "/cart" },
 ];
+
+export const MobileNavItems = [
+	{ name: "Home", icon: LocationIcon, href: "/" },
+	{ name: "Menu", icon: MenuIcon, href: "/menu" },
+	{ name: "Offers", icon: OffersIcon, href: "/offers" },
+	{ name: "Cart", icon: CartIcon, href: "/cart" },
+	{ name: "Account", icon: UserIcon, href: "/profile" },
+];
