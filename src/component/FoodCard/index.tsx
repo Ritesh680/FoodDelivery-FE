@@ -45,14 +45,14 @@ const FoodCard = ({
 		<div
 			className={`${
 				!withDetails && "items-center justify-center"
-			} border rounded-xl h-[363px] w-[305px] flex flex-col group`}>
+			} border rounded-xl lg:h-[363px] lg:min-w-[305px] flex flex-col min-h-[202px] min-w-[250px] relative`}>
 			<img
 				src={foodImage ?? "foodItem.png"}
 				alt={foodName ?? "foodItem"}
 				className={`${
 					withDetails
 						? "h-[236px] w-full "
-						: "h-full group-hover:opacity-70 transition-all duration-200"
+						: "h-full hover:opacity-70 transition-all duration-200"
 				} rounded-t-xl cursor-pointer object-cover`}
 			/>
 
@@ -94,10 +94,12 @@ const FoodCard = ({
 					)}
 				</div>
 			) : (
-				<span
-					className={`absolute text-[48px] text-white font-bold opacity-0 group-hover:opacity-100 transition-all duration-200 text-wrap w-[300px] z-50 cursor-pointer`}>
-					{foodName ?? "test"}
-				</span>
+				<div
+					className={`absolute flex h-full items-center justify-center opacity-0 hover:opacity-100 transition-all duration-200 w-full cursor-pointer bg-[#737373] bg-opacity-70 rounded-t-xl`}>
+					<span className="text-center text-white font-bold text-5xl text-wrap ">
+						{foodName ?? "test"}
+					</span>
+				</div>
 			)}
 		</div>
 	);
