@@ -48,70 +48,67 @@ const HomePage = () => {
 	const Testimonials = generateRandomTestimonials(6);
 
 	return (
-		<div className="bg-gray-100">
-			<img
-				src="image1.png"
-				alt="Logo"
-				className="w-4/5 mx-auto rounded-md object-cover h-[500px]"
-			/>
+		<div className="bg-gray-100 flex flex-col gap-5">
+			<div className="w-full lg:mx-16 lg:mt-16 mt-5 mx-5 h-[170px] lg:h-[500px]">
+				<img
+					src="image1.png"
+					alt="Logo"
+					className="w-full rounded-xl object-cover h-[170px] lg:h-[500px]"
+				/>
+			</div>
+
 			<Banner bannerItems={BannerItems} />
 
-			<div className="flex justify-center gap-16 lg:gap-[95px] pt-[93px] lg:px-[188px] lg:pb-[50px] bg-white flex-wrap">
-				{[...Array(5)].map((_, index) => (
+			<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll">
+				{[...Array(8)].map((_, index) => (
 					<FoodCategoryContainer key={index} />
 				))}
 			</div>
 
-			<div className="pt-10">
-				<ContentWrapper title="Top Offers">
-					<div className="flex justify-center gap-[25px] mx-auto px-5">
-						{TopOffersFoodItems.map((item, index) => (
-							<FoodCard
-								key={index}
-								withDetails
-								originalPrice={item.originalPrice}
-								discountedPrice={item.discountedPrice}
-								foodName={item.foodName}
-								foodImage={item.foodImage}
-								handleButtonClick={() => console.log("Button Clicked")}
-							/>
-						))}
-					</div>
-				</ContentWrapper>
-			</div>
+			<ContentWrapper title="Top Offers">
+				<div className="flex w-full lg:justify-between p-5 gap-[15px] overflow-x-scroll">
+					{TopOffersFoodItems.map((item, index) => (
+						<FoodCard
+							key={index}
+							withDetails
+							originalPrice={item.originalPrice}
+							discountedPrice={item.discountedPrice}
+							foodName={item.foodName}
+							foodImage={item.foodImage}
+							handleButtonClick={() => console.log("Button Clicked")}
+						/>
+					))}
+				</div>
+			</ContentWrapper>
 
-			<div className="mt-10 py-10">
-				<ContentWrapper title="Best Sellers">
-					<div className="flex justify-center gap-[25px] mx-auto px-5">
-						{BestSellersFoodItems.map((item, index) => (
-							<FoodCard
-								key={index}
-								withDetails
-								originalPrice={item.originalPrice}
-								discountedPrice={item.discountedPrice}
-								foodName={item.foodName}
-								foodImage={item.foodImage}
-								handleButtonClick={() => console.log("Button Clicked")}
-							/>
-						))}
-					</div>
-				</ContentWrapper>
-			</div>
+			<ContentWrapper title="Best Sellers">
+				<div className="flex w-full lg:justify-between p-4 gap-[15px] overflow-x-scroll">
+					{BestSellersFoodItems.map((item, index) => (
+						<FoodCard
+							key={index}
+							withDetails
+							originalPrice={item.originalPrice}
+							discountedPrice={item.discountedPrice}
+							foodName={item.foodName}
+							foodImage={item.foodImage}
+							handleButtonClick={() => console.log("Button Clicked")}
+						/>
+					))}
+				</div>
+			</ContentWrapper>
 
-			<div className="mt-10 bg-white py-10">
-				<ContentWrapper title="Explore By Category">
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full mx-auto place-items-center gap-10">
-						{Categories.map((item, index) => (
-							<FoodCard
-								key={index}
-								withDetails={false}
-								foodName={item.categoryName}
-								foodImage={item.categoryImage}
-							/>
-						))}
-					</div>
-				</ContentWrapper>
-			</div>
+			<ContentWrapper title="Explore By Category">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full mx-auto place-items-center gap-10 p-4">
+					{Categories.map((item, index) => (
+						<FoodCard
+							key={index}
+							withDetails={false}
+							foodName={item.categoryName}
+							foodImage={item.categoryImage}
+						/>
+					))}
+				</div>
+			</ContentWrapper>
 
 			<div className="py-10 bg-[#FEFDE7]">
 				<ContentWrapper title="What our Customer say's">

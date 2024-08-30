@@ -6,7 +6,7 @@ const ContentWrapper = ({
 	children,
 }: PropsWithChildren<{ title: string }>) => {
 	return (
-		<div className=" flex flex-col gap-10 items-center overflow-auto">
+		<div className=" flex flex-col gap-5 items-center py-5 overflow-hidden">
 			<ContentHeader title={title} />
 
 			{children}
