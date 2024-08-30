@@ -24,11 +24,11 @@ const SearchBar = ({
 			<input
 				type="text"
 				placeholder={placeholder ?? "Search"}
-				className="h-10 border-0 ml-7 w-full"
+				className="h-8 md:h-10 border-0 ml-5 md:ml-7 w-full text-xs md:text-lg"
 				value={query}
 				onChange={handleChange}
 			/>
-			<SearchIcon className="absolute text-neutral-300" />
+			<SearchIcon className="absolute text-neutral-300 md:text-lg text-xs" />
 		</div>
 	);
 };

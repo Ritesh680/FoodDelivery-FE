@@ -5,6 +5,7 @@ import FoodCategoryContainer from "../../component/FoodCategoryContainer";
 import { faker } from "@faker-js/faker";
 
 import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
+import ImageSlider from "../../component/Carousel/Carousel";
 
 const HomePage = () => {
 	const BannerItems = [
@@ -42,19 +43,24 @@ const HomePage = () => {
 		return testimonials;
 	}
 
+	function generateRandomLandingImages(count: number) {
+		const landingImages = Array.from({ length: count }, () => ({
+			imgSrc: faker.image.urlPicsumPhotos(),
+		}));
+
+		return landingImages;
+	}
+
 	const TopOffersFoodItems = generateRandomFoodItems(10);
 	const BestSellersFoodItems = generateRandomFoodItems(10);
 	const Categories = generateRandomCategories(6);
 	const Testimonials = generateRandomTestimonials(6);
+	const LandingImages = generateRandomLandingImages(4);
 
 	return (
 		<div className="bg-gray-100 flex flex-col gap-5">
 			<div className="w-full lg:px-16 lg:mt-16 mt-5 px-5 h-[170px] lg:h-[500px]">
-				<img
-					src="image1.png"
-					alt="Logo"
-					className="w-full rounded-xl object-cover h-[170px] lg:h-[500px]"
-				/>
+				<ImageSlider slideItems={LandingImages} />
 			</div>
 
 			<Banner bannerItems={BannerItems} />

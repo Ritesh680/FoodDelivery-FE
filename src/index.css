@@ -10,3 +10,24 @@ body {
 #menu-toggle:checked + #menu {
 	display: block;
 }
+
+.ant-carousel .slick-dots li button {
+	background: transparent; /* Change dot color */
+	width: 15px; /* Adjust size */
+	height: 15px; /* Adjust size */
+	border: 1px solid black;
+	border-radius: 50%;
+	transform: translateY(-10px);
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+	background: white; /* Change active dot color */
+	border: white;
+}
+
+@media screen and (max-width: 768px) {
+	.ant-carousel .slick-dots li button {
+		width: 10px;
+		height: 10px;
+	}
+}
