@@ -11,6 +11,21 @@ body {
 	display: block;
 }
 
+/* src/antd-overrides.css */
+:root {
+	--antd-primary-color: #c50202; /* Replace with your desired primary color */
+}
+
+.ant-btn-primary {
+	background-color: var(--antd-primary-color);
+	border-color: var(--antd-primary-color);
+}
+
+.ant-btn-primary:hover {
+	background-color: darken(var(--antd-primary-color), 10%);
+	border-color: darken(var(--antd-primary-color), 10%);
+}
+
 .ant-carousel .slick-dots li button {
 	background: transparent; /* Change dot color */
 	width: 15px; /* Adjust size */

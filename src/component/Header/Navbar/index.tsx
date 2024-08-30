@@ -2,14 +2,23 @@ import SearchBar from "../../Searchbar";
 
 import MobileNavigation from "./MobileNavigation";
 import { NavItems } from "../../../constants";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DropdownComponent from "../../Dropdown";
 import { LocationIcon } from "../../../assets/icons";
+import { useMemo } from "react";
 
 const Navbar = () => {
+	const location = useLocation();
+
+	const currentUrl = useMemo(() => {
+		return location.pathname;
+	}, [location]);
 	return (
 		<>
-			<nav className="relative lg:px-16 px-5 bg-white shadow-md md:flex flex-wrap items-center justify-between lg:py-0 py-2">
+			<nav
+				className={`relative lg:px-16 px-5 bg-white shadow-md md:flex flex-wrap items-center justify-between lg:py-0 py-2 ${
+					currentUrl == "/login" || currentUrl == "/register" ? "hidden" : ""
+				}`}>
 				<div className="flex justify-between lg:justify-start gap-7 items-center">
 					<a href="/" className="">
 						<img
@@ -54,8 +63,10 @@ const Navbar = () => {
 					id="menu">
 					<nav>
 						<ul className="text-xl text-center items-center pt-4 gap-x-12 lg:text-lg lg:flex lg:pt-0">
-							{NavItems.map((item) => (
-								<li className="flex gap-4 items-center py-2 lg:py-0 hover:scale-y-105">
+							{NavItems.map((item, index) => (
+								<li
+									key={item.href + index}
+									className="flex gap-4 items-center py-2 lg:py-0 hover:scale-y-105">
 									<Link
 										to={item.href}
 										className="text-sm text-gray-600 flex items-center gap-2">

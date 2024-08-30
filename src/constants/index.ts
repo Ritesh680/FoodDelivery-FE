@@ -19,5 +19,5 @@ export const MobileNavItems = [
 	{ name: "Menu", icon: MenuIcon, href: "/menu" },
 	{ name: "Offers", icon: OffersIcon, href: "/offers" },
 	{ name: "Cart", icon: CartIcon, href: "/cart" },
-	{ name: "Account", icon: UserIcon, href: "/profile" },
+	{ name: "Account", icon: UserIcon, href: "/login" },
 ];

@@ -109,14 +109,14 @@ const Footer = () => {
 							</p>
 						</div>
 					</div>
-					{FooterContentLinks.map((content) => (
-						<div>
+					{FooterContentLinks.map((content, index) => (
+						<div key={content.title + index}>
 							<h3 className="text-3xl md:text-lg font-semibold text-center md:text-left">
 								{content.title}
 							</h3>
 							<ul className="mt-2">
 								{content.lists.map((list) => (
-									<li className="text-center md:text-left">
+									<li key={list.href} className="text-center md:text-left">
 										<a href={list.href} className="text-xs">
 											{list.label}
 										</a>
