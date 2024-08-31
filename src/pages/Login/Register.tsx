@@ -1,25 +1,31 @@
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useYupValidationResolver from "../../hooks/useYupResolver";
 import { FacebookIcon, GoogleLogo } from "../../assets/icons";
 import { useNavigate } from "react-router";
+import useApi from "../../api/useApi";
+import { useMutation } from "react-query";
+import { AxiosError } from "axios";
 
 interface IRegisterProps {
-	fullname: string;
+	name: string;
 	email: string;
 	phone: string;
 	password: string;
 }
 
 const validationSchema = yup.object().shape({
-	fullname: yup.string().required(),
+	name: yup.string().required(),
 	email: yup.string().email().required(),
 	password: yup.string().required(),
 	phone: yup.string().required().min(10).max(10),
 });
 
 const Register = () => {
+	const { register } = useApi();
+	const navigate = useNavigate();
+
 	const {
 		handleSubmit,
 		formState: { errors },
@@ -28,16 +34,24 @@ const Register = () => {
 		resolver: useYupValidationResolver(validationSchema),
 		mode: "onChange",
 		defaultValues: {
-			fullname: "",
+			name: "",
 			email: "",
 			phone: "",
 			password: "",
 		},
 	});
 
-	const navigate = useNavigate();
+	const { mutate: registerUser } = useMutation({
+		mutationFn: (data: IRegisterProps) => register(data),
+		onSuccess: () => {
+			message.success("Account created successfully");
+		},
+		onError: (error: AxiosError<{ errMessage: string }>) => {
+			message.error(error.response?.data.errMessage);
+		},
+	});
 
-	const onSubmit = (data: IRegisterProps) => console.log(data);
+	const onSubmit = (data: IRegisterProps) => registerUser(data);
 	return (
 		<div className="px-10 flex flex-col items-center justify-center gap-2 h-screen sm:h-fit sm:my-10 sm:py-10 rounded-lg w-[375px] mx-auto border">
 			{/* <img src="/logo.jpeg" className="h-14 w-16 object-cover" /> */}
@@ -50,13 +64,13 @@ const Register = () => {
 				<div className="flex flex-col gap-7">
 					<Controller
 						control={control}
-						name="fullname"
+						name="name"
 						render={({ field }) => (
 							<Input
 								{...field}
 								placeholder="Full Name"
 								className="w-full py-2 rounded-lg"
-								status={errors.fullname ? "error" : ""}
+								status={errors.name ? "error" : ""}
 							/>
 						)}
 					/>

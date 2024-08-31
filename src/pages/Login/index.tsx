@@ -1,9 +1,12 @@
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useYupValidationResolver from "../../hooks/useYupResolver";
 import { FacebookIcon, GoogleLogo } from "../../assets/icons";
 import { useNavigate } from "react-router";
+import { useMutation } from "react-query";
+import { AxiosError } from "axios";
+import useApi from "../../api/useApi";
 
 interface ILoginProps {
 	email: string;
@@ -16,6 +19,7 @@ const validationSchema = yup.object().shape({
 });
 
 const Login = () => {
+	const { login } = useApi();
 	const {
 		handleSubmit,
 		formState: { errors },
@@ -27,7 +31,19 @@ const Login = () => {
 
 	const navigate = useNavigate();
 
-	const onSubmit = (data: ILoginProps) => console.log(data);
+	const { mutate: loginUser } = useMutation({
+		mutationFn: (data: ILoginProps) => login(data),
+		onSuccess: (res) => {
+			message.success(res.status);
+			localStorage.setItem("token", res.token);
+			navigate("/");
+		},
+		onError: (error: AxiosError<{ message: string }>) => {
+			message.error(error.response?.data.message);
+		},
+	});
+
+	const onSubmit = (data: ILoginProps) => loginUser(data);
 	return (
 		<div className="px-10 flex flex-col items-center justify-center gap-2 h-screen sm:h-fit sm:my-10 sm:py-10 rounded-lg w-[375px] mx-auto border">
 			<img src="/logo.jpeg" className="h-14 w-16 object-cover" />
