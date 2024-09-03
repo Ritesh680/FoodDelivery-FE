@@ -2,20 +2,33 @@ import HeaderInfo from "../Header/Info";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Header/Navbar";
 import Footer from "../Footer";
+import { Layout as AntdLayout } from "antd";
+import MobileNavigation from "../Header/Navbar/MobileNavigation";
+import { NAVBAR_HIDDEN_PAGES } from "../../constants";
+
+const { Header, Content, Footer: AntdFooter } = AntdLayout;
 
 const Layout = () => {
+	const hideNav = NAVBAR_HIDDEN_PAGES.includes(window.location.pathname);
 	return (
-		<>
-			<div className="flex flex-col">
+		<AntdLayout className="min-h-screen">
+			<Header className={`${hideNav ? "hidden" : ""} p-0`}>
 				<HeaderInfo />
 				<Navbar />
-				<div className="mb-16 sm:mb-0">
-					<Outlet />
-				</div>
+			</Header>
 
+			<Content className="hidden py-10 sm:inline-block px-10">
+				<Outlet />
+			</Content>
+			<Content className="sm:hidden min-h-screen">
+				<Outlet></Outlet>
+				<MobileNavigation></MobileNavigation>
+			</Content>
+
+			<AntdFooter className="p-0">
 				<Footer />
-			</div>
-		</>
+			</AntdFooter>
+		</AntdLayout>
 	);
 };
 

@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_BASE_URL,
 });
 
-axios.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
 	const token = "";
 	if (config.headers && token) {
 		config.headers.Authorization = `Bearer ${token}`;

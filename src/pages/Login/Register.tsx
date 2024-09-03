@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import useApi from "../../api/useApi";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
+import useAuth from "../../hooks/useAuth";
 
 interface IRegisterProps {
 	name: string;
@@ -24,6 +25,7 @@ const validationSchema = yup.object().shape({
 
 const Register = () => {
 	const { register } = useApi();
+	const { loginWithGoogle } = useAuth();
 	const navigate = useNavigate();
 
 	const {
@@ -117,7 +119,7 @@ const Register = () => {
 				</Button>
 			</form>
 			<div className="flex gap-9 mt-7">
-				<Button>
+				<Button htmlType="button" onClick={loginWithGoogle}>
 					<GoogleLogo className="text-xl" />
 					Google
 				</Button>

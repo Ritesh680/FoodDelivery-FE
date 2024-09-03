@@ -13,3 +13,6 @@ export { default as TestIcon } from "./testIcon.svg?react";
 export { default as ChevronRight } from "./ChevronRight.svg?react";
 export { default as GoogleLogo } from "./GoogleLogo.svg?react";
 export { default as FacebookIcon } from "./Facebook.svg?react";
+export { default as PencilIcon } from "./PencilIcon.svg?react";
+export { default as DeleteIcon } from "./DeleteIcon.svg?react";
+export { default as ArrowLeft } from "./ArrowLeft.svg?react";

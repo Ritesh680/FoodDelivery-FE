@@ -9,6 +9,7 @@ const useAxiosRequest = () => {
 		return {
 			...config,
 			headers: { Authorization: `Bearer ${token}` },
+			withCredentials: true,
 		};
 	};
 

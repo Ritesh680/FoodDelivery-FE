@@ -1,49 +1,78 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import {
+	createContext,
+	PropsWithChildren,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 import { Spin } from "antd";
-
-interface Auth {
-	accessToken: string;
-	authenticated?: boolean;
-	setIsAuthenticated?: (value: boolean) => void;
-	loading?: boolean;
-}
+import { IUserResponse } from "../@types/interface";
 
 type AuthContextState = {
-	auth: Auth | null;
+	userDetail: IUserResponse | null;
 	authenticated?: boolean;
 	setIsAuthenticated?: (value: boolean) => void;
 	logout: () => void;
-	loading?: boolean;
+	loginWithGoogle: () => void;
+	loginWithFacebook: () => void;
+	loading: boolean;
 };
 
 export const AuthContext = createContext<AuthContextState>({
-	auth: { accessToken: "" },
+	userDetail: {},
 	authenticated: false,
 } as AuthContextState);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-	const [auth, setAuth] = useState<Auth | null>(null);
+	const [userDetail, setUserDetail] = useState<IUserResponse | null>(null);
 	const [authenticated, setIsAuthenticated] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const logout = () => {
-		setLoading(true);
 		setTimeout(() => {
 			localStorage.clear();
 			window.location.href = "/login";
-			setLoading(false);
 		}, 2000);
 	};
 
+	function loginWithFacebook() {
+		window.open("http://localhost:4000/auth/facebook", "_self");
+	}
+
+	function loginWithGoogle() {
+		window.open("http://localhost:4000/auth/google", "_self");
+	}
+
+	const fetchUserDetail = useCallback(async () => {
+		setLoading(true);
+		await fetch("http://localhost:4000/auth/login/success", {
+			method: "GET",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Credentials": "true",
+				Accept: "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					setUserDetail(data);
+					setIsAuthenticated(true);
+				} else {
+					setIsAuthenticated(false);
+				}
+			})
+			.catch((err) => {
+				setIsAuthenticated(false);
+				console.log(err);
+			})
+			.finally(() => setLoading(false));
+	}, []);
+
 	useEffect(() => {
-		const accessToken = localStorage.getItem("token");
-		if (accessToken) {
-			setAuth({ accessToken });
-		}
-		if (auth) {
-			setIsAuthenticated(true);
-		}
-	}, [auth]);
+		fetchUserDetail();
+	}, [fetchUserDetail]);
 	return (
 		<>
 			{loading ? (
@@ -52,7 +81,15 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				</div>
 			) : (
 				<AuthContext.Provider
-					value={{ auth, logout, authenticated, setIsAuthenticated }}>
+					value={{
+						userDetail,
+						logout,
+						authenticated,
+						setIsAuthenticated,
+						loginWithGoogle,
+						loginWithFacebook,
+						loading,
+					}}>
 					{children}
 				</AuthContext.Provider>
 			)}

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import useApi from "../../api/useApi";
+import useAuth from "../../hooks/useAuth";
 
 interface ILoginProps {
 	email: string;
@@ -20,6 +21,8 @@ const validationSchema = yup.object().shape({
 
 const Login = () => {
 	const { login } = useApi();
+	const { loginWithGoogle, loginWithFacebook } = useAuth();
+
 	const {
 		handleSubmit,
 		formState: { errors },
@@ -86,11 +89,11 @@ const Login = () => {
 				</Button>
 			</form>
 			<div className="flex gap-9 mt-7">
-				<Button>
+				<Button onClick={loginWithGoogle} htmlType="button">
 					<GoogleLogo className="text-xl" />
 					Google
 				</Button>
-				<Button>
+				<Button htmlType="button" onClick={loginWithFacebook}>
 					<FacebookIcon className="text-lg" />
 					Facebook
 				</Button>
