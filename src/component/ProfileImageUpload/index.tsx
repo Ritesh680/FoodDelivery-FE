@@ -1,5 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { GetProp, Upload, UploadProps, message } from "antd";
+import { GetProp, Spin, Upload, UploadProps, message } from "antd";
 import { useState } from "react";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -56,12 +56,13 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 			withCredentials={true}
 			beforeUpload={beforeUpload}
 			onChange={handleChange}>
-			{imageUrl ? (
+			{loading ? (
+				<Spin />
+			) : imageUrl ? (
 				<img
 					src={imageUrl}
 					alt="avatar"
-					style={{ width: "100%" }}
-					className="rounded-full"
+					className="rounded-full w-full h-full object-cover"
 				/>
 			) : (
 				uploadButton

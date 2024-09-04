@@ -21,7 +21,13 @@ const Profile = () => {
 		<div className="flex flex-col gap-5">
 			<div className="flex justify-center pt-5 bg-red-500 pb-[30px]">
 				<div className="flex flex-col items-center gap-3">
-					<ProfileImageRender profileImage={userDetail?.user.picture} />
+					<ProfileImageRender
+						profileImage={
+							import.meta.env.VITE_BASE_URL +
+							"/file/" +
+							userDetail?.user.picture
+						}
+					/>
 					{/* <img
 						src={userDetail?.user.picture ?? "/image1.png"}
 						alt=""
