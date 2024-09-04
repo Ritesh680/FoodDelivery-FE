@@ -52,3 +52,11 @@ export interface ICategory extends ICreateCategory {
 	updatedAt: string;
 	__v: number;
 }
+
+export interface CartProduct {
+	product: IProduct;
+	quantity: number;
+}
+export interface ICartResponse {
+	products: CartProduct[];
+}

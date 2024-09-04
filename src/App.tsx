@@ -12,6 +12,7 @@ import ProductPage from "./pages/Products";
 import Menu from "./pages/Menu";
 import CreateOrEditCategory from "./pages/Categories/CreateOrEditCategory";
 import Categories from "./pages/Categories";
+import Cart from "./pages/Cart";
 
 function App() {
 	return (
@@ -40,6 +41,7 @@ function App() {
 						<Route path="categories" element={<Categories />} />
 					</Route>
 					<Route path="/menu" element={<Menu />} />
+					<Route path="/cart" element={<Cart />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

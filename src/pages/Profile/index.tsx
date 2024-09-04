@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import ProfileImageRender from "../../component/ProfileImageUpload";
 
 const Profile = () => {
 	const { userDetail, logout } = useAuth();
@@ -20,11 +21,12 @@ const Profile = () => {
 		<div className="flex flex-col gap-5">
 			<div className="flex justify-center pt-5 bg-red-500 pb-[30px]">
 				<div className="flex flex-col items-center gap-3">
-					<img
+					<ProfileImageRender profileImage={userDetail?.user.picture} />
+					{/* <img
 						src={userDetail?.user.picture ?? "/image1.png"}
 						alt=""
 						className="rounded-full h-20 w-20"
-					/>
+					/> */}
 					<div className="flex flex-col gap-1">
 						<span className="text-sm text-center font-semibold text-white">
 							{userDetail?.user.name}

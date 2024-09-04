@@ -6,8 +6,10 @@ import { faker } from "@faker-js/faker";
 
 import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
 import ImageSlider from "../../component/Carousel/Carousel";
+import useApi from "../../api/useApi";
 
 const HomePage = () => {
+	const { addToCart } = useApi();
 	const BannerItems = [
 		"Free Shipping ON +Rs 999",
 		"FREE Frozen French Fries On All Orders",
@@ -15,6 +17,7 @@ const HomePage = () => {
 
 	function generateRandomFoodItems(count: number) {
 		const foodItems = Array.from({ length: count }, () => ({
+			_id: faker.random.alphaNumeric(),
 			foodName: faker.commerce.productName(),
 			originalPrice: parseFloat(faker.commerce.price()),
 			discountedPrice: parseFloat(faker.commerce.price()),
@@ -81,7 +84,7 @@ const HomePage = () => {
 							discountedPrice={item.discountedPrice}
 							foodName={item.foodName}
 							foodImage={item.foodImage}
-							handleButtonClick={() => console.log("Button Clicked")}
+							handleButtonClick={() => addToCart(item._id, 1)}
 						/>
 					))}
 				</div>
@@ -97,7 +100,7 @@ const HomePage = () => {
 							discountedPrice={item.discountedPrice}
 							foodName={item.foodName}
 							foodImage={item.foodImage}
-							handleButtonClick={() => console.log("Button Clicked")}
+							handleButtonClick={() => addToCart(item._id, 1)}
 						/>
 					))}
 				</div>

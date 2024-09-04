@@ -1,13 +1,12 @@
 import SearchBar from "../../Searchbar";
 import { NavItems } from "../../../constants";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DropdownComponent from "../../Dropdown";
 import { LocationIcon } from "../../../assets/icons";
 import { useMemo } from "react";
 import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
-	const location = useLocation();
 	const { authenticated } = useAuth();
 
 	const NavItemList = useMemo(() => {
@@ -18,22 +17,9 @@ const Navbar = () => {
 		);
 	}, [authenticated]);
 
-	const currentUrl = useMemo(() => {
-		return location.pathname;
-	}, [location]);
-
-	const hideNav = useMemo(() => {
-		return (
-			currentUrl == "/login" ||
-			currentUrl == "/register" ||
-			currentUrl == "/menu"
-		);
-	}, [currentUrl]);
 	return (
 		<nav
-			className={`relative lg:px-16 px-5 bg-white shadow-md md:flex flex-wrap items-center justify-between lg:py-0 sm:py-2 ${
-				hideNav ? "hidden" : ""
-			}`}>
+			className={`relative lg:px-16 px-5 bg-white shadow-md sm:flex flex-wrap items-center justify-between lg:py-0 sm:py-2`}>
 			<div className="flex justify-between lg:justify-start gap-7 items-center">
 				<a href="/" className="">
 					<img

@@ -1,5 +1,6 @@
 import { QueryFunctionContext } from "react-query";
 import {
+	ICartResponse,
 	ICategory,
 	ICreateCategory,
 	ICreateProduct,
@@ -59,7 +60,7 @@ export default function useApi() {
 		return axiosRequest<ApiResponse<IProduct>>("GET", `/product/${id}`);
 	};
 	const createProduct = async (data: ICreateProduct) => {
-		return axiosRequest("POST", "/products", data);
+		return axiosRequest("POST", "/product", data);
 	};
 	const editProduct = async (id: string, data: ICreateProduct) => {
 		return axiosRequest("PUT", `/product/${id}`, data);
@@ -100,6 +101,24 @@ export default function useApi() {
 	const deleteImage = async (fileId: string) => {
 		return axiosRequest("DELETE", `/file/${fileId}`);
 	};
+
+	//cart
+
+	const addToCart = async (productId: string, quantity: number) => {
+		return axiosRequest<ApiResponse<ICartResponse>>("POST", "/cart/add", {
+			productId,
+			quantity,
+		});
+	};
+
+	const getCart = async () => {
+		return axiosRequest<ApiResponse<ICartResponse>>("GET", "/cart");
+	};
+
+	const deleteCart = async (productId: string) => {
+		return axiosRequest("DELETE", `/cart/${productId}/remove`);
+	};
+
 	return {
 		register,
 		login,
@@ -116,5 +135,8 @@ export default function useApi() {
 		deleteCategoryImage,
 		deleteCategory,
 		deleteImage,
+		addToCart,
+		getCart,
+		deleteCart,
 	};
 }

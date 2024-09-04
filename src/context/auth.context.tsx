@@ -36,16 +36,16 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	};
 
 	function loginWithFacebook() {
-		window.open("http://localhost:4000/auth/facebook", "_self");
+		window.open(import.meta.env.VITE_BASE_URL + "/auth/facebook", "_self");
 	}
 
 	function loginWithGoogle() {
-		window.open("http://localhost:4000/auth/google", "_self");
+		window.open(import.meta.env.VITE_BASE_URL + "/auth/google", "_self");
 	}
 
 	const fetchUserDetail = useCallback(async () => {
 		setLoading(true);
-		await fetch("http://localhost:4000/auth/login/success", {
+		await fetch(import.meta.env.VITE_BASE_URL + "/auth/login/success", {
 			method: "GET",
 			credentials: "include",
 			headers: {
@@ -64,8 +64,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				}
 			})
 			.catch((err) => {
+				if (err) return;
 				setIsAuthenticated(false);
-				console.log(err);
 			})
 			.finally(() => setLoading(false));
 	}, []);
