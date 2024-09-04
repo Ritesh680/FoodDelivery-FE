@@ -11,12 +11,14 @@ const Cart = () => {
 	const { getCart, deleteCart, addToCart } = useApi();
 	const queryClient = useQueryClient();
 
-	const { mutate: removeItemFromCart } = useMutation({
-		mutationFn: (productId: string) => deleteCart(productId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Cart"] });
-		},
-	});
+	const { mutate: removeItemFromCart, isLoading: isItemDeleting } = useMutation(
+		{
+			mutationFn: (productId: string) => deleteCart(productId),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ["Cart"] });
+			},
+		}
+	);
 
 	const { mutate, isLoading: isCartUpdating } = useMutation({
 		mutationFn: (data: { productId: string; quantity: number }) =>
@@ -29,8 +31,8 @@ const Cart = () => {
 				>
 			>("Cart", (data: ApiResponse<ICartResponse>) => {
 				const products = data?.data?.products.map((item) => {
-					if (item.product._id === res.data.products[0].product) {
-						return { ...item, quantity: res.data.products[0].quantity };
+					if (item.product._id === res.data.product) {
+						return { ...item, quantity: res.data.quantity };
 					}
 					return item;
 				});
@@ -42,7 +44,11 @@ const Cart = () => {
 		mutate({ productId, quantity });
 	}
 
-	const { data: cartItems, isLoading } = useQuery({
+	const {
+		data: cartItems,
+		isLoading,
+		isFetching,
+	} = useQuery({
 		queryKey: "Cart",
 		queryFn: getCart,
 	});
@@ -138,7 +144,7 @@ const Cart = () => {
 	};
 	return (
 		<>
-			{isLoading ? (
+			{isLoading || isItemDeleting || isFetching ? (
 				<Spin fullscreen />
 			) : (
 				<MobileContent title="Shopping Cart">
@@ -149,7 +155,7 @@ const Cart = () => {
 									key={item.product._id}
 									{...item.product}
 									quantity={item.quantity}
-									onDelete={() => deleteCart(item.product._id)}
+									onDelete={() => removeItemFromCart(item.product._id)}
 									onAdd={() => updateCart(item.product._id, item.quantity + 1)}
 									onRemove={() =>
 										updateCart(item.product._id, item.quantity - 1)

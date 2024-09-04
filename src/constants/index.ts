@@ -21,4 +21,4 @@ export const MobileNavItems = [
 	{ name: "Cart", icon: CartIcon, href: "/cart" },
 	{ name: "Account", icon: UserIcon, href: "/login" },
 ];
-export const NAVBAR_HIDDEN_PAGES = ["/login", "/register", "/menu"];
+export const NAVBAR_HIDDEN_PAGES = ["/login", "/register", "/menu", "/cart"];

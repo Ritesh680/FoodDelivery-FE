@@ -1,5 +1,6 @@
 import { QueryFunctionContext } from "react-query";
 import {
+	AddToCartResponse,
 	ICartResponse,
 	ICategory,
 	ICreateCategory,
@@ -105,7 +106,7 @@ export default function useApi() {
 	//cart
 
 	const addToCart = async (productId: string, quantity: number) => {
-		return axiosRequest<ApiResponse<ICartResponse>>("POST", "/cart/add", {
+		return axiosRequest<ApiResponse<AddToCartResponse>>("POST", "/cart/add", {
 			productId,
 			quantity,
 		});
@@ -116,7 +117,10 @@ export default function useApi() {
 	};
 
 	const deleteCart = async (productId: string) => {
-		return axiosRequest("DELETE", `/cart/${productId}/remove`);
+		return axiosRequest<ApiResponse<ICartResponse>>(
+			"DELETE",
+			`/cart/${productId}/remove`
+		);
 	};
 
 	return {

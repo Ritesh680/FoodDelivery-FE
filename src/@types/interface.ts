@@ -56,7 +56,14 @@ export interface ICategory extends ICreateCategory {
 export interface CartProduct {
 	product: IProduct;
 	quantity: number;
+	_id: string;
 }
 export interface ICartResponse {
 	products: CartProduct[];
+}
+
+export interface AddToCartResponse {
+	product: string;
+	quantity: number;
+	_id: string;
 }
