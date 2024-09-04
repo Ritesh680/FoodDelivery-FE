@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
 
 const Login = () => {
 	const { login } = useApi();
-	const { loginWithGoogle, loginWithFacebook } = useAuth();
+	const { loginWithGoogle, loginWithFacebook, setIsAuthenticated } = useAuth();
 
 	const {
 		handleSubmit,
@@ -36,13 +36,13 @@ const Login = () => {
 
 	const { mutate: loginUser } = useMutation({
 		mutationFn: (data: ILoginProps) => login(data),
-		onSuccess: (res) => {
-			message.success(res.status);
-			localStorage.setItem("token", res.token);
+		onSuccess: () => {
+			message.success("Logged In Successfully");
 			navigate("/");
+			setIsAuthenticated?.(true);
 		},
 		onError: (error: AxiosError<{ message: string }>) => {
-			message.error(error.response?.data.message);
+			message.error(error.response?.data.message ?? "Login failed");
 		},
 	});
 

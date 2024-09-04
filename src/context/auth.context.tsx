@@ -29,10 +29,26 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const logout = () => {
-		setTimeout(() => {
-			localStorage.clear();
-			window.location.href = "/login";
-		}, 2000);
+		setLoading(true);
+		fetch(import.meta.env.VITE_BASE_URL + "/auth/logout", {
+			method: "POST",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Credentials": "true",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					setUserDetail(null);
+					setIsAuthenticated(false);
+				}
+			})
+			.catch((err) => {
+				if (err) return;
+			})
+			.finally(() => setLoading(false));
 	};
 
 	function loginWithFacebook() {
@@ -52,6 +68,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Credentials": "true",
 				Accept: "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		})
 			.then((res) => res.json())
@@ -68,7 +85,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				setIsAuthenticated(false);
 			})
 			.finally(() => setLoading(false));
-	}, []);
+	}, [authenticated]);
 
 	useEffect(() => {
 		fetchUserDetail();

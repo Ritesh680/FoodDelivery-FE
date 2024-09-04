@@ -21,10 +21,10 @@ function App() {
 				<Route path="/" element={<Layout />}>
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
-					<Route path="/profile" element={<Profile />} />
 
 					<Route path="" element={<HomePage />} />
 					<Route path="/" element={<ProtectedRoutes />}>
+						<Route path="profile" element={<Profile />} />
 						<Route path="products/create" element={<CreateOrEditProduct />} />
 						<Route path="orders" element={<Orders />} />
 						<Route path="products" element={<ProductPage />} />
