@@ -1,15 +1,17 @@
 import { AxiosRequestConfig, Method } from "axios";
 
 import axiosInstance from "../utils/axios";
+import { getCookie } from "../utils/function";
 
 const useAxiosRequest = () => {
-	const token = "";
-
 	const getApiConfig = async (config?: AxiosRequestConfig) => {
+		const token = getCookie("token");
 		return {
 			...config,
-			headers: { Authorization: `Bearer ${token}` },
 			withCredentials: true,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		};
 	};
 

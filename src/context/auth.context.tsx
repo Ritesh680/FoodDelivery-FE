@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Spin } from "antd";
 import { IUserResponse } from "../@types/interface";
+import { getCookie } from "../utils/function";
 
 type AuthContextState = {
 	userDetail: IUserResponse | null;
@@ -26,7 +27,7 @@ export const AuthContext = createContext<AuthContextState>({
 const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [userDetail, setUserDetail] = useState<IUserResponse | null>(null);
 	const [authenticated, setIsAuthenticated] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const logout = () => {
 		setLoading(true);
@@ -36,6 +37,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Credentials": "true",
+				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		})
 			.then((res) => res.json())
@@ -60,6 +62,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	}
 
 	const fetchUserDetail = useCallback(async () => {
+		if (!authenticated) return;
 		setLoading(true);
 		await fetch(import.meta.env.VITE_BASE_URL + "/auth/login/success", {
 			method: "GET",
@@ -68,7 +71,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Credentials": "true",
 				Accept: "application/json",
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		})
 			.then((res) => res.json())

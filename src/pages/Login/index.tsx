@@ -36,9 +36,10 @@ const Login = () => {
 
 	const { mutate: loginUser } = useMutation({
 		mutationFn: (data: ILoginProps) => login(data),
-		onSuccess: () => {
+		onSuccess: (res) => {
 			message.success("Logged In Successfully");
 			navigate("/");
+			document.cookie = `token=${res.token}`;
 			setIsAuthenticated?.(true);
 		},
 		onError: (error: AxiosError<{ message: string }>) => {
