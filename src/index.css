@@ -46,3 +46,7 @@ body {
 		height: 10px;
 	}
 }
+
+.ant-card-body {
+	padding: 0 !important;
+}
