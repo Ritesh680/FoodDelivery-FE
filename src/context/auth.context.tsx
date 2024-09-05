@@ -3,11 +3,12 @@ import {
 	PropsWithChildren,
 	useCallback,
 	useEffect,
+	useMemo,
 	useState,
 } from "react";
 import { Spin } from "antd";
 import { IUserResponse } from "../@types/interface";
-import { getCookie } from "../utils/function";
+import { getCookie, removeCookie } from "../utils/function";
 
 type AuthContextState = {
 	userDetail: IUserResponse | null;
@@ -17,6 +18,7 @@ type AuthContextState = {
 	loginWithGoogle: () => void;
 	loginWithFacebook: () => void;
 	loading: boolean;
+	fetchUserDetail: () => void;
 };
 
 export const AuthContext = createContext<AuthContextState>({
@@ -26,8 +28,15 @@ export const AuthContext = createContext<AuthContextState>({
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [userDetail, setUserDetail] = useState<IUserResponse | null>(null);
-	const [authenticated, setIsAuthenticated] = useState<boolean>(false);
+	const [authenticated, setIsAuthenticated] = useState<boolean>(
+		!!getCookie("token")
+	);
 	const [loading, setLoading] = useState<boolean>(false);
+
+	const searchParams = useMemo(
+		() => new URLSearchParams(window.location.search),
+		[]
+	);
 
 	const logout = () => {
 		setLoading(true);
@@ -45,6 +54,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				if (data.success) {
 					setUserDetail(null);
 					setIsAuthenticated(false);
+					removeCookie("token");
 				}
 			})
 			.catch((err) => {
@@ -54,11 +64,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	};
 
 	function loginWithFacebook() {
-		window.open(import.meta.env.VITE_BASE_URL + "/auth/facebook", "_self");
+		window.open(import.meta.env.VITE_BASE_URL + "/auth/facebook");
 	}
 
 	function loginWithGoogle() {
-		window.open(import.meta.env.VITE_BASE_URL + "/auth/google", "_self");
+		window.location.href = import.meta.env.VITE_BASE_URL + "/auth/google";
 	}
 
 	const fetchUserDetail = useCallback(async () => {
@@ -71,7 +81,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Credentials": "true",
 				Accept: "application/json",
-				Authorization: `Bearer ${getCookie("token")}`,
+				Authorization: getCookie("token") ? `Bearer ${getCookie("token")}` : "",
 			},
 		})
 			.then((res) => res.json())
@@ -79,6 +89,9 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				if (data.success) {
 					setUserDetail(data);
 					setIsAuthenticated(true);
+					if (data.token) {
+						document.cookie = `token=${data.token}`;
+					}
 				} else {
 					setIsAuthenticated(false);
 				}
@@ -93,6 +106,18 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	useEffect(() => {
 		fetchUserDetail();
 	}, [fetchUserDetail]);
+
+	useEffect(() => {
+		const query = searchParams.toString();
+		const params = query.split("&");
+		params.forEach((param) => {
+			const [key, value] = param.split("=");
+			if (key === "authenticated" && value === "true") {
+				setIsAuthenticated(true);
+			}
+		});
+	}, [searchParams]);
+
 	return (
 		<>
 			{loading ? (
@@ -109,6 +134,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 						loginWithGoogle,
 						loginWithFacebook,
 						loading,
+						fetchUserDetail,
 					}}>
 					{children}
 				</AuthContext.Provider>

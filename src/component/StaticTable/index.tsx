@@ -25,7 +25,7 @@ const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
 	isLoading,
 	isFetching,
 }: IStaticTableProps<T>) => (
-	<div className="flex flex-col">
+	<div className="flex flex-col overflow-scroll">
 		{(title || actions) && (
 			<div className="bg-blue-400 px-4 py-3 flex justify-between items-center">
 				<h2 className="font-bold text-white text-lg">{title || ""}</h2>

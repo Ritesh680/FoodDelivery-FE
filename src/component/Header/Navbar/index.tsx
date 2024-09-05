@@ -5,17 +5,30 @@ import DropdownComponent from "../../Dropdown";
 import { LocationIcon } from "../../../assets/icons";
 import { useMemo } from "react";
 import useAuth from "../../../hooks/useAuth";
+import AdminRoutes from "../../../routes/AdminRoutes";
 
 const Navbar = () => {
-	const { authenticated } = useAuth();
+	const { authenticated, userDetail } = useAuth();
+
+	const List = useMemo(() => {
+		if (userDetail?.user?.role === "admin") {
+			return AdminRoutes.filter((item) => !item.hidden).map((route) => ({
+				name: route.name,
+				icon: route.icon,
+				href: `/admin/${route.route}`,
+			}));
+		} else {
+			return NavItems;
+		}
+	}, [userDetail?.user?.role]);
 
 	const NavItemList = useMemo(() => {
-		return [...NavItems].map((item) =>
+		return [...List].map((item) =>
 			item.name === "Login" && authenticated
 				? { ...item, href: "/profile", name: "Profile" }
 				: item
 		);
-	}, [authenticated]);
+	}, [authenticated, List]);
 
 	return (
 		<nav

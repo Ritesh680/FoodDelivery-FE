@@ -7,12 +7,10 @@ import Register from "./pages/Login/Register";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
-import CreateOrEditProduct from "./pages/Products/CreateOrEdit";
-import ProductPage from "./pages/Products";
 import Menu from "./pages/Menu";
-import CreateOrEditCategory from "./pages/Categories/CreateOrEditCategory";
-import Categories from "./pages/Categories";
 import Cart from "./pages/Cart";
+import AdminProtectedRoutes from "./routes/AdminProtected";
+import AdminRoutes from "./routes/AdminRoutes";
 
 function App() {
 	return (
@@ -25,20 +23,17 @@ function App() {
 					<Route path="" element={<HomePage />} />
 					<Route path="/" element={<ProtectedRoutes />}>
 						<Route path="profile" element={<Profile />} />
-						<Route path="products/create" element={<CreateOrEditProduct />} />
 						<Route path="orders" element={<Orders />} />
-						<Route path="products" element={<ProductPage />} />
-						<Route path="products/edit/:id" element={<CreateOrEditProduct />} />
+					</Route>
 
-						<Route
-							path="categories/create"
-							element={<CreateOrEditCategory />}
-						/>
-						<Route
-							path="categories/edit/:id"
-							element={<CreateOrEditCategory />}
-						/>
-						<Route path="categories" element={<Categories />} />
+					<Route path="/admin" element={<AdminProtectedRoutes />}>
+						{AdminRoutes.map((route) => (
+							<Route
+								key={route.route}
+								path={route.route}
+								element={<route.content />}
+							/>
+						))}
 					</Route>
 					<Route path="/menu" element={<Menu />} />
 					<Route path="/cart" element={<Cart />} />

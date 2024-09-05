@@ -1,4 +1,4 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { GetProp, Spin, Upload, UploadProps, message } from "antd";
 import { useState } from "react";
 
@@ -40,10 +40,16 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 		}
 	};
 
+	function handleImageError() {
+		setImageUrl(undefined);
+	}
+
 	const uploadButton = (
 		<button style={{ border: 0, background: "none" }} type="button">
-			{loading ? <LoadingOutlined /> : <PlusOutlined />}
-			<div style={{ marginTop: 8 }}>Upload</div>
+			{/* {loading ? <LoadingOutlined /> : <PlusOutlined />}
+			<div style={{ marginTop: 8 }}>Upload</div> */}
+
+			<UserOutlined className="text-7xl text-gray-400" />
 		</button>
 	);
 	return (
@@ -62,6 +68,7 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 				<img
 					src={imageUrl}
 					alt="avatar"
+					onError={handleImageError}
 					className="rounded-full w-full h-full object-cover"
 				/>
 			) : (

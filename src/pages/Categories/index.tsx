@@ -56,7 +56,7 @@ const CategoryList = () => {
 								<Button
 									type="default"
 									htmlType="button"
-									onClick={() => navigate(`/categories/edit/${item}`)}>
+									onClick={() => navigate(`/admin/categories/edit/${item}`)}>
 									{"->"}
 								</Button>
 							</div>

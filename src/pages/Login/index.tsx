@@ -34,7 +34,7 @@ const Login = () => {
 
 	const navigate = useNavigate();
 
-	const { mutate: loginUser } = useMutation({
+	const { mutate: loginUser, isLoading } = useMutation({
 		mutationFn: (data: ILoginProps) => login(data),
 		onSuccess: (res) => {
 			message.success("Logged In Successfully");
@@ -85,7 +85,11 @@ const Login = () => {
 					/>
 				</div>
 
-				<Button type="primary" htmlType="submit" className="w-full py-2 mt-12">
+				<Button
+					type="primary"
+					htmlType="submit"
+					className="w-full py-2 mt-12"
+					loading={isLoading}>
 					Login
 				</Button>
 			</form>

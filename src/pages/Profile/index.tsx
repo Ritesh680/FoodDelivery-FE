@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import ProfileImageRender from "../../component/ProfileImageUpload";
+import { useMemo } from "react";
 
 const Profile = () => {
 	const { userDetail, logout } = useAuth();
@@ -17,22 +18,22 @@ const Profile = () => {
 		{ label: "Logout", action: () => logout() },
 	];
 
+	const userImage = useMemo(() => {
+		if (userDetail?.user.picture?.startsWith("https")) {
+			return userDetail?.user.picture;
+		} else {
+			return (
+				import.meta.env.VITE_BASE_URL + "/file/" + userDetail?.user.picture
+			);
+		}
+	}, [userDetail]);
+
 	return (
 		<div className="flex flex-col gap-5">
 			<div className="flex justify-center pt-5 bg-red-500 pb-[30px]">
 				<div className="flex flex-col items-center gap-3">
-					<ProfileImageRender
-						profileImage={
-							import.meta.env.VITE_BASE_URL +
-							"/file/" +
-							userDetail?.user.picture
-						}
-					/>
-					{/* <img
-						src={userDetail?.user.picture ?? "/image1.png"}
-						alt=""
-						className="rounded-full h-20 w-20"
-					/> */}
+					<ProfileImageRender profileImage={userImage} />
+
 					<div className="flex flex-col gap-1">
 						<span className="text-sm text-center font-semibold text-white">
 							{userDetail?.user.name}

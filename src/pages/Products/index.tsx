@@ -44,7 +44,7 @@ const ProductList = () => {
 								<Button
 									type="default"
 									htmlType="button"
-									onClick={() => navigate(`/products/edit/${item}`)}>
+									onClick={() => navigate(`/admin/products/edit/${item}`)}>
 									{"->"}
 								</Button>
 							</div>

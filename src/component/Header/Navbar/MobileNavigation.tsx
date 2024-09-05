@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { MobileNavItems } from "../../../constants";
 import useAuth from "../../../hooks/useAuth";
+import AdminRoutes from "../../../routes/AdminRoutes";
 
 function MobileNavigation() {
 	const [activeTab, setActiveTab] = useState(getCurrentLocation() ?? "home");
 	const navigate = useNavigate();
-	const { authenticated } = useAuth();
+	const { authenticated, userDetail } = useAuth();
 
 	function getCurrentLocation() {
 		const path =
@@ -26,13 +27,25 @@ function MobileNavigation() {
 		setActiveTab(tab);
 	};
 
+	const List = useMemo(() => {
+		if (userDetail?.user?.role === "admin") {
+			return AdminRoutes.filter((item) => !item.hidden).map((route) => ({
+				name: route.name,
+				icon: route.icon,
+				href: `/admin/${route.route}`,
+			}));
+		} else {
+			return MobileNavItems;
+		}
+	}, [userDetail?.user?.role]);
+
 	const NavItems = useMemo(() => {
-		return [...MobileNavItems].map((item) =>
+		return [...List].map((item) =>
 			item.name === "Account" && authenticated
 				? { ...item, href: "/profile" }
 				: item
 		);
-	}, [authenticated]);
+	}, [authenticated, List]);
 
 	return (
 		<div className="flex flex-col z-[99]">
