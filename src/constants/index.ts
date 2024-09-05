@@ -34,4 +34,10 @@ export const ROUTES = {
 	SETTINGS: "settings",
 	USERS: "users",
 };
-export const NAVBAR_HIDDEN_PAGES = ["/login", "/register", "/menu", "/cart"];
+export const NAVBAR_HIDDEN_PAGES = [
+	"/login",
+	"/register",
+	"/menu",
+	"/cart",
+	"/checkout",
+];

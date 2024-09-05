@@ -25,7 +25,11 @@ const InputField = <T extends FieldValues>({
 		formState: { errors },
 	} = useController({ name, control, rules, defaultValue });
 	return (
-		<Form.Item label={label} layout="vertical" required={!!rules?.required}>
+		<Form.Item
+			label={label}
+			layout="vertical"
+			required={!!rules?.required}
+			className="text-xxs lg:text-base w-full">
 			<Input
 				type={type}
 				{...field}

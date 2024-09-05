@@ -6,10 +6,14 @@ import { DeleteIcon } from "../../assets/icons";
 import { ICartResponse } from "../../@types/interface";
 import { DataUpdateFunction } from "react-query/types/core/utils";
 import { LoadingOutlined } from "@ant-design/icons";
+import PopupButton from "../../component/ConfirmButton";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
 	const { getCart, deleteCart, addToCart } = useApi();
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const { mutate: removeItemFromCart, isLoading: isItemDeleting } = useMutation(
 		{
@@ -20,7 +24,11 @@ const Cart = () => {
 		}
 	);
 
-	const { mutate, isLoading: isCartUpdating } = useMutation({
+	const {
+		mutate,
+		isLoading: isCartUpdating,
+		variables,
+	} = useMutation({
 		mutationFn: (data: { productId: string; quantity: number }) =>
 			addToCart(data.productId, data.quantity),
 		onSuccess: (res) => {
@@ -57,24 +65,20 @@ const Cart = () => {
 		onRemove,
 		quantity,
 		onAdd,
+		loading,
 	}: {
 		quantity: number;
 		onAdd: () => void;
 		onRemove: () => void;
+		loading: boolean;
 	}) => {
 		return (
-			<div className="flex items-center rounded-xl">
-				<Button
-					size="small"
-					onClick={onRemove}
-					className="bg-gray-200 text-gray-800 rounded-l-xl px-2 rounded-r-none"
-					disabled={isCartUpdating}>
+			<div className="flex items-center rounded-xl col-span-1">
+				<Button type="text" onClick={onRemove} disabled={loading}>
 					-
 				</Button>
-				<Button
-					size="small"
-					className="border-x-0 rounded-none pointer-events-none">
-					{isCartUpdating ? (
+				<Button type="text">
+					{loading ? (
 						<Spin
 							size={"small"}
 							className="w-3"
@@ -84,11 +88,7 @@ const Cart = () => {
 						quantity
 					)}
 				</Button>
-				<Button
-					size="small"
-					onClick={onAdd}
-					className="bg-gray-200 text-gray-800 rounded-r-xl rounded-l-none px-2"
-					disabled={isCartUpdating}>
+				<Button type="text" onClick={onAdd} disabled={loading}>
 					+
 				</Button>
 			</div>
@@ -103,6 +103,7 @@ const Cart = () => {
 		onDelete,
 		onAdd,
 		onRemove,
+		_id,
 	}: {
 		name: string;
 		image: string[];
@@ -111,37 +112,63 @@ const Cart = () => {
 		onDelete: () => void;
 		onAdd: () => void;
 		onRemove: () => void;
+		_id: string;
 	}) => {
 		return (
-			<Card>
-				<div className="flex gap-5">
+			<Card className="p-5 rounded-none">
+				<div className="flex gap-5 items-stretch">
 					<img
-						src={import.meta.env.VITE_BASE_URL + "/file/" + image[0]}
+						src={import.meta.env.VITE_BASE_URL + "/file/" + image}
 						alt="product"
-						className="h-14 w-14 rounded"
+						className="h-[48px] w-[58px] rounded"
 					/>
-					<div className="flex justify-between flex-grow items-center">
-						<div className="flex flex-col gap-2.5">
-							<h3 className="text-[10px] font-semibold">{name}</h3>
+					<div className="flex flex-col gap-2.5 flex-grow">
+						<span className="text-[10px] leading-3">{name}</span>
+						<div className="flex justify-between items-center w-full">
 							<div className="flex gap-5 items-center">
-								<p className="text-[10px] font-semibold">Rs {price}</p>
+								<span className="text-[10px] leading-3">Rs {price}</span>
+
 								<AddRemoveButton
 									quantity={quantity}
 									onAdd={onAdd}
 									onRemove={onRemove}
+									loading={isCartUpdating && variables?.productId === _id}
 								/>
 							</div>
+							<PopupButton
+								title="Remove from Cart?"
+								description="Are you sure?"
+								onConfirm={onDelete}>
+								<DeleteIcon className="text-red-500 h-5 w-[18px] hover:scale-105 cursor-pointer" />
+							</PopupButton>
 						</div>
-
-						<DeleteIcon
-							onClick={onDelete}
-							className="text-red-500 h-5 w-[18px] hover:scale-105 cursor-pointer"
-						/>
 					</div>
 				</div>
 			</Card>
 		);
 	};
+
+	const itemSubtotal = useMemo(() => {
+		return cartItems?.data?.products?.reduce(
+			(acc, curr) => acc + (curr.product?.price ?? 0) * curr.quantity,
+			0
+		);
+	}, [cartItems]);
+
+	const deliveryCharge = useMemo(() => {
+		const totalWeight = cartItems?.data?.products?.reduce(
+			(acc, curr) => acc + curr.quantity,
+			0
+		);
+		return totalWeight ? (totalWeight >= 5 ? 0 : 100) : 0;
+	}, [cartItems]);
+
+	function navigateToCheckout() {
+		navigate(
+			{ pathname: "/checkout" },
+			{ state: { subtotal: itemSubtotal, deliveryCharge } }
+		);
+	}
 	return (
 		<>
 			{isLoading || isItemDeleting || isFetching ? (
@@ -149,7 +176,7 @@ const Cart = () => {
 			) : (
 				<MobileContent title="Shopping Cart">
 					{cartItems?.data.products ? (
-						<div className="flex flex-col gap-5">
+						<div className="flex flex-col">
 							{cartItems?.data?.products?.map((item) => (
 								<CartCard
 									key={item.product._id}
@@ -163,25 +190,64 @@ const Cart = () => {
 								/>
 							))}
 
-							<Divider />
-
-							{
-								<div>
-									<h3 className="text-[10px] font-semibold">Total</h3>
-									<div className="flex justify-between items-center">
-										<p className="text-[10px] font-semibold">
-											{cartItems?.data?.products?.reduce(
-												(acc, curr) =>
-													acc + (curr.product?.price ?? 0) * curr.quantity,
-												0
-											)}
-										</p>
-										<button className="bg-[#FFD700] text-white px-5 py-1 rounded">
-											Checkout
-										</button>
+							<div className="flex flex-col py-5 gap-1">
+								<span className="text-[8px] text-[#C50202] leading-[10px] mx-auto">
+									Free shipping on order obove 5kg
+								</span>
+								<div className="flex flex-col px-5 gap-2.5">
+									<div className="flex w-full justify-between items-center">
+										<h3 className="text-[10px] font-semibold leading-3">
+											Item Subtotal:
+										</h3>
+										<div className="flex justify-between items-center">
+											<p className="text-[10px] font-semibold">
+												{isItemDeleting || isCartUpdating ? (
+													<Spin />
+												) : (
+													itemSubtotal
+												)}
+											</p>
+										</div>
 									</div>
+									<div className="flex w-full justify-between items-center">
+										<h3 className="text-[10px] font-semibold leading-3">
+											Discount
+										</h3>
+										<div className="flex justify-between items-center">
+											<p className="text-[10px] font-semibold">0</p>
+										</div>
+									</div>
+									<div className="flex w-full justify-between items-center">
+										<h3 className="text-[10px] font-semibold leading-3">
+											DeliveryCharge
+										</h3>
+										<div className="flex justify-between items-center">
+											<p className="text-[10px] font-semibold">
+												Rs {deliveryCharge}
+											</p>
+										</div>
+									</div>
+
+									<Divider />
+									<div className="flex w-full justify-between items-center">
+										<h3 className="text-[10px] font-bold leading-3">
+											Item Total:
+										</h3>
+										<div className="flex justify-between items-center">
+											<p className="text-[10px] font-bold">
+												Rs {itemSubtotal ? itemSubtotal + deliveryCharge : 0}
+											</p>
+										</div>
+									</div>
+
+									<button
+										className="bg-[#C50202] text-white px-5 py-1 rounded w-full text-[10px] font-bold mt-5"
+										type="button"
+										onClick={navigateToCheckout}>
+										Continue Checkout
+									</button>
 								</div>
-							}
+							</div>
 						</div>
 					) : (
 						<span>Nothiong to display</span>

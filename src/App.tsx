@@ -11,6 +11,7 @@ import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import AdminProtectedRoutes from "./routes/AdminProtected";
 import AdminRoutes from "./routes/AdminRoutes";
+import CheckoutPage from "./pages/Checkout";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 				<Route path="/" element={<Layout />}>
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
+					<Route path="checkout" element={<CheckoutPage />} />
 
 					<Route path="" element={<HomePage />} />
 					<Route path="/" element={<ProtectedRoutes />}>

@@ -105,7 +105,7 @@ export default function useApi() {
 
 	//cart
 
-	const addToCart = async (productId: string, quantity: number) => {
+	const addToCart = async (productId: string, quantity = 1) => {
 		return axiosRequest<ApiResponse<AddToCartResponse>>("POST", "/cart/add", {
 			productId,
 			quantity,

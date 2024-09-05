@@ -1,5 +1,9 @@
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import { Card, Image } from "antd";
+import {
+	CheckOutlined,
+	LoadingOutlined,
+	ShoppingCartOutlined,
+} from "@ant-design/icons";
+import { Card, Image, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
 import { useMemo } from "react";
 
@@ -9,6 +13,8 @@ interface FoodCardWithDetails {
 	originalPrice: number;
 	discountedPrice: number;
 	withDetails: true;
+	loading: boolean;
+	success: boolean;
 	handleButtonClick: () => void;
 }
 interface FoodCardWithOutDetails {
@@ -17,6 +23,8 @@ interface FoodCardWithOutDetails {
 	originalPrice?: number;
 	discountedPrice?: number;
 	withDetails: false;
+	loading?: boolean;
+	success?: boolean;
 	handleButtonClick?: () => void;
 }
 
@@ -29,6 +37,8 @@ const FoodCard = ({
 	discountedPrice = 200,
 	withDetails,
 	handleButtonClick,
+	loading,
+	success,
 }: FoodCardProps) => {
 	const discountPercent = useMemo(() => {
 		if (discountedPrice > originalPrice) return 0;
@@ -97,9 +107,22 @@ const FoodCard = ({
 							<button
 								type="button"
 								className="bg-[#c50202] text-white rounded text-[8px] sm:text-xs px-2 py-1 flex gap-2 items-center"
-								onClick={handleButtonClick}>
-								<ShoppingCartOutlined className="text-[10px] text-xs" />
-								Add
+								onClick={handleButtonClick}
+								disabled={loading || success}>
+								{loading ? (
+									<Spin size="small" spinning indicator={<LoadingOutlined />} />
+								) : (
+									<>
+										{success ? (
+											<CheckOutlined className="text-[10px] text-xs" />
+										) : (
+											<>
+												<ShoppingCartOutlined className="text-[10px] text-xs" />
+												Add
+											</>
+										)}
+									</>
+								)}
 							</button>
 						</div>
 						{isDiscounted && (
