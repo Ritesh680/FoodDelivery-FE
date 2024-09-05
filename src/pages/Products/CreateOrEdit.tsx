@@ -1,13 +1,13 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
 import InputField from "../../component/Input/InputField";
 import TextArea from "../../component/Input/TextArea";
 import SelectField from "../../component/Input/Select";
 import FileUpload from "../../component/Input/FileUpload";
-import { Button, Spin } from "antd";
+import { Button, Spin, message } from "antd";
 import useApi from "../../api/useApi";
 import { ICreateProduct, IProduct } from "../../@types/interface";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
 
 const CreateOrEditProduct = () => {
@@ -20,6 +20,8 @@ const CreateOrEditProduct = () => {
 		getCategories,
 	} = useApi();
 	const { id } = useParams();
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const { control, handleSubmit, reset } = useForm<ICreateProduct>({
 		defaultValues: {
@@ -52,12 +54,22 @@ const CreateOrEditProduct = () => {
 	const { mutate: createNewProduct, isLoading: isProductCreating } =
 		useMutation({
 			mutationFn: (data: ICreateProduct) => createProduct(formattedData(data)),
+			onSuccess: () => {
+				message.success("Product created successfully");
+				navigate("/admin/products");
+				queryClient.invalidateQueries({ queryKey: ["Products", "product"] });
+			},
 		});
 
 	const { mutate: editCurrentProduct, isLoading: isProductEditing } =
 		useMutation({
 			mutationFn: (data: ICreateProduct) =>
 				editProduct(id ?? "", formattedData(data)),
+			onSuccess: () => {
+				message.success("Product updated");
+				navigate("/admin/products");
+				queryClient.invalidateQueries({ queryKey: ["Products", "product"] });
+			},
 		});
 
 	const { isLoading } = useQuery({

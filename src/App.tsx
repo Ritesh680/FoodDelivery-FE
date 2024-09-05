@@ -36,6 +36,7 @@ function App() {
 								element={<route.content />}
 							/>
 						))}
+						<Route path="/profile" element={<Profile />} />
 					</Route>
 					<Route path="/menu" element={<Menu />} />
 					<Route path="/cart" element={<Cart />} />

@@ -31,7 +31,7 @@ export const ROUTES = {
 	EDIT_CATEGORY: "categories/edit/:id",
 	CREATE_CATEGORY: "categories/create",
 	ORDERS: "orders",
-	SETTINGS: "settings",
+	SETTINGS: "profile",
 	USERS: "users",
 };
 export const NAVBAR_HIDDEN_PAGES = [

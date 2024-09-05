@@ -34,7 +34,7 @@ const CreateOrEditCategory = () => {
 			onSuccess: () => {
 				message.success("Category deleted successfully");
 				navigate("/categories");
-				queryClient.invalidateQueries("Categories");
+				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
 			},
 		});
 
@@ -43,8 +43,8 @@ const CreateOrEditCategory = () => {
 			mutationFn: (data: ICreateCategory) => createCategory(data),
 			onSuccess: () => {
 				message.success("Category created successfully");
-				navigate("/categories");
-				queryClient.invalidateQueries("Categories");
+				navigate("/admin/categories");
+				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
 			},
 		});
 
@@ -53,8 +53,8 @@ const CreateOrEditCategory = () => {
 			mutationFn: (data: ICreateCategory) => editCategory(id ?? "", data),
 			onSuccess: () => {
 				message.success("Category edited");
-				navigate("/categories");
-				queryClient.invalidateQueries("Categories");
+				navigate("/admin/categories");
+				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
 			},
 		});
 
