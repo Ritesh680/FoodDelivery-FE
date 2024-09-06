@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker";
 const RunningOrders = () => {
 	function generateRandomFoodItems(count: number) {
 		const foodItems = Array.from({ length: count }, () => ({
+			id: faker.datatype.uuid(),
 			foodName: faker.commerce.productName(),
 			quantity: faker.datatype.number({ min: 1, max: 10 }),
 			price: parseFloat(faker.commerce.price()),
@@ -52,7 +53,7 @@ const RunningOrders = () => {
 			{foodItems.length ? (
 				<div className="flex flex-col gap-4">
 					{foodItems.map((items) => (
-						<ItemCard {...items} />
+						<ItemCard {...items} key={items.id} />
 					))}
 
 					<div className="flex justify-between shadow shadow-slate-200 p-4">

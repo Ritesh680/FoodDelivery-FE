@@ -93,8 +93,8 @@ const FileUpload = <T extends FieldValues>({
 			}
 			deleteUrl(file.response.data.filename);
 		},
-		onDrop(e) {
-			console.log("Dropped files", e.dataTransfer.files);
+		onDrop() {
+			// console.info("Dropped files", e.dataTransfer.files);
 		},
 
 		defaultFileList: fileList.length ? fileList : undefined,
