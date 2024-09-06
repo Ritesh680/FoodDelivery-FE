@@ -100,9 +100,7 @@ const HomePage = () => {
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.price ?? 0}
 								foodName={item.name}
-								foodImage={`${import.meta.env.VITE_BASE_URL}/file/${
-									item.image[0]
-								}`}
+								foodImage={item.image[0].url}
 								loading={
 									AddItemToCart.isLoading &&
 									AddItemToCart.variables === item._id
@@ -126,9 +124,7 @@ const HomePage = () => {
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
-								foodImage={`${import.meta.env.VITE_BASE_URL}/file/${
-									item.image[0]
-								}`}
+								foodImage={item.image[0].url}
 								loading={
 									AddItemToCart.isLoading &&
 									item._id === AddItemToCart.variables
@@ -150,9 +146,7 @@ const HomePage = () => {
 								key={index}
 								withDetails={false}
 								foodName={item.name}
-								foodImage={`${import.meta.env.VITE_BASE_URL}/file/${
-									item.image
-								}`}
+								foodImage={item.image.url}
 							/>
 						))}
 					</div>

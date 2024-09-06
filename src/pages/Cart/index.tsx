@@ -3,7 +3,7 @@ import useApi from "../../api/useApi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Button, Card, Divider, Spin } from "antd";
 import { DeleteIcon } from "../../assets/icons";
-import { ICartResponse } from "../../@types/interface";
+import { ICartResponse, ImageGetResponse } from "../../@types/interface";
 import { DataUpdateFunction } from "react-query/types/core/utils";
 import { LoadingOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
@@ -106,7 +106,7 @@ const Cart = () => {
 		_id,
 	}: {
 		name: string;
-		image: string[];
+		image: ImageGetResponse[];
 		price: number | null;
 		quantity: number;
 		onDelete: () => void;
@@ -118,7 +118,7 @@ const Cart = () => {
 			<Card className="p-5 rounded-none">
 				<div className="flex gap-5 items-stretch">
 					<img
-						src={import.meta.env.VITE_BASE_URL + "/file/" + image}
+						src={image[0].url}
 						alt="product"
 						className="h-[48px] w-[58px] rounded"
 					/>

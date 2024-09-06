@@ -7,6 +7,7 @@ import {
 	useController,
 	UseControllerProps,
 } from "react-hook-form";
+import { ImageGetResponse } from "../../@types/interface";
 
 const { Dragger } = Upload;
 
@@ -32,19 +33,19 @@ const FileUpload = <T extends FieldValues>({
 	} = useController({ name, control, rules, defaultValue });
 
 	const fileList: UploadFile[] = useMemo(() => {
-		let values: string[] = [];
+		let values: ImageGetResponse[] = [];
 		if (isMultiple) {
 			values = field.value;
 		} else {
 			if (field.value && field.value !== "") values.push(field.value);
 		}
 
-		return values?.map((file: string) => ({
-			uid: file,
-			name: file.split("-")[1],
+		return values?.map((file: ImageGetResponse) => ({
+			uid: file._id,
+			name: file.name,
 			status: "done",
-			url: import.meta.env.VITE_BASE_URL + "/file/" + file,
-			response: { data: { filename: file } },
+			url: file.url,
+			response: { data: file },
 		}));
 	}, [isMultiple, field.value]);
 
@@ -66,10 +67,10 @@ const FileUpload = <T extends FieldValues>({
 
 			if (status === "done") {
 				if (!isMultiple) {
-					field.onChange(info.file.response.data.filename);
+					field.onChange(info.file.response.data);
 					return;
 				} else {
-					field.onChange([...field.value, info.file.response.data.filename]);
+					field.onChange([...(field.value ?? []), info.file.response.data]);
 				}
 
 				message.success(`${info.file.name} file uploaded successfully.`);
@@ -86,18 +87,19 @@ const FileUpload = <T extends FieldValues>({
 
 			if (isMultiple) {
 				field.onChange(
-					field.value.filter((f: string) => f !== file.response.data.filename)
+					field.value?.filter((f: string) => f !== file.response.data.filename)
 				);
 			} else {
 				field.onChange("");
 			}
-			deleteUrl(file.response.data.filename);
+
+			deleteUrl(file.response.data.fileId);
 		},
 		onDrop() {
 			// console.info("Dropped files", e.dataTransfer.files);
 		},
 
-		defaultFileList: fileList.length ? fileList : undefined,
+		defaultFileList: fileList?.length ? fileList : undefined,
 	};
 
 	return (

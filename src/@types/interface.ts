@@ -21,6 +21,8 @@ export interface ICreateProduct {
 	description: string;
 	category: string;
 	image: string[];
+
+	images?: ImageGetResponse[];
 	discountedPrice: number | null;
 	quantity: number;
 }
@@ -28,6 +30,7 @@ export interface ICreateProduct {
 export interface ICreateCategory {
 	name: string;
 	image: string;
+	images?: ImageGetResponse;
 }
 
 export interface IGetProduct {
@@ -40,16 +43,29 @@ export interface IGetProducts {
 	data: IProduct[];
 }
 
-export interface IProduct extends ICreateProduct {
+export interface ImageGetResponse {
+	_id: string;
+	name: string;
+	url: string;
+	size: number;
+	type: string;
+	fileId: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface IProduct extends Omit<ICreateProduct, "image"> {
 	_id: string;
 	createdAt: string;
 	updatedAt: string;
+	image: ImageGetResponse[];
 	__v: number;
 }
-export interface ICategory extends ICreateCategory {
+export interface ICategory extends Omit<ICreateCategory, "image"> {
 	_id: string;
 	createdAt: string;
 	updatedAt: string;
+	image: ImageGetResponse;
 	__v: number;
 }
 
