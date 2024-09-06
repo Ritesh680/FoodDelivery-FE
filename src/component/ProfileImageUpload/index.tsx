@@ -53,6 +53,7 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 			<UserOutlined className="text-7xl text-gray-400" />
 		</button>
 	);
+
 	return (
 		<Upload
 			name="profileImage"

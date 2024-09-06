@@ -43,7 +43,7 @@ const CreateOrEditProduct = () => {
 			price: data.price ? parseFloat(data.price.toString()) : null,
 			description: data.description,
 			category: data.category,
-			image: data.image,
+			image: data.images?.map((image) => image.fileId) ?? [],
 			discountedPrice: data.discountedPrice
 				? parseFloat(data.discountedPrice.toString())
 				: null,
@@ -105,7 +105,7 @@ const CreateOrEditProduct = () => {
 			price: data.data.price,
 			description: data.data.description,
 			category: data.data.category,
-			image: data.data.image,
+			images: data.data.image,
 			discountedPrice: data.data.discountedPrice,
 			quantity: data.data.quantity,
 		});
@@ -124,7 +124,7 @@ const CreateOrEditProduct = () => {
 							<FileUpload
 								isMultiple={true}
 								control={control}
-								name="image"
+								name="images"
 								rules={{ required: "This is required" }}
 								deleteUrl={(fileId: string) =>
 									id ? deleteProductImage(id, fileId) : deleteImage(fileId)

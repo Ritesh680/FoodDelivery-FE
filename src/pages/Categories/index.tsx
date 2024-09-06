@@ -32,10 +32,10 @@ const CategoryList = () => {
 					key: "image",
 					title: "Image",
 					dataIndex: "image",
-					render: (item) => {
+					render: (item: ICategory["image"]) => {
 						return (
 							<img
-								src={import.meta.env.VITE_BASE_URL + "/file/" + item}
+								src={item.url}
 								alt="item"
 								className="w-20 h-20 object-cover rounded"
 								onError={(e) => {

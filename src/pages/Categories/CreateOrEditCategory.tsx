@@ -28,6 +28,15 @@ const CreateOrEditCategory = () => {
 		},
 	});
 
+	const filteredData: (data: ICreateCategory) => ICreateCategory = (
+		data: ICreateCategory
+	) => {
+		return {
+			name: data.name,
+			image: data.images?.fileId ?? "",
+		};
+	};
+
 	const { mutate: deleteThisCategory, isLoading: isCategoryDeleting } =
 		useMutation({
 			mutationFn: (id: string) => deleteCategory(id),
@@ -69,16 +78,16 @@ const CreateOrEditCategory = () => {
 
 	const onSubmit = (data: ICreateCategory) => {
 		if (id) {
-			editCurrentCategory(data);
+			editCurrentCategory(filteredData(data));
 			return;
 		}
-		createNewProduct(data);
+		createNewProduct(filteredData(data));
 	};
 
 	function setDefault(data: ApiResponse<ICategory>) {
 		reset({
 			name: data.data.name,
-			image: data.data.image,
+			images: data.data.image,
 		});
 	}
 
@@ -113,8 +122,9 @@ const CreateOrEditCategory = () => {
 								placeholder="Enter name of product"
 							/>
 							<FileUpload
+								isMultiple={false}
 								control={control}
-								name="image"
+								name="images"
 								rules={{ required: "This is required" }}
 								deleteUrl={(fileId: string) =>
 									id ? deleteCategoryImage(id, fileId) : deleteImage(fileId)
