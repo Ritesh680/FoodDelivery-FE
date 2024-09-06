@@ -1,6 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import { GetProp, Spin, Upload, UploadProps, message } from "antd";
 import { useState } from "react";
+import { getCookie } from "../../utils/function";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -60,6 +61,7 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 			showUploadList={false}
 			action={import.meta.env.VITE_BASE_URL + "/user/image"}
 			withCredentials={true}
+			headers={{ Authorization: `Bearer ${getCookie("token")}` }}
 			beforeUpload={beforeUpload}
 			onChange={handleChange}>
 			{loading ? (
