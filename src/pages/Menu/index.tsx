@@ -33,7 +33,7 @@ const Menu = () => {
 							<ItemCard
 								key={item._id}
 								name={item.name}
-								imageUrl={`${import.meta.env.VITE_BASE_URL}/file/${item.image}`}
+								imageUrl={item.image.url}
 							/>
 						))}
 					</div>
