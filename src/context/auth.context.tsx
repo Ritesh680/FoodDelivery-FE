@@ -28,10 +28,8 @@ export const AuthContext = createContext<AuthContextState>({
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [userDetail, setUserDetail] = useState<IUserResponse | null>(null);
-	const [authenticated, setIsAuthenticated] = useState<boolean>(
-		!!getCookie("token")
-	);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [authenticated, setIsAuthenticated] = useState<boolean>();
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const searchParams = useMemo(
 		() => new URLSearchParams(window.location.search),
@@ -72,7 +70,6 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	}
 
 	const fetchUserDetail = useCallback(async () => {
-		if (!authenticated) return;
 		setLoading(true);
 		await fetch(import.meta.env.VITE_BASE_URL + "/auth/login/success", {
 			method: "GET",
@@ -101,11 +98,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				setIsAuthenticated(false);
 			})
 			.finally(() => setLoading(false));
-	}, [authenticated]);
+	}, []);
 
 	useEffect(() => {
 		fetchUserDetail();
-	}, [fetchUserDetail]);
+	}, [fetchUserDetail, authenticated]);
 
 	useEffect(() => {
 		const query = searchParams.toString();

@@ -11,6 +11,8 @@ import CreateOrEditProduct from "../pages/Products/CreateOrEdit";
 import { ROUTES } from "../constants";
 import CategoryList from "../pages/Categories";
 import CreateOrEditCategory from "../pages/Categories/CreateOrEditCategory";
+import Profile from "../pages/Profile";
+import Users from "../pages/Users";
 
 const AdminRoutes = [
 	{
@@ -22,7 +24,7 @@ const AdminRoutes = [
 	{
 		name: "Create Product",
 		route: ROUTES.CREATE_PRODUCT,
-		content: ProductPage,
+		content: CreateOrEditProduct,
 		icon: OffersIcon,
 		hidden: true,
 	},
@@ -62,13 +64,13 @@ const AdminRoutes = [
 	{
 		name: "Users",
 		route: ROUTES.USERS,
-		content: `<p>Products</p>`,
+		content: Users,
 		icon: UsergroupAddOutlined,
 	},
 	{
 		name: "Settings",
 		route: ROUTES.SETTINGS,
-		content: `<p>Products</p>`,
+		content: Profile,
 		icon: SettingTwoTone,
 	},
 ];

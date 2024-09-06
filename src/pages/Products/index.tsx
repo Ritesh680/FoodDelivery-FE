@@ -9,7 +9,16 @@ const ProductList = () => {
 	const navigate = useNavigate();
 	return (
 		<QueryTable<ApiResponse<IProduct[]>, IProduct>
+			title="Products"
 			queryKey="Products"
+			actions={
+				<Button
+					className="default"
+					htmlType="button"
+					onClick={() => navigate("/admin/products/create")}>
+					Add new Product
+				</Button>
+			}
 			queryFunction={getProducts}
 			tableHeaders={[
 				{

@@ -15,7 +15,7 @@ const CategoryList = () => {
 				<Button
 					className="default"
 					htmlType="button"
-					onClick={() => navigate("/categories/create")}>
+					onClick={() => navigate("/admin/categories/create")}>
 					Add new Category
 				</Button>
 			}
