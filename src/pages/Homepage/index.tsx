@@ -16,7 +16,7 @@ const HomePage = () => {
 	const { addToCart, getProducts, getCategories } = useApi();
 	const queryClient = useQueryClient();
 
-	const [showOfferBanner, setShowOfferBanner] = useState(true);
+	const [showOfferBanner, setShowOfferBanner] = useState(false);
 	const BannerItems = [
 		"Free Shipping ON +Rs 999",
 		"FREE Frozen French Fries On All Orders",
@@ -69,9 +69,6 @@ const HomePage = () => {
 
 	return (
 		<>
-			{/* <AntdModal onOk={() => setShowOfferBanner(false)}>
-				<p>this i some content</p>
-			</AntdModal> */}
 			{showOfferBanner ? (
 				<Modal
 					open={showOfferBanner}
