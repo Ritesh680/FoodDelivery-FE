@@ -37,7 +37,7 @@ const ProductDetail = () => {
 	});
 	const itemsInCart = useMemo(() => {
 		return authenticated
-			? data?.data.cart.find((item) => item.product === id)?.quantity ?? 0
+			? data?.data?.cart?.find((item) => item?.product === id)?.quantity ?? 0
 			: 0;
 	}, [data?.data?.cart, id, authenticated]);
 	return (
