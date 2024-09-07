@@ -1,14 +1,17 @@
-import SearchBar from "../../Searchbar";
 import { NavItems } from "../../../constants";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropdownComponent from "../../Dropdown";
 import { LocationIcon } from "../../../assets/icons";
 import { useMemo } from "react";
 import useAuth from "../../../hooks/useAuth";
 import AdminRoutes from "../../../routes/AdminRoutes";
+import useApi from "../../../api/useApi";
+import AutoComplete from "../../AutoComplete";
 
 const Navbar = () => {
 	const { authenticated, userDetail } = useAuth();
+	const { getProducts } = useApi();
+	const navigate = useNavigate();
 
 	const List = useMemo(() => {
 		if (userDetail?.user?.role === "admin") {
@@ -42,11 +45,10 @@ const Navbar = () => {
 					/>
 				</a>
 				<div className="w-[187px] sm:w-[417px]">
-					<SearchBar
-						placeholder="Search for product "
-						handleSearch={() => {
-							//
-						}}
+					<AutoComplete
+						queryFunction={getProducts}
+						queryKey="Products"
+						onSelect={(id: string) => navigate("/product/" + id)}
 					/>
 				</div>
 				<div className="sm:hidden">

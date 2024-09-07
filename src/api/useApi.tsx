@@ -55,8 +55,13 @@ export default function useApi() {
 
 	const getProducts: (
 		context: QueryFunctionContext
-	) => Promise<ApiResponse<IProduct[]>> = async () => {
-		return axiosRequest<ApiResponse<IProduct[]>>("GET", "/product");
+	) => Promise<ApiResponse<IProduct[]>> = async ({ queryKey }) => {
+		const [_key, params = ""] = queryKey;
+
+		return axiosRequest<ApiResponse<IProduct[]>>(
+			"GET",
+			"/product/?search=" + params
+		);
 	};
 	const getProductById = async (id: string) => {
 		return axiosRequest<ApiResponse<IProduct>>("GET", `/product/${id}`);
@@ -128,8 +133,9 @@ export default function useApi() {
 
 	const getAllUsers: (
 		context: QueryFunctionContext
-	) => Promise<ApiResponse<IUserResponse[]>> = async () => {
-		return await axiosRequest("GET", "/user");
+	) => Promise<ApiResponse<IUserResponse[]>> = async ({ queryKey }) => {
+		const [_, search = ""] = queryKey;
+		return await axiosRequest("GET", "/user?search=" + search);
 	};
 
 	return {
