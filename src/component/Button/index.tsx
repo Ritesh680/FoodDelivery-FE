@@ -1,5 +1,4 @@
-import { Button, ButtonProps, ConfigProvider } from "antd";
-import { ComponentToken } from "antd/es/button/style/token";
+import { Button, ConfigProvider } from "antd";
 import { PropsWithChildren } from "react";
 
 const variantStyle = {
