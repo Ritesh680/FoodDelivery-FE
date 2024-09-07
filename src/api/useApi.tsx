@@ -6,6 +6,7 @@ import {
 	ICreateCategory,
 	ICreateProduct,
 	IProduct,
+	IUserResponse,
 } from "../@types/interface";
 import useAxiosRequest from "../hooks/useAxiosRequest";
 
@@ -123,6 +124,14 @@ export default function useApi() {
 		);
 	};
 
+	//USERS
+
+	const getAllUsers: (
+		context: QueryFunctionContext
+	) => Promise<ApiResponse<IUserResponse[]>> = async () => {
+		return await axiosRequest("GET", "/user");
+	};
+
 	return {
 		register,
 		login,
@@ -142,5 +151,6 @@ export default function useApi() {
 		addToCart,
 		getCart,
 		deleteCart,
+		getAllUsers,
 	};
 }

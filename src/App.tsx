@@ -12,6 +12,7 @@ import Cart from "./pages/Cart";
 import AdminProtectedRoutes from "./routes/AdminProtected";
 import AdminRoutes from "./routes/AdminRoutes";
 import CheckoutPage from "./pages/Checkout";
+import ProductDetail from "./pages/Products/ProductDetail";
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 					<Route path="checkout" element={<CheckoutPage />} />
 
 					<Route path="" element={<HomePage />} />
+					<Route path="product/:id" element={<ProductDetail />} />
 					<Route path="/" element={<ProtectedRoutes />}>
 						<Route path="profile" element={<Profile />} />
 						<Route path="orders" element={<Orders />} />

@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Image, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 interface FoodCardWithDetails {
 	foodImage: string;
@@ -15,7 +15,8 @@ interface FoodCardWithDetails {
 	withDetails: true;
 	loading: boolean;
 	success: boolean;
-	handleButtonClick: () => void;
+	handleButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	handleCardClick: () => void;
 }
 interface FoodCardWithOutDetails {
 	foodImage: string;
@@ -26,6 +27,7 @@ interface FoodCardWithOutDetails {
 	loading?: boolean;
 	success?: boolean;
 	handleButtonClick?: () => void;
+	handleCardClick?: () => void;
 }
 
 type FoodCardProps = FoodCardWithDetails | FoodCardWithOutDetails;
@@ -39,6 +41,7 @@ const FoodCard = ({
 	handleButtonClick,
 	loading,
 	success,
+	handleCardClick,
 }: FoodCardProps) => {
 	const discountPercent = useMemo(() => {
 		if (discountedPrice > originalPrice) return 0;
@@ -57,6 +60,7 @@ const FoodCard = ({
 	return (
 		<>
 			<Card
+				onClick={handleCardClick}
 				loading={false}
 				cover={
 					<Image
@@ -84,9 +88,9 @@ const FoodCard = ({
 				}
 				className={`${
 					withDetails
-						? "w-[150px] h-[202px] sm:h-[363px] sm:w-[305px]"
+						? "w-[150px] h-[202px] sm:h-[363px] sm:w-[305px] cursor-pointer"
 						: "w-full h-full"
-				} `}>
+				}`}>
 				{withDetails ? (
 					<div className="p-2">
 						<Meta className="text-[10px] font-semibold" title={foodName}></Meta>
@@ -106,7 +110,7 @@ const FoodCard = ({
 
 							<button
 								type="button"
-								className="bg-[#c50202] text-white rounded text-[8px] sm:text-xs px-2 py-1 flex gap-2 items-center"
+								className="bg-[#c50202] text-white rounded text-[8px] sm:text-xs px-2 py-1 flex gap-2 items-center hover:shadow-md hover:scale-105"
 								onClick={handleButtonClick}
 								disabled={loading || success}>
 								{loading ? (

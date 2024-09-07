@@ -9,12 +9,14 @@ import ImageSlider from "../../component/Carousel/Carousel";
 import useApi from "../../api/useApi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Spin, message } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "../../component/Modal";
+import { useNavigate } from "react-router";
 
 const HomePage = () => {
 	const { addToCart, getProducts, getCategories } = useApi();
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const [showOfferBanner, setShowOfferBanner] = useState(false);
 	const BannerItems = [
@@ -109,7 +111,12 @@ const HomePage = () => {
 									AddItemToCart.isSuccess &&
 									item._id === AddItemToCart.variables
 								}
-								handleButtonClick={() => AddItemToCart.mutate(item._id)}
+								handleCardClick={() => navigate("/product/" + item._id)}
+								handleButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+									e.preventDefault();
+									e.stopPropagation();
+									AddItemToCart.mutate(item._id);
+								}}
 							/>
 						))}
 					</div>
@@ -129,6 +136,7 @@ const HomePage = () => {
 									AddItemToCart.isLoading &&
 									item._id === AddItemToCart.variables
 								}
+								handleCardClick={() => navigate(`/product/${item._id}`)}
 								success={
 									AddItemToCart.isSuccess &&
 									item._id === AddItemToCart.variables
