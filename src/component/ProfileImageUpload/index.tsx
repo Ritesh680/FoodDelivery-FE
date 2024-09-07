@@ -38,6 +38,7 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 				setLoading(false);
 				setImageUrl(url);
 			});
+			message.success("Profile Image updated");
 		}
 	};
 

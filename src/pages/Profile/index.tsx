@@ -20,11 +20,7 @@ const Profile = () => {
 	];
 
 	const userImage = useMemo(() => {
-		if (userDetail?.user.picture?.startsWith("https")) {
-			return userDetail?.user.picture;
-		} else {
-			return userDetail?.user.picture;
-		}
+		return userDetail?.user.picture;
 	}, [userDetail]);
 
 	return (
