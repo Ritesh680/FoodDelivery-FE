@@ -5,9 +5,9 @@ import { getCookie } from "../../utils/function";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
+const getBase64 = (img: FileType, callback?: (url: string) => void) => {
 	const reader = new FileReader();
-	reader.addEventListener("load", () => callback(reader.result as string));
+	reader.addEventListener("load", () => callback?.(reader.result as string));
 	reader.readAsDataURL(img);
 };
 
@@ -23,11 +23,18 @@ const beforeUpload = (file: FileType) => {
 	return isJpgOrPng && isLt2M;
 };
 
-const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
+const ProfileImageRender = ({
+	profileImage,
+	shouldUpdateImage = false,
+}: {
+	profileImage?: string;
+	shouldUpdateImage?: boolean;
+}) => {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState<string | undefined>(profileImage);
 
 	const handleChange: UploadProps["onChange"] = (info) => {
+		if (!shouldUpdateImage) return;
 		if (info.file.status === "uploading") {
 			setLoading(true);
 			return;
@@ -42,10 +49,6 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 		}
 	};
 
-	function handleImageError() {
-		setImageUrl(undefined);
-	}
-
 	const uploadButton = (
 		<button style={{ border: 0, background: "none" }} type="button">
 			{/* {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -56,29 +59,35 @@ const ProfileImageRender = ({ profileImage }: { profileImage?: string }) => {
 	);
 
 	return (
-		<Upload
-			name="profileImage"
-			listType="picture-circle"
-			className="border-none"
-			showUploadList={false}
-			action={import.meta.env.VITE_BASE_URL + "/user/image"}
-			withCredentials={true}
-			headers={{ Authorization: `Bearer ${getCookie("token")}` }}
-			beforeUpload={beforeUpload}
-			onChange={handleChange}>
-			{loading ? (
-				<Spin />
-			) : imageUrl ? (
-				<img
-					src={imageUrl}
-					alt="avatar"
-					onError={handleImageError}
-					className="rounded-full w-full h-full object-cover"
-				/>
-			) : (
-				uploadButton
-			)}
-		</Upload>
+		<>
+			<Upload
+				name="profileImage"
+				listType="picture-circle"
+				className="border-none rounded-full"
+				showUploadList={false}
+				openFileDialogOnClick={shouldUpdateImage}
+				action={
+					shouldUpdateImage
+						? import.meta.env.VITE_BASE_URL + "/user/image"
+						: undefined
+				}
+				withCredentials={true}
+				headers={{ Authorization: `Bearer ${getCookie("token")}` }}
+				beforeUpload={beforeUpload}
+				onChange={handleChange}>
+				{loading ? (
+					<Spin />
+				) : imageUrl ? (
+					<img
+						src={imageUrl}
+						alt="Profile image"
+						className="w-full h-full  rounded-full object-cover"
+					/>
+				) : (
+					uploadButton
+				)}
+			</Upload>
+		</>
 	);
 };
 

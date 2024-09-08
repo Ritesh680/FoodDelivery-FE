@@ -13,6 +13,7 @@ import AdminProtectedRoutes from "./routes/AdminProtected";
 import AdminRoutes from "./routes/AdminRoutes";
 import CheckoutPage from "./pages/Checkout";
 import ProductDetail from "./pages/Products/ProductDetail";
+import UpdateProfile from "./pages/Profile/UpdateProfile";
 
 function App() {
 	return (
@@ -40,6 +41,7 @@ function App() {
 						))}
 						<Route path="profile" element={<Profile />} />
 					</Route>
+					<Route path="profile/update" element={<UpdateProfile />} />
 					<Route path="/menu" element={<Menu />} />
 					<Route path="/cart" element={<Cart />} />
 				</Route>

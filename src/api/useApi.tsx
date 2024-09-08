@@ -10,7 +10,7 @@ import {
 } from "../@types/interface";
 import useAxiosRequest from "../hooks/useAxiosRequest";
 
-interface RegisterData {
+export interface RegisterData {
 	name: string;
 	email: string;
 	password: string;
@@ -42,6 +42,10 @@ export default function useApi() {
 
 	const register = async (data: RegisterData) => {
 		return axiosRequest("POST", "/user", data);
+	};
+
+	const updateProfile = async (id: string, data: RegisterData) => {
+		return axiosRequest("PUT", `/user/${id}`, data);
 	};
 	const login = async (data: LoginData) => {
 		return axiosRequest<ILoginResponse>("POST", "/auth/local/login", data);
@@ -140,6 +144,7 @@ export default function useApi() {
 
 	return {
 		register,
+		updateProfile,
 		login,
 		logout,
 		createProduct,

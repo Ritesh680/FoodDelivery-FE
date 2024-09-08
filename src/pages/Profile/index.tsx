@@ -36,7 +36,9 @@ const Profile = () => {
 						<span className="text-xs text-center text-white">
 							{userDetail?.user.email}
 						</span>
-						<button className="text-xs text-center text-white bg-red-500 rounded-lg py-1">
+						<button
+							className="text-xs text-center text-white bg-red-500 rounded-lg py-1"
+							onClick={() => navigate("/profile/update")}>
 							Edit Profile
 						</button>
 					</div>
