@@ -94,6 +94,10 @@ export default function useApi() {
 		return axiosRequest("PUT", `/product/${id}`, data);
 	};
 
+	const deleteProduct = async (id: string) => {
+		return axiosRequest("DELETE", `/product/${id}`);
+	};
+
 	const deleteProductImage = async (id: string, fileId: string) => {
 		return axiosRequest("DELETE", `/product/${id}/file/${fileId}`);
 	};
@@ -180,6 +184,7 @@ export default function useApi() {
 		getProducts,
 		getProductById,
 		editProduct,
+		deleteProduct,
 		deleteProductImage,
 		getCategories,
 		getCategoryById,

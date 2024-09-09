@@ -1,12 +1,35 @@
 import QueryTable from "../../component/StaticTable/QueryTable";
 import useApi from "../../api/useApi";
 import { ICategory } from "../../@types/interface";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router";
+import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import PopupButton from "../../component/ConfirmButton";
+import { useMutation, useQueryClient } from "react-query";
 
 const CategoryList = () => {
-	const { getCategories } = useApi();
+	const { getCategories, deleteCategory } = useApi();
 	const navigate = useNavigate();
+
+	const queryClient = useQueryClient();
+
+	const {
+		mutate: deleteThisCategory,
+		isLoading: isCategoryDeleting,
+		variables,
+	} = useMutation({
+		mutationFn: (id: string) => deleteCategory(id),
+		onSuccess: () => {
+			message.success("Category deleted successfully");
+			navigate("/admin/categories");
+			queryClient.invalidateQueries({
+				queryKey: ["Categories"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["category"],
+			});
+		},
+	});
 	return (
 		<QueryTable<ApiResponse<ICategory[]>, ICategory>
 			title="Categories"
@@ -57,8 +80,22 @@ const CategoryList = () => {
 									type="default"
 									htmlType="button"
 									onClick={() => navigate(`/admin/categories/edit/${item}`)}>
-									{"->"}
+									<InfoCircleOutlined />
 								</Button>
+
+								<PopupButton
+									title="Delete Category"
+									description="Are you sure?"
+									onConfirm={() => {
+										deleteThisCategory(item);
+									}}>
+									<Button
+										type="primary"
+										danger
+										loading={isCategoryDeleting && variables === item}>
+										<DeleteOutlined />
+									</Button>
+								</PopupButton>
 							</div>
 						);
 					},

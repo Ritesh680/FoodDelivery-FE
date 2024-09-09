@@ -14,7 +14,6 @@ const CreateOrEditCategory = () => {
 		getCategoryById,
 		deleteCategoryImage,
 		deleteImage,
-		deleteCategory,
 	} = useApi();
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -36,16 +35,6 @@ const CreateOrEditCategory = () => {
 			image: data.images?.fileId ?? "",
 		};
 	};
-
-	const { mutate: deleteThisCategory, isLoading: isCategoryDeleting } =
-		useMutation({
-			mutationFn: (id: string) => deleteCategory(id),
-			onSuccess: () => {
-				message.success("Category deleted successfully");
-				navigate("/categories");
-				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
-			},
-		});
 
 	const { mutate: createNewProduct, isLoading: isProductCreating } =
 		useMutation({
@@ -99,19 +88,6 @@ const CreateOrEditCategory = () => {
 				</div>
 			) : (
 				<div className="flex flex-col mb-20 p-10">
-					<div className="flex justify-end">
-						{id ? (
-							<Button
-								htmlType="button"
-								className="mb-5 bg-red-500 text-white"
-								onClick={() => deleteThisCategory(id)}
-								loading={isCategoryDeleting}>
-								Delete Category
-							</Button>
-						) : (
-							""
-						)}
-					</div>
 					<form className="" onSubmit={handleSubmit(onSubmit)}>
 						<div className="flex flex-col sm:gap-10">
 							<InputField

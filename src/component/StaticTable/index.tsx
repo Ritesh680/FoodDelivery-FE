@@ -40,6 +40,7 @@ const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
 			)}
 
 			<Table
+				bordered
 				scroll={{ x: isMobileDevice ? 1000 : 0 }}
 				columns={tableHeaders}
 				dataSource={tableData}
@@ -47,7 +48,6 @@ const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
 				className="p-5 table-auto mb-10"
 				rowKey={(record) => record._id.toString()}
 				tableLayout="auto"
-				caption={tableData?.length ? "" : "No data found"}
 			/>
 		</div>
 	);
