@@ -106,7 +106,7 @@ const Cart = () => {
 		_id,
 	}: {
 		name: string;
-		image: ImageGetResponse[];
+		image?: ImageGetResponse[];
 		price: number | null;
 		quantity: number;
 		onDelete: () => void;
@@ -118,7 +118,7 @@ const Cart = () => {
 			<Card className="p-5 rounded-none">
 				<div className="flex gap-5 items-stretch">
 					<img
-						src={image[0].url}
+						src={image?.[0]?.url}
 						alt="product"
 						className="h-[48px] w-[58px] rounded"
 					/>

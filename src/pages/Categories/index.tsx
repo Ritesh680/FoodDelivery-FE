@@ -35,7 +35,7 @@ const CategoryList = () => {
 					render: (item: ICategory["image"]) => {
 						return (
 							<img
-								src={item.url}
+								src={item?.url}
 								alt="item"
 								className="w-20 h-20 object-cover rounded"
 								onError={(e) => {

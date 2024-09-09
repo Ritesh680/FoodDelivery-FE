@@ -37,6 +37,23 @@ interface ILoginResponse {
 	user: IUser;
 	"token-expire": string;
 }
+
+interface ILoginResponse {
+	latitude: number;
+	longitude: number;
+	country: string;
+	state: string;
+	zipcode: string;
+	countryCode: string;
+	county: string;
+	streetName?: string;
+	city?: string;
+	extra: {
+		confidence: number;
+		confidenceKM: number;
+	};
+	provider: "opencage";
+}
 export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
 
@@ -64,7 +81,7 @@ export default function useApi() {
 
 		return axiosRequest<ApiResponse<IProduct[]>>(
 			"GET",
-			"/product/?search=" + params
+			`/product/?search=${params}`
 		);
 	};
 	const getProductById = async (id: string) => {
@@ -142,6 +159,18 @@ export default function useApi() {
 		return await axiosRequest("GET", "/user?search=" + search);
 	};
 
+	// location
+
+	const getLocation: (
+		context: QueryFunctionContext
+	) => Promise<ILoginResponse[]> = async ({ queryKey }) => {
+		const [_key, search = "", latitude, longitude] = queryKey;
+		return axiosRequest(
+			"GET",
+			`/location?location=${search}&latitude=${latitude}&longitude=${longitude}`
+		);
+	};
+
 	return {
 		register,
 		updateProfile,
@@ -163,5 +192,6 @@ export default function useApi() {
 		getCart,
 		deleteCart,
 		getAllUsers,
+		getLocation,
 	};
 }

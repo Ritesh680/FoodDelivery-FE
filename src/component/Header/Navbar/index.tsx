@@ -10,6 +10,7 @@ import AutoComplete from "../../AutoComplete";
 
 const Navbar = () => {
 	const { authenticated, userDetail } = useAuth();
+
 	const { getProducts } = useApi();
 	const navigate = useNavigate();
 
@@ -91,6 +92,20 @@ const Navbar = () => {
 								</Link>
 							</li>
 						))}
+						{/* //FIXME: ERROR WHILE CLOSING THE DROPDOWN */}
+						{/* <li className="flex gap-4 items-center py-2 lg:py-0 hover:scale-y-105 cursor-pointer hover:text-red-500">
+							<Dropdown
+								placement="bottomLeft"
+								arrow
+								menu={{ items: LocationItems, itemRef: "location" }}>
+								<span
+									className="text-sm text-gray-600 flex items-center gap-2 hover:scale-y-105 cursor-pointer hover:text-red-500"
+									onClick={() => setIsLocationActive(!isLocationActive)}>
+									<LocationIcon />
+									Location
+								</span>
+							</Dropdown>
+						</li> */}
 					</ul>
 				</nav>
 			</div>

@@ -49,7 +49,7 @@ const ProductDetail = () => {
 					<div className="flex sm:flex-row flex-col gap-5 sm:gap-20 py-5 sm:items-center px-5 sm:px-20">
 						<Image
 							className="w-[335px] sm:w-[550px] h-[197px] sm:h-[422px] object cover rounded"
-							src={data?.data?.image[0]?.url}
+							src={data?.data?.image?.[0]?.url}
 							fallback="https://via.placeholder.com/150"
 						/>
 
@@ -63,16 +63,16 @@ const ProductDetail = () => {
 
 							<div className="flex sm:flex-col justify-between items-start">
 								<div className="flex sm:gap-3 flex-col">
-									<div className="flex gap-1 items-center">
+									<div className="flex gap-1 sm:gap-5 items-center">
 										<span className="text-xxs sm:text-2xl sm:font-bold">
-											Rs 999
+											Rs {data?.data.discountedPrice}
 										</span>
-										<span className="text-[8px] sm:text-base font-normal line-through decoration-red-500">
-											Rs 999
+										<span className="text-[10px] sm:text-base font-normal line-through decoration-red-500">
+											Rs {data?.data.price}
 										</span>
 									</div>
 
-									<span className="text-[7px] sm:text-sm text-[#29A157] font-inter">
+									<span className="text-[7px] sm:text-base text-[#29A157] font-inter">
 										7% OFF
 									</span>
 								</div>
@@ -141,7 +141,7 @@ const ProductDetail = () => {
 						Products?.data &&
 						Products.data?.length > 1 && (
 							<div className="flex flex-col gap-6">
-								<span className="text-xs font-bold px-5">
+								<span className="text-xs sm:text-2xl font-bold px-5">
 									You might also like
 								</span>
 								<div className="flex ps-4 gap-4 overflow-x-scroll w-full">
@@ -154,7 +154,7 @@ const ProductDetail = () => {
 												originalPrice={item.price ?? 0}
 												discountedPrice={item.price ?? 0}
 												foodName={item.name}
-												foodImage={item.image[0]?.url}
+												foodImage={item.image?.[0]?.url ?? ""}
 												loading={
 													AddItemToCart.isLoading &&
 													AddItemToCart.variables?.productId === item._id

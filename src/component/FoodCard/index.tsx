@@ -11,7 +11,7 @@ interface FoodCardWithDetails {
 	foodImage: string;
 	foodName: string;
 	originalPrice: number;
-	discountedPrice: number;
+	discountedPrice?: number;
 	withDetails: true;
 	loading: boolean;
 	success: boolean;
@@ -35,8 +35,8 @@ type FoodCardProps = FoodCardWithDetails | FoodCardWithOutDetails;
 const FoodCard = ({
 	foodImage,
 	foodName,
-	originalPrice = 300,
-	discountedPrice = 200,
+	originalPrice,
+	discountedPrice,
 	withDetails,
 	handleButtonClick,
 	loading,
@@ -44,17 +44,18 @@ const FoodCard = ({
 	handleCardClick,
 }: FoodCardProps) => {
 	const discountPercent = useMemo(() => {
-		if (discountedPrice > originalPrice) return 0;
-		return calculateDiscount(originalPrice, discountedPrice);
+		if (!discountedPrice) return 0;
+		return calculateDiscount(discountedPrice ?? 0, originalPrice ?? 0);
 	}, [originalPrice, discountedPrice]);
 
 	const isDiscounted = useMemo(() => {
-		return discountedPrice < originalPrice;
+		if (!discountedPrice) return false;
+		return originalPrice ? discountedPrice < originalPrice : false;
 	}, [discountedPrice, originalPrice]);
 
 	function calculateDiscount(originalPrice: number, discountedPrice: number) {
 		return Math.round(
-			((originalPrice - discountedPrice) / originalPrice) * 100
+			((discountedPrice - originalPrice) / originalPrice) * 100
 		);
 	}
 	return (
@@ -83,23 +84,23 @@ const FoodCard = ({
 							e.currentTarget.src = "https://via.placeholder.com/150";
 						}}
 						previewPrefixCls="test"
-						className={`object-cover !h-32 lg:min-w-[305px] min-w-[150px] sm:!h-[236px] rounded-md`}
+						className={`object-cover !h-32 lg:min-w-[305px] min-w-[160px] sm:!h-[236px] rounded-md`}
 					/>
 				}
 				className={`${
 					withDetails
-						? "w-[150px] h-[202px] sm:h-[363px] sm:w-[305px] cursor-pointer"
+						? "w-[160px] h-[212px] sm:h-[363px] sm:w-[305px] cursor-pointer"
 						: "w-full h-full"
 				}`}>
 				{withDetails ? (
 					<div className="p-2">
 						<Meta className="text-[10px] font-semibold" title={foodName}></Meta>
-						<div className="flex w-full justify-between items-end sm:mt-2">
-							<div className="flex gap-5 items-center">
+						<div className="flex w-full justify-between items-end mt-1 sm:mt-2">
+							<div className="flex gap-2 sm:gap-5 items-center">
 								{isDiscounted ? (
 									<>
-										<span className="text-[10px] sm:text-xs">{`Rs ${discountedPrice}`}</span>
-										<span className="text-[10px] sm:text-xs text-gray-500 line-through font-thin decoration-red-500">
+										<span className="text-[8px] sm:text-xs">{`Rs ${discountedPrice}`}</span>
+										<span className="text-[8px] sm:text-xs text-gray-500 line-through font-thin decoration-red-500">
 											{`Rs ${originalPrice}`}
 										</span>
 									</>

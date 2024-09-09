@@ -100,9 +100,9 @@ const HomePage = () => {
 								key={index}
 								withDetails
 								originalPrice={item.price ?? 0}
-								discountedPrice={item.price ?? 0}
+								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
-								foodImage={item.image[0]?.url}
+								foodImage={item?.image?.[0]?.url || ""}
 								loading={
 									AddItemToCart.isLoading &&
 									AddItemToCart.variables === item._id
@@ -131,7 +131,7 @@ const HomePage = () => {
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
-								foodImage={item.image[0]?.url}
+								foodImage={item?.image?.[0]?.url || ""}
 								loading={
 									AddItemToCart.isLoading &&
 									item._id === AddItemToCart.variables
@@ -154,7 +154,7 @@ const HomePage = () => {
 								key={index}
 								withDetails={false}
 								foodName={item.name}
-								foodImage={item.image.url}
+								foodImage={item.image?.url || ""}
 							/>
 						))}
 					</div>
