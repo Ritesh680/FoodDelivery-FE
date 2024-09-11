@@ -9,6 +9,7 @@ import useApi from "../../api/useApi";
 import { ICreateProduct, IProduct } from "../../@types/interface";
 import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
+import QueryKeys from "../../constants/QueryKeys";
 
 const CreateOrEditProduct = () => {
 	const {
@@ -57,7 +58,12 @@ const CreateOrEditProduct = () => {
 			onSuccess: () => {
 				message.success("Product created successfully");
 				navigate("/admin/products");
-				queryClient.invalidateQueries({ queryKey: ["Products", "product"] });
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.SingleProduct],
+				});
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.Products],
+				});
 			},
 		});
 
@@ -68,12 +74,17 @@ const CreateOrEditProduct = () => {
 			onSuccess: () => {
 				message.success("Product updated");
 				navigate("/admin/products");
-				queryClient.invalidateQueries({ queryKey: ["Products", "product"] });
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.SingleProduct],
+				});
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.Products],
+				});
 			},
 		});
 
 	const { isLoading } = useQuery({
-		queryKey: ["product", id],
+		queryKey: [QueryKeys.SingleProduct, id],
 		queryFn: () => getProductById(id!),
 		enabled: !!id,
 		onSuccess: (data) => {
@@ -82,7 +93,7 @@ const CreateOrEditProduct = () => {
 	});
 
 	const Categories = useQuery({
-		queryKey: "Categories",
+		queryKey: QueryKeys.Categories,
 		queryFn: getCategories,
 	});
 

@@ -28,7 +28,9 @@ export const AuthContext = createContext<AuthContextState>({
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [userDetail, setUserDetail] = useState<IUserResponse | null>(null);
-	const [authenticated, setIsAuthenticated] = useState<boolean>();
+	const [authenticated, setIsAuthenticated] = useState<boolean>(
+		getCookie("token") ? true : false
+	);
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const searchParams = useMemo(
@@ -70,25 +72,17 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 	}
 
 	const fetchUserDetail = useCallback(async () => {
+		if (authenticated && userDetail) return setLoading(false);
 		setLoading(true);
 		await fetch(import.meta.env.VITE_BASE_URL + "/auth/login/success", {
 			method: "GET",
 			credentials: "include",
-			headers: {
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Credentials": "true",
-				Accept: "application/json",
-				Authorization: getCookie("token") ? `Bearer ${getCookie("token")}` : "",
-			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
 					setUserDetail(data);
 					setIsAuthenticated(true);
-					if (data.token) {
-						document.cookie = `token=${data.token}`;
-					}
 				} else {
 					setIsAuthenticated(false);
 				}
@@ -98,7 +92,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 				setIsAuthenticated(false);
 			})
 			.finally(() => setLoading(false));
-	}, []);
+	}, [authenticated, userDetail]);
 
 	useEffect(() => {
 		fetchUserDetail();

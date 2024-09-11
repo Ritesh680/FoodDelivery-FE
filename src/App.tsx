@@ -14,6 +14,7 @@ import AdminRoutes from "./routes/AdminRoutes";
 import CheckoutPage from "./pages/Checkout";
 import ProductDetail from "./pages/Products/ProductDetail";
 import UpdateProfile from "./pages/Profile/UpdateProfile";
+import CategoryItems from "./pages/Categories/CategoryItems";
 
 function App() {
 	return (
@@ -44,6 +45,7 @@ function App() {
 					<Route path="profile/update" element={<UpdateProfile />} />
 					<Route path="/menu" element={<Menu />} />
 					<Route path="/cart" element={<Cart />} />
+					<Route path="category/:id" element={<CategoryItems />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

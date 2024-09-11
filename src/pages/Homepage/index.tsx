@@ -7,16 +7,14 @@ import { faker } from "@faker-js/faker";
 import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
 import ImageSlider from "../../component/Carousel/Carousel";
 import useApi from "../../api/useApi";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Spin, message } from "antd";
-import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { Spin } from "antd";
+import { useState } from "react";
 import Modal from "../../component/Modal";
-import { useNavigate } from "react-router";
+import QueryKeys from "../../constants/QueryKeys";
 
 const HomePage = () => {
-	const { addToCart, getProducts, getCategories } = useApi();
-	const queryClient = useQueryClient();
-	const navigate = useNavigate();
+	const { getProducts, getCategories } = useApi();
 
 	const [showOfferBanner, setShowOfferBanner] = useState(false);
 	const BannerItems = [
@@ -24,20 +22,12 @@ const HomePage = () => {
 		"FREE Frozen French Fries On All Orders",
 	];
 
-	const AddItemToCart = useMutation({
-		mutationFn: (productId: string) => addToCart(productId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Cart"] });
-			message.success("Item added to cart");
-		},
-	});
-
 	const { data: Products, isLoading } = useQuery({
-		queryKey: "Products",
+		queryKey: QueryKeys.Products,
 		queryFn: getProducts,
 	});
 	const { data: Category } = useQuery({
-		queryKey: "Categories",
+		queryKey: QueryKeys.Categories,
 		queryFn: getCategories,
 	});
 
@@ -98,25 +88,12 @@ const HomePage = () => {
 						{TopOffersFoodItems?.map((item, index) => (
 							<FoodCard
 								key={index}
+								id={item._id}
 								withDetails
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
 								foodImage={item?.image?.[0]?.url || ""}
-								loading={
-									AddItemToCart.isLoading &&
-									AddItemToCart.variables === item._id
-								}
-								success={
-									AddItemToCart.isSuccess &&
-									item._id === AddItemToCart.variables
-								}
-								handleCardClick={() => navigate("/product/" + item._id)}
-								handleButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-									e.preventDefault();
-									e.stopPropagation();
-									AddItemToCart.mutate(item._id);
-								}}
 							/>
 						))}
 					</div>
@@ -127,21 +104,12 @@ const HomePage = () => {
 						{BestSellersFoodItems?.map((item, index) => (
 							<FoodCard
 								key={index}
+								id={item._id}
 								withDetails
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
 								foodImage={item?.image?.[0]?.url || ""}
-								loading={
-									AddItemToCart.isLoading &&
-									item._id === AddItemToCart.variables
-								}
-								handleCardClick={() => navigate(`/product/${item._id}`)}
-								success={
-									AddItemToCart.isSuccess &&
-									item._id === AddItemToCart.variables
-								}
-								handleButtonClick={() => AddItemToCart.mutate(item._id)}
 							/>
 						))}
 					</div>
@@ -151,6 +119,7 @@ const HomePage = () => {
 					<div className="grid grid-cols-2 lg:grid-cols-3 gap-10 px-4">
 						{Categories?.map((item, index) => (
 							<FoodCard
+								id={item._id}
 								key={index}
 								withDetails={false}
 								foodName={item.name}

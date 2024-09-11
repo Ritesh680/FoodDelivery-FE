@@ -3,46 +3,44 @@ import {
 	LoadingOutlined,
 	ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Card, Image, Spin } from "antd";
+import { Card, Image, Spin, message } from "antd";
 import Meta from "antd/es/card/Meta";
 import React, { useMemo } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import useApi from "../../api/useApi";
+import { useNavigate } from "react-router";
 
 interface FoodCardWithDetails {
+	id: string;
 	foodImage: string;
 	foodName: string;
 	originalPrice: number;
 	discountedPrice?: number;
 	withDetails: true;
-	loading: boolean;
-	success: boolean;
-	handleButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-	handleCardClick: () => void;
 }
 interface FoodCardWithOutDetails {
+	id: string;
 	foodImage: string;
 	foodName: string;
 	originalPrice?: number;
 	discountedPrice?: number;
 	withDetails: false;
-	loading?: boolean;
-	success?: boolean;
-	handleButtonClick?: () => void;
-	handleCardClick?: () => void;
 }
 
 type FoodCardProps = FoodCardWithDetails | FoodCardWithOutDetails;
 
 const FoodCard = ({
+	id,
 	foodImage,
 	foodName,
 	originalPrice,
 	discountedPrice,
 	withDetails,
-	handleButtonClick,
-	loading,
-	success,
-	handleCardClick,
 }: FoodCardProps) => {
+	const { addToCart } = useApi();
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
+
 	const discountPercent = useMemo(() => {
 		if (!discountedPrice) return 0;
 		return calculateDiscount(discountedPrice ?? 0, originalPrice ?? 0);
@@ -58,10 +56,28 @@ const FoodCard = ({
 			((discountedPrice - originalPrice) / originalPrice) * 100
 		);
 	}
+
+	const AddItemToCart = useMutation({
+		mutationFn: (productId: string) => addToCart(productId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["Cart"] });
+			message.success("Item added to cart");
+		},
+	});
+
+	const loading = useMemo(() => {
+		return AddItemToCart.isLoading && AddItemToCart.variables === id;
+	}, [AddItemToCart.isLoading, AddItemToCart.variables, id]);
+
+	const success = useMemo(
+		() => AddItemToCart.isSuccess && id === AddItemToCart.variables,
+		[AddItemToCart.isSuccess, AddItemToCart.variables, id]
+	);
+
 	return (
 		<>
 			<Card
-				onClick={handleCardClick}
+				onClick={() => navigate(`/product/${id}`)}
 				loading={false}
 				cover={
 					<Image
@@ -112,7 +128,11 @@ const FoodCard = ({
 							<button
 								type="button"
 								className="bg-[#c50202] text-white rounded text-[8px] sm:text-xs px-2 py-1 flex gap-2 items-center hover:shadow-md hover:scale-105"
-								onClick={handleButtonClick}
+								onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+									e.preventDefault();
+									e.stopPropagation();
+									AddItemToCart.mutate(id);
+								}}
 								disabled={loading || success}>
 								{loading ? (
 									<Spin size="small" spinning indicator={<LoadingOutlined />} />

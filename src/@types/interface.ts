@@ -68,6 +68,7 @@ export interface ICategory extends Omit<ICreateCategory, "image"> {
 	updatedAt: string;
 	image?: ImageGetResponse;
 	__v: number;
+	products: IProduct[];
 }
 
 export interface CartProduct {

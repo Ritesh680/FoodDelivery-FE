@@ -2,10 +2,22 @@ import { useQuery } from "react-query";
 import MobileContent from "../../component/Layout/MobileContent";
 import useApi from "../../api/useApi";
 import { Spin } from "antd";
+import { useNavigate } from "react-router";
+import QueryKeys from "../../constants/QueryKeys";
 
-const ItemCard = ({ name, imageUrl }: { name: string; imageUrl: string }) => {
+const ItemCard = ({
+	name,
+	imageUrl,
+	handleClick,
+}: {
+	name: string;
+	imageUrl: string;
+	handleClick: () => void;
+}) => {
 	return (
-		<div className="flex justify-start gap-2.5 items-center p-5 bg-white [&:not(:last-child)]:border-b cursor-pointer hover:shadow-md">
+		<div
+			className="flex justify-start gap-2.5 items-center p-5 bg-white [&:not(:last-child)]:border-b cursor-pointer hover:shadow-md"
+			onClick={handleClick}>
 			<img
 				src={imageUrl}
 				alt=""
@@ -17,9 +29,13 @@ const ItemCard = ({ name, imageUrl }: { name: string; imageUrl: string }) => {
 };
 const Menu = () => {
 	const { getCategories } = useApi();
+	const navigate = useNavigate();
 
+	function handleClick(name: string) {
+		navigate(`/category/${name}`);
+	}
 	const { data: MenuItems, isLoading } = useQuery({
-		queryKey: "Categories",
+		queryKey: QueryKeys.Categories,
 		queryFn: getCategories,
 	});
 	return (
@@ -34,6 +50,7 @@ const Menu = () => {
 								key={item._id}
 								name={item.name}
 								imageUrl={item?.image?.url || ""}
+								handleClick={() => handleClick(item._id)}
 							/>
 						))}
 					</div>

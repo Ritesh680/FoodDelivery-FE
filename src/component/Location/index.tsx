@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import useApi from "../../api/useApi";
 import useDebounce from "../../hooks/useDebounce";
+import QueryKeys from "../../constants/QueryKeys";
 
 const Location = () => {
 	const [search, setSearch] = useState("");
@@ -22,7 +23,7 @@ const Location = () => {
 	);
 
 	const { data } = useQuery({
-		queryKey: ["location", debouncedValue, latitude, longitude],
+		queryKey: [QueryKeys.Location, debouncedValue, latitude, longitude],
 		queryFn: getLocation,
 		onSuccess: (data) => {
 			if (latitude && longitude) {

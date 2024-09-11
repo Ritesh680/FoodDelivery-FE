@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
 import { useMutation, useQueryClient } from "react-query";
+import QueryKeys from "../../constants/QueryKeys";
 
 const CategoryList = () => {
 	const { getCategories, deleteCategory } = useApi();
@@ -23,17 +24,17 @@ const CategoryList = () => {
 			message.success("Category deleted successfully");
 			navigate("/admin/categories");
 			queryClient.invalidateQueries({
-				queryKey: ["Categories"],
+				queryKey: [QueryKeys.Categories],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["category"],
+				queryKey: [QueryKeys.SingleCategory],
 			});
 		},
 	});
 	return (
 		<QueryTable<ApiResponse<ICategory[]>, ICategory>
 			title="Categories"
-			queryKey="Categories"
+			queryKey={QueryKeys.Categories}
 			actions={
 				<Button
 					className="default"

@@ -9,6 +9,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import QueryKeys from "../../constants/QueryKeys";
 
 const Cart = () => {
 	const { getCart, deleteCart, addToCart } = useApi();
@@ -57,7 +58,7 @@ const Cart = () => {
 		isLoading,
 		isFetching,
 	} = useQuery({
-		queryKey: "Cart",
+		queryKey: QueryKeys.Cart,
 		queryFn: getCart,
 	});
 

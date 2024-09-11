@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
 import { useMutation, useQueryClient } from "react-query";
+import QueryKeys from "../../constants/QueryKeys";
 
 const ProductList = () => {
 	const { getProducts, deleteProduct } = useApi();
@@ -22,17 +23,17 @@ const ProductList = () => {
 			message.success("Product deleted successfully");
 			navigate("/admin/products");
 			queryClient.invalidateQueries({
-				queryKey: ["Products"],
+				queryKey: [QueryKeys.Products],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["product"],
+				queryKey: [QueryKeys.SingleProduct],
 			});
 		},
 	});
 	return (
 		<QueryTable<ApiResponse<IProduct[]>, IProduct>
 			title="Products"
-			queryKey="Products"
+			queryKey={QueryKeys.Products}
 			actions={
 				<Button
 					className="default"

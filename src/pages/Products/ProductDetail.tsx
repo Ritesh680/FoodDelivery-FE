@@ -7,6 +7,7 @@ import useInnerWidth from "../../hooks/useInnerWidth";
 import FoodCard from "../../component/FoodCard";
 import { useMemo } from "react";
 import useAuth from "../../hooks/useAuth";
+import QueryKeys from "../../constants/QueryKeys";
 
 const ProductDetail = () => {
 	const { authenticated } = useAuth();
@@ -17,13 +18,13 @@ const ProductDetail = () => {
 	const queryClient = useQueryClient();
 
 	const { data, isLoading } = useQuery({
-		queryKey: ["Product", id],
+		queryKey: [QueryKeys.SingleProduct, id],
 		queryFn: () => getProductById(id!),
 		enabled: !!id,
 	});
 
 	const { data: Products, isLoading: isProductsLoading } = useQuery({
-		queryKey: "Products",
+		queryKey: QueryKeys.Products,
 		queryFn: getProducts,
 	});
 
@@ -31,8 +32,8 @@ const ProductDetail = () => {
 		mutationFn: (data: { productId: string; quantity: number }) =>
 			addToCart(data.productId, data.quantity),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Product"] });
-			queryClient.invalidateQueries({ queryKey: ["Cart"] });
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.SingleProduct] });
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 		},
 	});
 	const itemsInCart = useMemo(() => {
@@ -149,31 +150,13 @@ const ProductDetail = () => {
 										?.filter((data) => data._id !== id)
 										.map((item, index) => (
 											<FoodCard
+												id={item._id}
 												key={index}
 												withDetails
 												originalPrice={item.price ?? 0}
 												discountedPrice={item.price ?? 0}
 												foodName={item.name}
 												foodImage={item.image?.[0]?.url ?? ""}
-												loading={
-													AddItemToCart.isLoading &&
-													AddItemToCart.variables?.productId === item._id
-												}
-												success={
-													AddItemToCart.isSuccess &&
-													item._id === AddItemToCart.variables?.productId
-												}
-												handleCardClick={() => navigate("/product/" + item._id)}
-												handleButtonClick={(
-													e: React.MouseEvent<HTMLButtonElement>
-												) => {
-													e.preventDefault();
-													e.stopPropagation();
-													AddItemToCart.mutate({
-														productId: item._id,
-														quantity: 1,
-													});
-												}}
 											/>
 										))}
 								</div>

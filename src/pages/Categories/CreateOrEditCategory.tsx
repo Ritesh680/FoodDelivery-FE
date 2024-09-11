@@ -6,6 +6,7 @@ import { Button, Spin, message } from "antd";
 import useApi from "../../api/useApi";
 import { ICategory, ICreateCategory } from "../../@types/interface";
 import { useNavigate, useParams } from "react-router";
+import QueryKeys from "../../constants/QueryKeys";
 
 const CreateOrEditCategory = () => {
 	const {
@@ -42,7 +43,9 @@ const CreateOrEditCategory = () => {
 			onSuccess: () => {
 				message.success("Category created successfully");
 				navigate("/admin/categories");
-				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.Categories, QueryKeys.SingleCategory],
+				});
 			},
 		});
 
@@ -52,12 +55,14 @@ const CreateOrEditCategory = () => {
 			onSuccess: () => {
 				message.success("Category edited");
 				navigate("/admin/categories");
-				queryClient.invalidateQueries({ queryKey: ["Categories", "category"] });
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.Categories, QueryKeys.SingleCategory],
+				});
 			},
 		});
 
 	const { isLoading } = useQuery({
-		queryKey: ["category", id],
+		queryKey: [QueryKeys.SingleCategory, id],
 		queryFn: () => getCategoryById(id!),
 		enabled: !!id,
 		onSuccess: (data) => {
