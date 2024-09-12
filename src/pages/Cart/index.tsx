@@ -1,20 +1,25 @@
-import MobileContent from "../../component/Layout/MobileContent";
-import useApi from "../../api/useApi";
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Button, Card, Divider, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { DataUpdateFunction } from "react-query/types/core/utils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import MobileContent from "../../component/Layout/MobileContent";
+import useApi from "../../api/useApi";
+
 import { DeleteIcon } from "../../assets/icons";
 import { ICartResponse, ImageGetResponse } from "../../@types/interface";
-import { DataUpdateFunction } from "react-query/types/core/utils";
-import { LoadingOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import QueryKeys from "../../constants/QueryKeys";
+import { updateCart as UPDATE_CART } from "../../slice/cartSlice";
 
 const Cart = () => {
 	const { getCart, deleteCart, addToCart } = useApi();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const { mutate: removeItemFromCart, isLoading: isItemDeleting } = useMutation(
 		{
@@ -40,13 +45,21 @@ const Cart = () => {
 				>
 			>("Cart", (data: ApiResponse<ICartResponse>) => {
 				const products = data?.data?.products.map((item) => {
-					if (item.product._id === res.data.product) {
+					if (item.product._id === res.data.product._id) {
 						return { ...item, quantity: res.data.quantity };
 					}
 					return item;
 				});
 				return { ...data, data: { products } };
 			});
+
+			dispatch(
+				UPDATE_CART({
+					productId: res.data.product._id,
+					quantity: res.data.quantity,
+					price: res.data.product.price,
+				})
+			);
 		},
 	});
 	function updateCart(productId: string, quantity: number) {
@@ -60,6 +73,19 @@ const Cart = () => {
 	} = useQuery({
 		queryKey: QueryKeys.Cart,
 		queryFn: getCart,
+		onSuccess: (data) => {
+			return data.data?.products
+				? data.data.products.map((item) =>
+						dispatch(
+							UPDATE_CART({
+								productId: item.product._id,
+								quantity: item.quantity,
+								price: item.product.discountedPrice ?? item.product.price ?? 0,
+							})
+						)
+				  )
+				: null;
+		},
 	});
 
 	const AddRemoveButton = ({

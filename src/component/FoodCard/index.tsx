@@ -1,14 +1,18 @@
+import React, { useMemo } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router";
+import { Card, Image, Spin, message } from "antd";
+import { useDispatch } from "react-redux";
+
 import {
 	CheckOutlined,
 	LoadingOutlined,
 	ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Card, Image, Spin, message } from "antd";
 import Meta from "antd/es/card/Meta";
-import React, { useMemo } from "react";
-import { useMutation, useQueryClient } from "react-query";
+
 import useApi from "../../api/useApi";
-import { useNavigate } from "react-router";
+import { updateCart } from "../../slice/cartSlice";
 
 interface FoodCardWithDetails {
 	id: string;
@@ -41,6 +45,8 @@ const FoodCard = ({
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
+	const dispatch = useDispatch();
+
 	const discountPercent = useMemo(() => {
 		if (!discountedPrice) return 0;
 		return calculateDiscount(discountedPrice ?? 0, originalPrice ?? 0);
@@ -59,9 +65,16 @@ const FoodCard = ({
 
 	const AddItemToCart = useMutation({
 		mutationFn: (productId: string) => addToCart(productId),
-		onSuccess: () => {
+		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["Cart"] });
 			message.success("Item added to cart");
+			dispatch(
+				updateCart({
+					productId: id,
+					quantity: res.data.quantity,
+					price: res.data.product.discountedPrice ?? res.data.product.price,
+				})
+			);
 		},
 	});
 
@@ -107,7 +120,7 @@ const FoodCard = ({
 					withDetails
 						? "w-[160px] h-[212px] sm:h-[363px] sm:w-[305px] cursor-pointer"
 						: "w-full h-full"
-				}`}>
+				} hover:shadow-lg`}>
 				{withDetails ? (
 					<div className="p-2">
 						<Meta className="text-[10px] font-semibold" title={foodName}></Meta>

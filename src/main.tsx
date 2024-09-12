@@ -4,6 +4,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import AuthProvider from "./context/auth.context.tsx";
+import { Provider } from "react-redux";
+import store from "./store.ts";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -19,7 +21,9 @@ createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
-				<App />
+				<Provider store={store}>
+					<App />
+				</Provider>
 			</AuthProvider>
 		</QueryClientProvider>
 	</StrictMode>

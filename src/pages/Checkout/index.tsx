@@ -2,8 +2,10 @@ import MobileContent from "../../component/Layout/MobileContent";
 import { Controller, useForm } from "react-hook-form";
 import InputField from "../../component/Input/InputField";
 import { Divider, Form, Radio, Spin } from "antd";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface IShippingDetails {
 	firstName: string;
@@ -18,22 +20,39 @@ interface IShippingDetails {
 const CheckoutPage = () => {
 	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
 	const [loading, setLoading] = useState(true);
-	const location = useLocation();
 	const navigate = useNavigate();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+	const cart = useSelector((state: RootState) => state.cart.cart);
+	const cartItems = useMemo(
+		() =>
+			cart.map((item) => ({
+				id: item.productId,
+				quantity: item.quantity,
+				price: item.price,
+			})),
+		[cart]
+	);
+
 	const onSubmit = (_data: IShippingDetails) => {
 		//handle form submission
 	};
 
 	const subtotal = useMemo(() => {
-		return location.state?.subtotal ?? null;
-	}, [location.state?.subtotal]);
+		const total = cartItems.reduce((acc, item) => {
+			return acc + item.price * item.quantity;
+		}, 0);
+		return total ?? null;
+	}, [cartItems]);
+
 	const deliveryCharge = useMemo(() => {
-		return location.state?.deliveryCharge ?? null;
-	}, [location.state?.deliveryCharge]);
+		const totalQuantity = cartItems.reduce((acc, item) => {
+			return acc + item.quantity;
+		}, 0);
+		return totalQuantity >= 5 ? 0 : 100;
+	}, [cartItems]);
 
 	useEffect(() => {
-		if (!subtotal || !deliveryCharge) {
+		if (!subtotal) {
 			navigate("/cart");
 		} else {
 			setLoading(false);
