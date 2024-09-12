@@ -28,7 +28,7 @@ const CategoryItems = () => {
 					]}
 				/>
 			</div>
-			<div className="flex flex-wrap gap-5 px-20">
+			<div className="flex flex-wrap gap-5 px-10 sm:px-20">
 				{CategoryData.data?.data.products.map((item) => (
 					<FoodCard
 						key={item._id}

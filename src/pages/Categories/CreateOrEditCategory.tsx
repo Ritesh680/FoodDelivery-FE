@@ -81,7 +81,7 @@ const CreateOrEditCategory = () => {
 	function setDefault(data: ApiResponse<ICategory>) {
 		reset({
 			name: data.data.name,
-			images: data.data.image,
+			images: data.data.image?.[0],
 		});
 	}
 

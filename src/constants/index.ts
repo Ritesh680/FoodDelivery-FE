@@ -1,13 +1,8 @@
-import {
-	CartIcon,
-	LocationIcon,
-	MenuIcon,
-	OffersIcon,
-	UserIcon,
-} from "../assets/icons";
+import { HomeOutlined } from "@ant-design/icons";
+import { CartIcon, MenuIcon, OffersIcon, UserIcon } from "../assets/icons";
 
 export const MobileNavItems = [
-	{ name: "Home", icon: LocationIcon, href: "/" },
+	{ name: "Home", icon: HomeOutlined, href: "/" },
 	{ name: "Menu", icon: MenuIcon, href: "/menu" },
 	{ name: "Offers", icon: OffersIcon, href: "/offers" },
 	{ name: "Cart", icon: CartIcon, href: "/cart" },
@@ -15,16 +10,27 @@ export const MobileNavItems = [
 ];
 
 export const ROUTES = {
+	HOME: "/",
 	ADMIN: "admin",
 	PRODUCTS: "products",
+	MENU: "menu",
 	EDIT_PRODUCT: "products/edit/:id",
 	CREATE_PRODUCT: "products/create",
+	VIEW_PRODUCTS: "products/:id",
 	CATEGORIES: "categories",
 	EDIT_CATEGORY: "categories/edit/:id",
 	CREATE_CATEGORY: "categories/create",
+	VIEW_CATEGORIES: "category/:id",
 	ORDERS: "orders",
 	SETTINGS: "profile",
 	USERS: "users",
+	LOGIN: "login",
+	REGISTER: "register",
+	CART: "cart",
+	PROFILE: "profile",
+	EDIT_PROFILE: "profile/update",
+	CHECKOUT: "checkout",
+	TERMS_AND_CONDITION: "terms-and-condition",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

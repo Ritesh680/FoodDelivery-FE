@@ -153,8 +153,16 @@ const CreateOrEditProduct = () => {
 							<InputField
 								control={control}
 								name="price"
-								label="Price"
-								rules={{ required: "Price is required" }}
+								label="Original Price"
+								rules={{ required: "Original Price is required" }}
+								type="number"
+								placeholder="Enter price of product"
+							/>
+							<InputField
+								control={control}
+								name="discountedPrice"
+								label="Discounted Price"
+								rules={{ required: false }}
 								type="number"
 								placeholder="Enter price of product"
 							/>
