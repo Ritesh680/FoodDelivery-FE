@@ -1,4 +1,4 @@
-import { AutoComplete, Button, Input, Space } from "antd";
+import { AutoComplete, Button, Input, Space, Spin } from "antd";
 
 import { SearchIcon } from "../../assets/icons";
 import { CloseSquareFilled, GlobalOutlined } from "@ant-design/icons";
@@ -22,7 +22,7 @@ const Location = () => {
 		[debouncedValue, latitude, longitude]
 	);
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: [QueryKeys.Location, debouncedValue, latitude, longitude],
 		queryFn: getLocation,
 		onSuccess: (data) => {
@@ -44,7 +44,7 @@ const Location = () => {
 		navigator.geolocation.getCurrentPosition((position) => {
 			setLatitude(position.coords.latitude);
 			setLongitude(position.coords.longitude);
-			queryClient.invalidateQueries("location");
+			queryClient.invalidateQueries(QueryKeys.Location);
 		});
 	}
 
@@ -53,7 +53,7 @@ const Location = () => {
 		setLocation("");
 		setLatitude(undefined);
 		setLongitude(undefined);
-		queryClient.invalidateQueries("location");
+		queryClient.invalidateQueries(QueryKeys.Location);
 	}
 
 	const options = useMemo(() => {
@@ -70,23 +70,29 @@ const Location = () => {
 	}, [data]);
 
 	return (
-		<div className="flex justify-around sm:py-[70px] sm:px-[90px] items-center">
+		<div className="flex justify-around sm:py-[70px] sm:px-[90px] items-center shadow-md rounded-lg">
 			<Space.Compact
 				style={{ width: "100%" }}
-				className="flex items-center gap-5 lg:gap-[400px]">
+				className="flex items-center gap-5 lg:gap-[200px]">
 				<AutoComplete
 					allowClear={{
 						clearIcon: <CloseSquareFilled />,
 					}}
 					options={options}
-					searchValue={location ?? search}
+					searchValue={search}
 					onClear={clearSearch}
 					value={location ?? search}
+					onSelect={(value) => {
+						setLatitude(undefined);
+						setLongitude(undefined);
+						setSearch(value);
+					}}
 					className="w-full">
 					<Input
 						prefix={<SearchIcon />}
 						placeholder="Search for your location"
-						value={location ?? search}
+						addonAfter={isLoading ? <Spin /> : ""}
+						value={search}
 						onChange={(e) => {
 							setLatitude(undefined);
 							setLongitude(undefined);

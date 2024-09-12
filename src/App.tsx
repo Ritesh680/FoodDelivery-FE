@@ -15,6 +15,7 @@ import CheckoutPage from "./pages/Checkout";
 import ProductDetail from "./pages/Products/ProductDetail";
 import UpdateProfile from "./pages/Profile/UpdateProfile";
 import CategoryItems from "./pages/Categories/CategoryItems";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
 	return (
@@ -46,6 +47,7 @@ function App() {
 					<Route path="/menu" element={<Menu />} />
 					<Route path="/cart" element={<Cart />} />
 					<Route path="category/:id" element={<CategoryItems />} />
+					<Route path="/terms-and-conditions" element={<PrivacyPolicy />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

@@ -1,8 +1,7 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import ProfileImageRender from "../../component/ProfileImageUpload";
-import { useMemo } from "react";
-import { Result } from "antd";
 
 const Profile = () => {
 	const { userDetail, logout } = useAuth();
@@ -58,14 +57,6 @@ const Profile = () => {
 						</li>
 					))}
 				</ul>
-			</div>
-
-			<div>
-				<Result
-					status="warning"
-					title="User Information cannot be updated at the moment"
-					className="bg-white"
-				/>
 			</div>
 		</div>
 	);

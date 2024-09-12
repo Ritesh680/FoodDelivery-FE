@@ -1,8 +1,10 @@
-const PrivacyPolicy = () => {
+const index = () => {
 	return (
-		<div>
-			<h1>Privacy Policy</h1>
-			<p>Last updated: September 02, 2024</p>
+		<div className="sm:w-1/2 mx-5 sm:mx-auto text-justify border p-4 my-4 flex flex-col bg-white gap-4">
+			<div>
+				<h1 className="text-lg font-bold">Privacy Policy</h1>
+				<p>Last updated: September 02, 2024</p>
+			</div>
 			<p>
 				This Privacy Policy describes Our policies and procedures on the
 				collection, use and disclosure of Your information when You use the
@@ -21,16 +23,22 @@ const PrivacyPolicy = () => {
 				</a>
 				.
 			</p>
-			<h2>Interpretation and Definitions</h2>
-			<h3>Interpretation</h3>
+			<div>
+				<h2 className="text-base font-semibold">
+					Interpretation and Definitions
+				</h2>
+				<h3>Interpretation</h3>
+			</div>
 			<p>
 				The words of which the initial letter is capitalized have meanings
 				defined under the following conditions. The following definitions shall
 				have the same meaning regardless of whether they appear in singular or
 				in plural.
 			</p>
-			<h3>Definitions</h3>
-			<p>For the purposes of this Privacy Policy:</p>
+			<div>
+				<h3>Definitions</h3>
+				<p>For the purposes of this Privacy Policy:</p>
+			</div>
 			<ul>
 				<li>
 					<p>
@@ -134,9 +142,13 @@ const PrivacyPolicy = () => {
 					</p>
 				</li>
 			</ul>
-			<h2>Collecting and Using Your Personal Data</h2>
-			<h3>Types of Data Collected</h3>
-			<h4>Personal Data</h4>
+			<h2 className="text-base font-semibold">
+				Collecting and Using Your Personal Data
+			</h2>
+			<div>
+				<h3>Types of Data Collected</h3>
+				<h4>Personal Data</h4>
+			</div>
 			<p>
 				While using Our Service, We may ask You to provide Us with certain
 				personally identifiable information that can be used to contact or
@@ -157,8 +169,10 @@ const PrivacyPolicy = () => {
 					<p>Usage Data</p>
 				</li>
 			</ul>
-			<h4>Usage Data</h4>
-			<p>Usage Data is collected automatically when using the Service.</p>
+			<div>
+				<h4>Usage Data</h4>
+				<p>Usage Data is collected automatically when using the Service.</p>
+			</div>
 			<p>
 				Usage Data may include information such as Your Device's Internet
 				Protocol address (e.g. IP address), browser type, browser version, the
@@ -554,4 +568,4 @@ const PrivacyPolicy = () => {
 	);
 };
 
-export default PrivacyPolicy;
+export default index;
