@@ -23,7 +23,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          projectName: delivery-fe
+          projectName: foodsdelivery-fe
           directory: dist/
           # Optional: Enable this if you want to have GitHub Deployments triggered
           # Optional: Switch what branch you are publishing to.
