@@ -10,7 +10,4 @@ export default defineConfig({
 			svgrOptions: { icon: true },
 		}),
 	],
-	server: {
-		port: 4001,
-	},
 });

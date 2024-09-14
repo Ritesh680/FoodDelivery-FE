@@ -98,3 +98,13 @@ export interface IUserResponse {
 	role: string;
 	_id: string;
 }
+
+export interface IOrderData {
+	_id: string;
+	user: IUserResponse;
+	products: { product: IProduct; quantity: number }[];
+	status: string;
+	paymentMethod: string;
+	paymentStatus: string;
+	contact: string;
+}

@@ -5,6 +5,7 @@ import {
 	ICategory,
 	ICreateCategory,
 	ICreateProduct,
+	IOrderData,
 	IProduct,
 	IUserResponse,
 } from "../@types/interface";
@@ -53,6 +54,16 @@ interface ILoginResponse {
 		confidenceKM: number;
 	};
 	provider: "opencage";
+}
+interface ICreateOrder {
+	products: Array<{ product: string; quantity: number }>;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phone: string;
+	city: string;
+	street: string;
+	payment: string;
 }
 export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
@@ -176,11 +187,21 @@ export default function useApi() {
 	};
 
 	//order
-	const confirmOrder = async (data: any) => {
-		return axiosRequest("POST", "/order/create", data);
+	const confirmOrder = async (data: ICreateOrder) => {
+		return axiosRequest<ApiResponse<IOrderData>>("POST", "/order/create", data);
 	};
-	const getOrders = async () => {
-		return axiosRequest("GET", "/order/all");
+	const getOrders: (
+		context: QueryFunctionContext
+	) => Promise<ApiResponse<IOrderData[]>> = async () => {
+		return axiosRequest<ApiResponse<IOrderData[]>>("GET", "/order/all");
+	};
+
+	const updateOrderPaymentStatus = async (id: string, status: string) => {
+		return axiosRequest("PUT", `/order/update/${id}/payment`, { status });
+	};
+
+	const updateOrderStatus = async (id: string, status: string) => {
+		return axiosRequest("PUT", `/order/update/${id}/status`, { status });
 	};
 
 	return {
@@ -208,5 +229,7 @@ export default function useApi() {
 		getLocation,
 		confirmOrder,
 		getOrders,
+		updateOrderPaymentStatus,
+		updateOrderStatus,
 	};
 }

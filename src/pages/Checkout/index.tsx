@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import useApi from "../../api/useApi";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
 
 interface IShippingDetails {
@@ -25,6 +25,8 @@ const CheckoutPage = () => {
 	const { confirmOrder, getOrders } = useApi();
 	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
 	const navigate = useNavigate();
+
+	const queryClient = useQueryClient();
 
 	const cart = useSelector((state: RootState) => state.cart.cart);
 	const cartItems = useMemo(
@@ -48,11 +50,18 @@ const CheckoutPage = () => {
 	};
 	useQuery({
 		queryKey: [QueryKeys.Cart],
-		queryFn: () => getOrders(),
+		queryFn: getOrders,
 	});
 
 	const Checkout = useMutation({
 		mutationFn: (data: IShippingDetails) => confirmOrder(formatData(data)),
+		onSuccess: (res) => {
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+			navigate(
+				{ pathname: "/orders/success" },
+				{ state: { message: "Order placed successfully", data: res.data } }
+			);
+		},
 	});
 
 	const onSubmit = (_data: IShippingDetails) => {

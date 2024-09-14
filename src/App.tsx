@@ -6,6 +6,7 @@ import AdminProtectedRoutes from "./routes/AdminProtected";
 import AdminRoutes from "./routes/AdminRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
+import Success from "./pages/Checkout/Success";
 
 function App() {
 	return (
@@ -40,6 +41,7 @@ function App() {
 							/>
 						))}
 					</Route>
+					<Route path="/orders/success" element={<Success />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

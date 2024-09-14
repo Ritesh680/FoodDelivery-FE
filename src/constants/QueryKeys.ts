@@ -8,5 +8,6 @@ const QueryKeys = {
 	SingleUser: "user",
 	Cart: "cart",
 	Location: "location",
+	AdminOrders: "adminOrders",
 };
 export default QueryKeys;
