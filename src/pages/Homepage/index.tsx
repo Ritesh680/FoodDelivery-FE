@@ -123,7 +123,7 @@ const HomePage = () => {
 								key={index}
 								withDetails={false}
 								foodName={item.name}
-								foodImage={item.image?.url || ""}
+								foodImage={item.image?.[0]?.url || ""}
 							/>
 						))}
 					</div>

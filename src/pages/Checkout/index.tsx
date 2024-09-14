@@ -6,6 +6,9 @@ import { useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import useApi from "../../api/useApi";
+import { useMutation, useQuery } from "react-query";
+import QueryKeys from "../../constants/QueryKeys";
 
 interface IShippingDetails {
 	firstName: string;
@@ -18,8 +21,9 @@ interface IShippingDetails {
 }
 
 const CheckoutPage = () => {
-	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
 	const [loading, setLoading] = useState(true);
+	const { confirmOrder, getOrders } = useApi();
+	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
 	const navigate = useNavigate();
 
 	const cart = useSelector((state: RootState) => state.cart.cart);
@@ -33,8 +37,26 @@ const CheckoutPage = () => {
 		[cart]
 	);
 
+	const formatData = (data: IShippingDetails) => {
+		return {
+			...data,
+			products: cartItems.map((item) => ({
+				product: item.id,
+				quantity: item.quantity,
+			})),
+		};
+	};
+	useQuery({
+		queryKey: [QueryKeys.Cart],
+		queryFn: () => getOrders(),
+	});
+
+	const Checkout = useMutation({
+		mutationFn: (data: IShippingDetails) => confirmOrder(formatData(data)),
+	});
+
 	const onSubmit = (_data: IShippingDetails) => {
-		//handle form submission
+		Checkout.mutate(_data);
 	};
 
 	const subtotal = useMemo(() => {

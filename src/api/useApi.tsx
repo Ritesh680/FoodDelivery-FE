@@ -175,6 +175,14 @@ export default function useApi() {
 		);
 	};
 
+	//order
+	const confirmOrder = async (data: any) => {
+		return axiosRequest("POST", "/order/create", data);
+	};
+	const getOrders = async () => {
+		return axiosRequest("GET", "/order/all");
+	};
+
 	return {
 		register,
 		updateProfile,
@@ -198,5 +206,7 @@ export default function useApi() {
 		deleteCart,
 		getAllUsers,
 		getLocation,
+		confirmOrder,
+		getOrders,
 	};
 }
