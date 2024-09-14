@@ -8,6 +8,7 @@ import {
 	IOrderData,
 	IProduct,
 	IUserResponse,
+	MyOrders,
 } from "../@types/interface";
 import useAxiosRequest from "../hooks/useAxiosRequest";
 
@@ -196,6 +197,12 @@ export default function useApi() {
 		return axiosRequest<ApiResponse<IOrderData[]>>("GET", "/order/all");
 	};
 
+	const getMyOrders: (
+		context: QueryFunctionContext
+	) => Promise<ApiResponse<MyOrders>> = async () => {
+		return axiosRequest<ApiResponse<MyOrders>>("GET", "/order/my");
+	};
+
 	const updateOrderPaymentStatus = async (id: string, status: string) => {
 		return axiosRequest("PUT", `/order/update/${id}/payment`, { status });
 	};
@@ -229,6 +236,7 @@ export default function useApi() {
 		getLocation,
 		confirmOrder,
 		getOrders,
+		getMyOrders,
 		updateOrderPaymentStatus,
 		updateOrderStatus,
 	};

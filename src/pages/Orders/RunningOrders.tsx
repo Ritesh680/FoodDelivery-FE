@@ -1,27 +1,18 @@
-import { faker } from "@faker-js/faker";
+import { MyOrders } from "../../@types/interface";
 
-const RunningOrders = () => {
-	function generateRandomFoodItems(count: number) {
-		const foodItems = Array.from({ length: count }, () => ({
-			id: faker.datatype.uuid(),
-			foodName: faker.commerce.productName(),
-			quantity: faker.datatype.number({ min: 1, max: 10 }),
-			price: parseFloat(faker.commerce.price()),
-			foodImage: faker.image.urlPicsumPhotos(),
-		}));
-
-		return foodItems;
-	}
-
-	const foodItems = generateRandomFoodItems(10);
+const RunningOrders = ({
+	orders,
+}: {
+	orders?: MyOrders["pendingProducts"];
+}) => {
 	const ItemCard = ({
 		foodImage,
-		quantity,
+		orderQuantity,
 		price,
-		foodName,
+		name,
 	}: {
-		foodName: string;
-		quantity: number;
+		name: string;
+		orderQuantity: number;
 		price: number;
 		foodImage: string;
 	}) => {
@@ -29,19 +20,19 @@ const RunningOrders = () => {
 			<div className="py-1 sm:py-3 flex gap-5 w-full px-1 sm:px-4 rounded-sm hover:shadow-lg cursor-pointer hover:scale-[101%]">
 				<img
 					src={foodImage}
-					alt={foodName}
+					alt={name}
 					className="w-14 h-12 sm:w-20 sm:h-20 rounded-xl"
 				/>
 				<div className="flex flex-col justify-between w-full my-2">
 					<span className="text-[10px] leading-3 text-black font-semibold">
-						{foodName}
+						{name}
 					</span>
 					<div className="flex justify-between">
 						<span className="text-[10px] font-normal leading-3">
 							Rs {price}
 						</span>
 						<span className="text-[10px] font-normal leading-3">
-							Qty: {quantity}
+							Qty: {orderQuantity}
 						</span>
 					</div>
 				</div>
@@ -50,20 +41,28 @@ const RunningOrders = () => {
 	};
 	return (
 		<>
-			{foodItems.length ? (
+			{orders?.length ? (
 				<div className="flex flex-col gap-4">
-					{foodItems.map((items) => (
-						<ItemCard {...items} key={items.id} />
+					{orders.map((items) => (
+						<ItemCard
+							name={items.name}
+							orderQuantity={items.orderQuantity}
+							price={items.price ?? 0}
+							key={items._id}
+							foodImage={items.image?.[0]?.url ?? ""}
+						/>
 					))}
 
 					<div className="flex justify-between shadow shadow-slate-200 p-4">
 						<span>Item Total:</span>
 						<span>
 							Rs{" "}
-							{foodItems.reduce(
-								(acc, curr) => acc + curr.quantity * curr.price,
-								0
-							)}
+							{orders
+								.reduce(
+									(acc, curr) => acc + curr.orderQuantity * (curr.price ?? 0),
+									0
+								)
+								?.toFixed(2)}
 						</span>
 					</div>
 				</div>

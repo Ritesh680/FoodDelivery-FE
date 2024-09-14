@@ -107,4 +107,10 @@ export interface IOrderData {
 	paymentMethod: string;
 	paymentStatus: string;
 	contact: string;
+	orderQuantity: number;
+}
+export interface MyOrders {
+	cancelledProducts: (IProduct & { orderQuantity: number })[];
+	deliveredProducts: (IProduct & { orderQuantity: number })[];
+	pendingProducts: (IProduct & { orderQuantity: number })[];
 }
