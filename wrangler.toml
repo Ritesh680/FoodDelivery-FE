@@ -1,0 +1,10 @@
+# Top-level configuration
+name = "fooddelivery-fe"
+type = "javascript"
+
+[build]
+command = "npm run build"
+directory = "dist/"
+
+[env.staging]
+name = "Food Delivery"
