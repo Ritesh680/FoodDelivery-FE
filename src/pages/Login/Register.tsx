@@ -8,6 +8,7 @@ import useApi from "../../api/useApi";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import useAuth from "../../hooks/useAuth";
+import { ROUTES } from "../../constants";
 
 interface IRegisterProps {
 	name: string;
@@ -45,8 +46,14 @@ const Register = () => {
 
 	const { mutate: registerUser } = useMutation({
 		mutationFn: (data: IRegisterProps) => register(data),
-		onSuccess: () => {
+		onSuccess: (res) => {
 			message.success("Account created successfully");
+			if (res.success) {
+				navigate({
+					pathname: "/" + ROUTES.VERIFY,
+					search: `?email=${res.data.user.email}`,
+				});
+			}
 		},
 		onError: (error: AxiosError<{ errMessage: string }>) => {
 			message.error(error.response?.data.errMessage);

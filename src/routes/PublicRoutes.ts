@@ -9,6 +9,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Menu from "../pages/Menu";
 import CategoryItems from "../pages/Categories/CategoryItems";
 import Offers from "../pages/Offers";
+import VerifyOtp from "../pages/Login/VerifyOtp";
 
 const PublicRoutes = [
 	{
@@ -44,6 +45,7 @@ const PublicRoutes = [
 		route: ROUTES.REGISTER,
 		content: Register,
 	},
+	{ name: "Verify OTP", route: ROUTES.VERIFY, content: VerifyOtp },
 	{
 		name: "Terms and Condition",
 		route: ROUTES.TERMS_AND_CONDITION,
