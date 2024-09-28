@@ -1,10 +1,10 @@
 import { ROUTES } from "../constants";
 import Cart from "../pages/Cart";
-import CategoryList from "../pages/Categories";
 import CheckoutPage from "../pages/Checkout";
 import Orders from "../pages/Orders";
 
 import Profile from "../pages/Profile";
+import UpdateProfile from "../pages/Profile/UpdateProfile";
 
 const AuthenticatedRoutes = [
 	{
@@ -21,7 +21,7 @@ const AuthenticatedRoutes = [
 	{
 		name: "Edit Profile",
 		route: ROUTES.EDIT_PROFILE,
-		content: CategoryList,
+		content: UpdateProfile,
 	},
 
 	{

@@ -43,7 +43,7 @@ const Cart = () => {
 					ApiResponse<ICartResponse>,
 					ApiResponse<ICartResponse>
 				>
-			>("Cart", (data: ApiResponse<ICartResponse>) => {
+			>(QueryKeys.Cart, (data: ApiResponse<ICartResponse>) => {
 				const products = data?.data?.products.map((item) => {
 					if (item.product._id === res.data.product._id) {
 						return { ...item, quantity: res.data.quantity };
@@ -277,7 +277,14 @@ const Cart = () => {
 							</div>
 						</div>
 					) : (
-						<span>Nothiong to display</span>
+						<div className="text-black h-[50vh] items-center justify-center flex flex-col w-full gap-2">
+							<span className="text-sm font-bold text-red-500">
+								Nothing in the cart
+							</span>
+							<span className="text-sm font-bold">
+								Start adding items to cart to see it here.
+							</span>
+						</div>
 					)}
 				</MobileContent>
 			)}

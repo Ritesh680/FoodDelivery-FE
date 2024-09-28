@@ -96,6 +96,11 @@ export default function useApi() {
 			`/product/?search=${params}`
 		);
 	};
+	const getOffersProducts: (
+		context: QueryFunctionContext
+	) => Promise<ApiResponse<IProduct[]>> = async () => {
+		return axiosRequest<ApiResponse<IProduct[]>>("GET", "/product/offers");
+	};
 	const getProductById = async (id: string) => {
 		return axiosRequest<ApiResponse<IProduct>>("GET", `/product/${id}`);
 	};
@@ -218,6 +223,7 @@ export default function useApi() {
 		logout,
 		createProduct,
 		getProducts,
+		getOffersProducts,
 		getProductById,
 		editProduct,
 		deleteProduct,

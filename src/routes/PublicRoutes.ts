@@ -8,6 +8,7 @@ import ProductDetail from "../pages/Products/ProductDetail";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Menu from "../pages/Menu";
 import CategoryItems from "../pages/Categories/CategoryItems";
+import Offers from "../pages/Offers";
 
 const PublicRoutes = [
 	{
@@ -21,6 +22,7 @@ const PublicRoutes = [
 		route: ROUTES.VIEW_PRODUCTS,
 		content: ProductDetail,
 	},
+	{ name: "Offers", route: ROUTES.OFFERS, content: Offers },
 
 	{
 		name: "Categories",

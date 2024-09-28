@@ -21,6 +21,7 @@ export const ROUTES = {
 	EDIT_CATEGORY: "categories/edit/:id",
 	CREATE_CATEGORY: "categories/create",
 	VIEW_CATEGORIES: "category/:id",
+	OFFERS: "offers",
 	ORDERS: "orders",
 	SETTINGS: "profile",
 	USERS: "users",
@@ -30,7 +31,7 @@ export const ROUTES = {
 	PROFILE: "profile",
 	EDIT_PROFILE: "profile/update",
 	CHECKOUT: "checkout",
-	TERMS_AND_CONDITION: "terms-and-condition",
+	TERMS_AND_CONDITION: "terms-and-conditions",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

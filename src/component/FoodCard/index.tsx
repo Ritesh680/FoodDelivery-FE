@@ -90,7 +90,7 @@ const FoodCard = ({
 	return (
 		<>
 			<Card
-				onClick={() => navigate(`/product/${id}`)}
+				onClick={() => navigate(`/products/${id}`)}
 				loading={false}
 				cover={
 					<Image

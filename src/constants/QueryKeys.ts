@@ -1,5 +1,6 @@
 const QueryKeys = {
 	Products: "products",
+	Offers: "offers",
 	Categories: "categories",
 	Users: "users",
 	Orders: "orders",
