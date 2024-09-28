@@ -70,7 +70,11 @@ export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
 
 	const register = async (data: RegisterData) => {
-		return axiosRequest("POST", "/user", data);
+		return axiosRequest<ApiResponse<any>>("POST", "/user", data);
+	};
+
+	const verifyOtp = async (data: { otp: number }) => {
+		return axiosRequest("post", "/auth/verify", data);
 	};
 
 	const updateProfile = async (id: string, data: RegisterData) => {
@@ -218,6 +222,7 @@ export default function useApi() {
 
 	return {
 		register,
+		verifyOtp,
 		updateProfile,
 		login,
 		logout,
