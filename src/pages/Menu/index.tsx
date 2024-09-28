@@ -49,7 +49,7 @@ const Menu = () => {
 							<ItemCard
 								key={item._id}
 								name={item.name}
-								imageUrl={item?.image?.[0]?.url || ""}
+								imageUrl={item?.image?.url || ""}
 								handleClick={() => handleClick(item._id)}
 							/>
 						))}
