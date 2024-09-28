@@ -44,7 +44,10 @@ const CreateOrEditCategory = () => {
 				message.success("Category created successfully");
 				navigate("/admin/categories");
 				queryClient.invalidateQueries({
-					queryKey: [QueryKeys.Categories, QueryKeys.SingleCategory],
+					queryKey: [QueryKeys.Categories],
+				});
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.SingleCategory],
 				});
 			},
 		});
@@ -56,7 +59,10 @@ const CreateOrEditCategory = () => {
 				message.success("Category edited");
 				navigate("/admin/categories");
 				queryClient.invalidateQueries({
-					queryKey: [QueryKeys.Categories, QueryKeys.SingleCategory],
+					queryKey: [QueryKeys.Categories],
+				});
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.SingleCategory],
 				});
 			},
 		});
@@ -81,7 +87,7 @@ const CreateOrEditCategory = () => {
 	function setDefault(data: ApiResponse<ICategory>) {
 		reset({
 			name: data.data.name,
-			images: data.data.image?.[0],
+			images: data.data.image,
 		});
 	}
 

@@ -66,7 +66,7 @@ export interface ICategory extends Omit<ICreateCategory, "image"> {
 	_id: string;
 	createdAt: string;
 	updatedAt: string;
-	image?: ImageGetResponse[];
+	image?: ImageGetResponse;
 	__v: number;
 	products: IProduct[];
 }

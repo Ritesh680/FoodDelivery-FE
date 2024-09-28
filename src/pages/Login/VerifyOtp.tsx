@@ -25,6 +25,7 @@ const VerifyOtp = () => {
 		onSuccess: () => {
 			navigate("/login");
 		},
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onError: (err: any) => {
 			message.error(err.response.data.message);
 		},

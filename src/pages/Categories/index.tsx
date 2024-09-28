@@ -56,10 +56,10 @@ const CategoryList = () => {
 					key: "image",
 					title: "Image",
 					dataIndex: "image",
-					render: (item: ICategory["image"]) => {
+					render: (item: ICategory["image"] | undefined) => {
 						return (
 							<img
-								src={item?.[0]?.url}
+								src={item?.url}
 								alt="item"
 								className="w-20 h-20 object-cover rounded"
 								onError={(e) => {
