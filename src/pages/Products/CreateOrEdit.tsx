@@ -19,17 +19,19 @@ const CreateOrEditProduct = () => {
 		deleteProductImage,
 		deleteImage,
 		getCategories,
+		getSubCategoriesByCategoryId,
 	} = useApi();
 	const { id } = useParams();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
-	const { control, handleSubmit, reset } = useForm<ICreateProduct>({
+	const { control, handleSubmit, reset, watch } = useForm<ICreateProduct>({
 		defaultValues: {
 			name: "",
 			price: null,
 			description: "",
 			category: "",
+			subCategory: "",
 			image: [],
 			discountedPrice: null,
 			quantity: 0,
@@ -44,6 +46,7 @@ const CreateOrEditProduct = () => {
 			price: data.price ? parseFloat(data.price.toString()) : null,
 			description: data.description,
 			category: data.category,
+			subCategory: data.subCategory,
 			image: data.images?.map((image) => image.fileId) ?? [],
 			discountedPrice: data.discountedPrice
 				? parseFloat(data.discountedPrice.toString())
@@ -93,8 +96,14 @@ const CreateOrEditProduct = () => {
 	});
 
 	const Categories = useQuery({
-		queryKey: QueryKeys.Categories,
+		queryKey: [QueryKeys.Categories],
 		queryFn: getCategories,
+	});
+
+	const SubCategories = useQuery({
+		queryKey: [QueryKeys.SubCategoriesById, watch("category")],
+		queryFn: () => getSubCategoriesByCategoryId(watch("category")),
+		enabled: !!watch("category"),
 	});
 
 	const loading = useMemo(
@@ -119,6 +128,7 @@ const CreateOrEditProduct = () => {
 			images: data.data.image,
 			discountedPrice: data.data.discountedPrice,
 			quantity: data.data.quantity,
+			subCategory: data.data.subCategory,
 		});
 	}
 
@@ -184,6 +194,19 @@ const CreateOrEditProduct = () => {
 								label="Select Category"
 								options={
 									Categories.data?.data.map((category) => ({
+										label: category.name,
+										value: category._id,
+									})) ?? []
+								}
+								rules={{ required: "Category is required" }}
+							/>
+							<SelectField<ICreateProduct>
+								name="subCategory"
+								control={control}
+								label="Select SubCategory"
+								loading={SubCategories.isLoading || SubCategories.isFetching}
+								options={
+									SubCategories.data?.data.map((category) => ({
 										label: category.name,
 										value: category._id,
 									})) ?? []

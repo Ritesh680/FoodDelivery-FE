@@ -131,6 +131,13 @@ export default function useApi() {
 		return axiosRequest<ApiResponse<ICategory[]>>("GET", "/category");
 	};
 
+	const getSubCategoriesByCategoryId = async (id: string) => {
+		return axiosRequest<ApiResponse<ICategory[]>>(
+			"GET",
+			`/category/${id}/subcategories`
+		);
+	};
+
 	const getCategoryById = async (id: string) => {
 		return axiosRequest<ApiResponse<ICategory>>("GET", `/category/${id}`);
 	};
@@ -235,6 +242,7 @@ export default function useApi() {
 		deleteProductImage,
 		getCategories,
 		getCategoryById,
+		getSubCategoriesByCategoryId,
 		createCategory,
 		editCategory,
 		deleteCategoryImage,

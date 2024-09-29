@@ -21,7 +21,7 @@ export interface ICreateProduct {
 	description: string;
 	category: string;
 	image: string[];
-
+	subCategory: string;
 	images?: ImageGetResponse[];
 	discountedPrice: number | null;
 	quantity: number;

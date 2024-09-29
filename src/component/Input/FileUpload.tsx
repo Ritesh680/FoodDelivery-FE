@@ -16,7 +16,6 @@ interface IFileUploadProps<T extends FieldValues>
 	label?: string;
 	deleteUrl: (fileId: string) => void;
 	isMultiple?: boolean;
-	isSmall?: boolean;
 }
 
 const FileUpload = <T extends FieldValues>({

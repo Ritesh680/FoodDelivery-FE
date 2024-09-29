@@ -2,6 +2,7 @@ const QueryKeys = {
 	Products: "products",
 	Offers: "offers",
 	Categories: "categories",
+	SubCategoriesById: "subCategoriesById",
 	Users: "users",
 	Orders: "orders",
 	SingleProduct: "product",
