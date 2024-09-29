@@ -27,10 +27,17 @@ export interface ICreateProduct {
 	quantity: number;
 }
 
+export interface SubCategories {
+	name: string;
+	image: string;
+	images?: ImageGetResponse;
+}
+
 export interface ICreateCategory {
 	name: string;
 	image: string;
 	images?: ImageGetResponse;
+	subCategories?: SubCategories[];
 }
 
 export interface IGetProduct {
@@ -62,13 +69,21 @@ export interface IProduct extends Omit<ICreateProduct, "image"> {
 	cart: { product: string; quantity: number }[];
 	__v: number;
 }
-export interface ICategory extends Omit<ICreateCategory, "image"> {
+export interface ICategory
+	extends Omit<ICreateCategory, "image" | "subCategories"> {
 	_id: string;
 	createdAt: string;
 	updatedAt: string;
 	image?: ImageGetResponse;
 	__v: number;
 	products: IProduct[];
+	subcategories: SubCategoriesResponse[];
+}
+
+interface SubCategoriesResponse {
+	_id: string;
+	name: string;
+	image: ImageGetResponse;
 }
 
 export interface CartProduct {

@@ -16,6 +16,7 @@ interface IFileUploadProps<T extends FieldValues>
 	label?: string;
 	deleteUrl: (fileId: string) => void;
 	isMultiple?: boolean;
+	isSmall?: boolean;
 }
 
 const FileUpload = <T extends FieldValues>({
@@ -50,7 +51,6 @@ const FileUpload = <T extends FieldValues>({
 	}, [isMultiple, field.value]);
 
 	const props: UploadProps = {
-		name: "file",
 		multiple: isMultiple,
 		action: import.meta.env.VITE_BASE_URL + "/file/upload",
 		withCredentials: true,
@@ -103,10 +103,7 @@ const FileUpload = <T extends FieldValues>({
 	};
 
 	return (
-		<Form.Item
-			label={label ?? "Upload Images"}
-			layout="vertical"
-			required={!!rules?.required}>
+		<Form.Item label={label} layout="vertical" required={!!rules?.required}>
 			<Dragger
 				{...props}
 				style={{ border: `${errors[name] ? "1px solid red" : ""}` }}>

@@ -21,17 +21,17 @@ const Footer = () => {
 				{ label: "Frozen Foods", href: "/frozenfoods" },
 			],
 		},
-		{
-			title: "Corporate",
-			lists: [
-				{ label: "About Us", href: "/aboutus" },
-				{ label: "Restaurant Partners", href: "/restaurantpartners" },
-				{ label: "Wholesale Inquiries", href: "/wholesaleinquiries" },
-				{ label: "Affiliated Program", href: "/affialiated" },
-				{ label: "Careers", href: "/careers" },
-				{ label: "Accessibility Statement", href: "/accessibilitystatement" },
-			],
-		},
+		// {
+		// 	title: "Corporate",
+		// 	lists: [
+		// 		{ label: "About Us", href: "/aboutus" },
+		// 		{ label: "Restaurant Partners", href: "/restaurantpartners" },
+		// 		{ label: "Wholesale Inquiries", href: "/wholesaleinquiries" },
+		// 		{ label: "Affiliated Program", href: "/affialiated" },
+		// 		{ label: "Careers", href: "/careers" },
+		// 		{ label: "Accessibility Statement", href: "/accessibilitystatement" },
+		// 	],
+		// },
 		{
 			title: "Customer's Service",
 			lists: [
@@ -47,7 +47,7 @@ const Footer = () => {
 	return (
 		<footer className="bg-black text-white mb-[66px] sm:mb-0">
 			<div className="container mx-auto px-4 pt-10">
-				<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 pb-5">
+				<div className="grid grid-cols-2 md:grid-cols-3 gap-4 pb-5">
 					<div className="flex flex-col gap-2 sm:gap-4">
 						<h3 className="text-xs sm:text-xl font-semibold text-left">
 							Reach Us

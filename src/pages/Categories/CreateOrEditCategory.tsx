@@ -1,12 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import InputField from "../../component/Input/InputField";
 import FileUpload from "../../component/Input/FileUpload";
-import { Button, Spin, message } from "antd";
+import { Button, Form, Spin, Upload, UploadFile, message } from "antd";
 import useApi from "../../api/useApi";
 import { ICategory, ICreateCategory } from "../../@types/interface";
 import { useNavigate, useParams } from "react-router";
 import QueryKeys from "../../constants/QueryKeys";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
+import { useCallback, useEffect } from "react";
 
 const CreateOrEditCategory = () => {
 	const {
@@ -21,11 +23,17 @@ const CreateOrEditCategory = () => {
 
 	const queryClient = useQueryClient();
 
-	const { control, handleSubmit, reset } = useForm<ICreateCategory>({
+	const { control, handleSubmit, reset, getValues } = useForm<ICreateCategory>({
 		defaultValues: {
 			name: "",
 			image: "",
+			subCategories: [{ name: "", image: "" }],
 		},
+	});
+
+	const { append, remove, fields } = useFieldArray({
+		control,
+		name: "subCategories",
 	});
 
 	const filteredData: (data: ICreateCategory) => ICreateCategory = (
@@ -34,6 +42,10 @@ const CreateOrEditCategory = () => {
 		return {
 			name: data.name,
 			image: data.images?.fileId ?? "",
+			subCategories: data.subCategories?.map((sub) => ({
+				name: sub.name,
+				image: sub.images?.fileId ?? "",
+			})),
 		};
 	};
 
@@ -56,7 +68,7 @@ const CreateOrEditCategory = () => {
 		useMutation({
 			mutationFn: (data: ICreateCategory) => editCategory(id ?? "", data),
 			onSuccess: () => {
-				message.success("Category edited");
+				message.success("Category updated");
 				navigate("/admin/categories");
 				queryClient.invalidateQueries({
 					queryKey: [QueryKeys.Categories],
@@ -67,12 +79,12 @@ const CreateOrEditCategory = () => {
 			},
 		});
 
-	const { isLoading } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: [QueryKeys.SingleCategory, id],
 		queryFn: () => getCategoryById(id!),
 		enabled: !!id,
 		onSuccess: (data) => {
-			setDefault(data);
+			resetData(data);
 		},
 	});
 
@@ -84,12 +96,42 @@ const CreateOrEditCategory = () => {
 		createNewProduct(filteredData(data));
 	};
 
-	function setDefault(data: ApiResponse<ICategory>) {
+	const fileList: (i: number) => UploadFile[] = useCallback(
+		(i) => {
+			const fieldImages = getValues(`subCategories.${i}.images`);
+
+			if (!fieldImages) return [];
+			return [
+				{
+					uid: fieldImages._id,
+					name: fieldImages.name,
+					status: "done",
+					url: fieldImages.url,
+					response: { data: fieldImages },
+				},
+			];
+		},
+		[getValues]
+	);
+
+	function resetData(data: ApiResponse<ICategory>) {
 		reset({
 			name: data.data.name,
 			images: data.data.image,
+			subCategories: data.data.subcategories?.length
+				? data.data.subcategories?.map((sub) => ({
+						name: sub.name,
+						images: sub.image,
+				  }))
+				: [{ name: "", image: "" }],
 		});
 	}
+
+	useEffect(() => {
+		if (data) {
+			resetData(data);
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -104,9 +146,9 @@ const CreateOrEditCategory = () => {
 							<InputField
 								control={control}
 								name="name"
-								label="Name"
+								label="Category Name"
 								rules={{ required: "Name is required" }}
-								placeholder="Enter name of product"
+								placeholder="Enter name of category"
 							/>
 							<FileUpload
 								isMultiple={false}
@@ -117,6 +159,61 @@ const CreateOrEditCategory = () => {
 									id ? deleteCategoryImage(id, fileId) : deleteImage(fileId)
 								}
 							/>
+
+							<div>
+								<h4>Add SubCategories</h4>
+								{fields.map((field, index) => (
+									<div
+										key={field.id}
+										className="grid grid-flow-col gap-5 items-end">
+										<InputField
+											control={control}
+											name={`subCategories.${index}.name`}
+											rules={{ required: "Name is required" }}
+											placeholder="Enter name of subcategory"
+											extraStyles="w-1/3"
+										/>
+										<div className="w-1/3">
+											<Form.Item>
+												<Upload
+													withCredentials={true}
+													name="file"
+													listType="text"
+													className="flex items-center gap-4 w-full"
+													defaultFileList={fileList(index)}>
+													<Button
+														type="primary"
+														icon={<UploadOutlined />}
+														className="h-10 w-full">
+														Upload
+													</Button>
+												</Upload>
+											</Form.Item>
+										</div>
+										<Form.Item>
+											<Button
+												htmlType="button"
+												onClick={() => remove(index)}
+												className="bg-red-500 text-white flex items-center justify-center h-10">
+												<DeleteOutlined className="text-base" />
+											</Button>
+										</Form.Item>
+									</div>
+								))}
+
+								<Form.Item>
+									<Button
+										onClick={() =>
+											append({
+												name: "",
+												image: "",
+											})
+										}
+										className="bg-green-500 text-white w-fit">
+										Add More
+									</Button>
+								</Form.Item>
+							</div>
 						</div>
 
 						<Button

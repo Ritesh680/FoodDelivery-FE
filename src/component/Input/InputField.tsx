@@ -11,6 +11,7 @@ interface InputFieldProps<T extends FieldValues> extends UseControllerProps<T> {
 	placeholder: string;
 	label?: string;
 	showErrorMessage?: boolean;
+	extraStyles?: string;
 }
 const InputField = <T extends FieldValues>({
 	name,
@@ -22,6 +23,7 @@ const InputField = <T extends FieldValues>({
 	label,
 	showErrorMessage = true,
 	disabled,
+	extraStyles,
 }: InputFieldProps<T>) => {
 	const {
 		field,
@@ -35,7 +37,7 @@ const InputField = <T extends FieldValues>({
 				label={label}
 				layout="vertical"
 				required={!!rules?.required}
-				className="text-xxs lg:text-base w-full">
+				className={`text-xxs lg:text-base w-full ${extraStyles}`}>
 				<Input.Password
 					{...field}
 					placeholder={placeholder}
