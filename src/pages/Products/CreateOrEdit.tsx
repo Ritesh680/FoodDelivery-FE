@@ -211,7 +211,6 @@ const CreateOrEditProduct = () => {
 										value: category._id,
 									})) ?? []
 								}
-								rules={{ required: "Category is required" }}
 							/>
 							<div className="sm:col-span-2">
 								<TextArea

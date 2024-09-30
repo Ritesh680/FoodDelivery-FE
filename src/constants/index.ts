@@ -14,6 +14,7 @@ export const ROUTES = {
 	ADMIN: "admin",
 	PRODUCTS: "products",
 	MENU: "menu",
+	MENU_SINGLE: "menu/:id",
 	EDIT_PRODUCT: "products/edit/:id",
 	CREATE_PRODUCT: "products/create",
 	VIEW_PRODUCTS: "products/:id",

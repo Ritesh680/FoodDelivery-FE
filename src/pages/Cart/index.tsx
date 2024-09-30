@@ -25,7 +25,7 @@ const Cart = () => {
 		{
 			mutationFn: (productId: string) => deleteCart(productId),
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ["Cart"] });
+				queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 			},
 		}
 	);
@@ -45,8 +45,8 @@ const Cart = () => {
 				>
 			>(QueryKeys.Cart, (data: ApiResponse<ICartResponse>) => {
 				const products = data?.data?.products.map((item) => {
-					if (item.product._id === res.data.product._id) {
-						return { ...item, quantity: res.data.quantity };
+					if (item.product?._id === res.data[0].product?._id) {
+						return { ...item, quantity: res.data[0].product.quantity };
 					}
 					return item;
 				});
@@ -55,9 +55,9 @@ const Cart = () => {
 
 			dispatch(
 				UPDATE_CART({
-					productId: res.data.product._id,
-					quantity: res.data.quantity,
-					price: res.data.product.price,
+					productId: res.data[0].product._id,
+					quantity: res.data[0].product.quantity,
+					price: res.data[0].product.price,
 				})
 			);
 		},

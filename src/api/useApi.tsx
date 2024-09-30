@@ -70,6 +70,7 @@ export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
 
 	const register = async (data: RegisterData) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return axiosRequest<ApiResponse<any>>("POST", "/user", data);
 	};
 
@@ -165,7 +166,7 @@ export default function useApi() {
 	//cart
 
 	const addToCart = async (productId: string, quantity = 1) => {
-		return axiosRequest<ApiResponse<AddToCartResponse>>("POST", "/cart/add", {
+		return axiosRequest<ApiResponse<AddToCartResponse[]>>("POST", "/cart/add", {
 			productId,
 			quantity,
 		});

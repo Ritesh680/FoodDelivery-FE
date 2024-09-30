@@ -8,6 +8,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Menu from "../pages/Menu";
 import Offers from "../pages/Offers";
 import VerifyOtp from "../pages/Login/VerifyOtp";
+import CategoryItems from "../pages/Categories/CategoryItems";
 
 const PublicRoutes = [
 	{
@@ -16,6 +17,7 @@ const PublicRoutes = [
 		content: HomePage,
 	},
 	{ name: "Menu", route: ROUTES.MENU, content: Menu },
+	{ name: "Menu Details", route: ROUTES.MENU_SINGLE, content: CategoryItems },
 	{
 		name: "Product Detail",
 		route: ROUTES.VIEW_PRODUCTS,

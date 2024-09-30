@@ -101,8 +101,8 @@ export interface AddToCartResponse {
 		name: string;
 		price: number;
 		discountedPrice: number;
+		quantity: number;
 	};
-	quantity: number;
 	_id: string;
 }
 
