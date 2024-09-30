@@ -34,6 +34,7 @@ export const ROUTES = {
 	EDIT_PROFILE: "profile/update",
 	CHECKOUT: "checkout",
 	TERMS_AND_CONDITION: "terms-and-conditions",
+	LANDING_PAGE: "landing-page",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

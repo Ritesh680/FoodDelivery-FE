@@ -7,16 +7,25 @@ const Profile = () => {
 	const { userDetail, logout } = useAuth();
 	const navigate = useNavigate();
 
-	const List = [
-		{ label: "My Order", action: () => navigate("/orders") },
-		{ label: "Billing Address", action: () => navigate("/billing-address") },
-		{ label: "About Us", action: () => navigate("/about") },
-		{
-			label: "Terms and Conditions",
-			action: () => navigate("/terms-and-conditions"),
-		},
-		{ label: "Logout", action: () => logout() },
-	];
+	const List = useMemo(
+		() => [
+			{
+				label:
+					userDetail?.user?.role == "admin"
+						? "Update Landing Page"
+						: "My Order",
+				action: () => navigate("/admin/landing-page"),
+			},
+			{ label: "Billing Address", action: () => navigate("/billing-address") },
+			{ label: "About Us", action: () => navigate("/about") },
+			{
+				label: "Terms and Conditions",
+				action: () => navigate("/terms-and-conditions"),
+			},
+			{ label: "Logout", action: () => logout() },
+		],
+		[logout, navigate, userDetail?.user?.role]
+	);
 
 	const userImage = useMemo(() => {
 		return userDetail?.user.picture;

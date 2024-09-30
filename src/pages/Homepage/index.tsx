@@ -2,26 +2,26 @@ import Banner from "../../component/Banner";
 import ContentWrapper from "../../component/ContentHeader/ContentWrapper";
 import FoodCard from "../../component/FoodCard";
 import FoodCategoryContainer from "../../component/FoodCategoryContainer";
-import { faker } from "@faker-js/faker";
 
 import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
 import ImageSlider from "../../component/Carousel/Carousel";
 import useApi from "../../api/useApi";
 import { useQuery } from "react-query";
 import { Spin } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../../component/Modal";
 import QueryKeys from "../../constants/QueryKeys";
 import { Testimonials } from "../../constants/data/Testimonials";
 
 const HomePage = () => {
-	const { getProducts, getCategories } = useApi();
+	const { getProducts, getCategories, getLandingPageData } = useApi();
 
 	const [showOfferBanner, setShowOfferBanner] = useState(false);
-	const BannerItems = [
-		"Free Shipping ON +Rs 999",
-		"FREE Frozen French Fries On All Orders",
-	];
+
+	const LandingPageData = useQuery({
+		queryKey: [QueryKeys.LandingPage],
+		queryFn: getLandingPageData,
+	});
 
 	const { data: Products, isLoading } = useQuery({
 		queryKey: QueryKeys.Products,
@@ -32,18 +32,16 @@ const HomePage = () => {
 		queryFn: getCategories,
 	});
 
-	function generateRandomLandingImages(count: number) {
-		const landingImages = Array.from({ length: count }, () => ({
-			imgSrc: faker.image.urlPicsumPhotos(),
-		}));
-
-		return landingImages;
-	}
-
 	const TopOffersFoodItems = Products?.data;
 	const BestSellersFoodItems = Products?.data;
 	const Categories = Category?.data;
-	const LandingImages = generateRandomLandingImages(4);
+
+	const LandingImages = useMemo(() => {
+		if (LandingPageData.isLoading) return [];
+		return LandingPageData.data?.data[0].images.map((image) => ({
+			imgSrc: image.url,
+		}));
+	}, [LandingPageData.data?.data, LandingPageData.isLoading]);
 
 	if (isLoading) {
 		return <Spin fullscreen size="large" />;
@@ -62,10 +60,10 @@ const HomePage = () => {
 
 			<div className="bg-gray-100 flex flex-col gap-5">
 				<div className="w-full lg:px-16 lg:mt-16 mt-5 px-5 h-[170px] lg:h-[500px]">
-					<ImageSlider slideItems={LandingImages} />
+					<ImageSlider slideItems={LandingImages ?? []} />
 				</div>
 
-				<Banner bannerItems={BannerItems} />
+				<Banner bannerItems={LandingPageData.data?.data[0]?.banner ?? [""]} />
 
 				<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll">
 					{[...Array(8)].map((_, index) => (

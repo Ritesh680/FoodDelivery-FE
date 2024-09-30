@@ -11,5 +11,6 @@ const QueryKeys = {
 	Cart: "cart",
 	Location: "location",
 	AdminOrders: "adminOrders",
+	LandingPage: "LandingPage",
 };
 export default QueryKeys;

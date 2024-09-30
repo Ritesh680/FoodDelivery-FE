@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueryFunctionContext } from "react-query";
 import {
 	AddToCartResponse,
@@ -8,6 +9,7 @@ import {
 	IOrderData,
 	IProduct,
 	IUserResponse,
+	ImageGetResponse,
 	MyOrders,
 } from "../@types/interface";
 import useAxiosRequest from "../hooks/useAxiosRequest";
@@ -70,7 +72,6 @@ export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
 
 	const register = async (data: RegisterData) => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return axiosRequest<ApiResponse<any>>("POST", "/user", data);
 	};
 
@@ -228,6 +229,23 @@ export default function useApi() {
 		return axiosRequest("PUT", `/order/update/${id}/status`, { status });
 	};
 
+	//Landing Page
+
+	interface ILandingPageData {
+		_id: string;
+		banner: string[];
+		images: ImageGetResponse[];
+	}
+	const getLandingPageData = async () => {
+		return axiosRequest<ApiResponse<ILandingPageData[]>>("GET", "/landingPage");
+	};
+	const updateLandingPageData = async (data: any) => {
+		return axiosRequest("PUT", "/landingPage", data);
+	};
+	const createLandingPageData = async (data: any) => {
+		return axiosRequest("POST", "/landingPage", data);
+	};
+
 	return {
 		register,
 		verifyOtp,
@@ -259,5 +277,8 @@ export default function useApi() {
 		getMyOrders,
 		updateOrderPaymentStatus,
 		updateOrderStatus,
+		getLandingPageData,
+		updateLandingPageData,
+		createLandingPageData,
 	};
 }

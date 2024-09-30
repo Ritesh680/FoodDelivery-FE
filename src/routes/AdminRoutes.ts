@@ -13,6 +13,7 @@ import CategoryList from "../pages/Categories";
 import CreateOrEditCategory from "../pages/Categories/CreateOrEditCategory";
 import Profile from "../pages/Profile";
 import Users from "../pages/Users";
+import AddHomepageData from "../pages/Homepage/AddHomepageData";
 
 const AdminRoutes = [
 	{
@@ -72,6 +73,13 @@ const AdminRoutes = [
 		route: ROUTES.SETTINGS,
 		content: Profile,
 		icon: SettingTwoTone,
+	},
+	{
+		name: "Landing Page",
+		route: ROUTES.LANDING_PAGE,
+		content: AddHomepageData,
+		icon: SettingTwoTone,
+		hidden: true,
 	},
 ];
 export default AdminRoutes;
