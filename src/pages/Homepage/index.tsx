@@ -38,7 +38,7 @@ const HomePage = () => {
 
 	const LandingImages = useMemo(() => {
 		if (LandingPageData.isLoading) return [];
-		return LandingPageData.data?.data[0].images.map((image) => ({
+		return LandingPageData.data?.data?.[0]?.images?.map((image) => ({
 			imgSrc: image.url,
 		}));
 	}, [LandingPageData.data?.data, LandingPageData.isLoading]);
@@ -63,7 +63,11 @@ const HomePage = () => {
 					<ImageSlider slideItems={LandingImages ?? []} />
 				</div>
 
-				<Banner bannerItems={LandingPageData.data?.data[0]?.banner ?? [""]} />
+				<Banner
+					bannerItems={
+						LandingPageData.data?.data[0]?.banner ?? ["Please Add Banner Items"]
+					}
+				/>
 
 				<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll">
 					{[...Array(8)].map((_, index) => (

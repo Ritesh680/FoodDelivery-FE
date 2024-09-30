@@ -68,13 +68,13 @@ const AddHomepageData = () => {
 	useEffect(() => {
 		if (isLoading) return;
 
-		if (watch(`banner`).length) return;
+		if (watch(`banner`)?.length) return;
 
 		if (apiData?.data) {
-			apiData.data[0]?.banner?.forEach((banner) => {
+			apiData.data?.[0]?.banner?.forEach((banner) => {
 				appendBanner({ label: banner });
 			});
-			setValue("images", apiData.data[0].images);
+			setValue("images", apiData.data[0]?.images);
 		} else {
 			appendBanner({ label: "" });
 		}
@@ -82,7 +82,7 @@ const AddHomepageData = () => {
 
 	if (isLoading) return <Spin fullscreen />;
 
-	if (apiData?.data && !watch("images")?.length) return <Spin fullscreen />;
+	if (apiData?.data[0] && !watch("images")?.length) return <Spin fullscreen />;
 	return (
 		<div className="p-10">
 			<form onSubmit={handleSubmit(onSubmit)}>
