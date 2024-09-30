@@ -71,8 +71,9 @@ const FoodCard = ({
 			dispatch(
 				updateCart({
 					productId: id,
-					quantity: res.data.quantity,
-					price: res.data.product.discountedPrice ?? res.data.product.price,
+					quantity: res.data[0].product.quantity,
+					price:
+						res.data[0]?.product.discountedPrice ?? res.data[0].product.price,
 				})
 			);
 		},
