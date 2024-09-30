@@ -12,6 +12,7 @@ import { Spin } from "antd";
 import { useState } from "react";
 import Modal from "../../component/Modal";
 import QueryKeys from "../../constants/QueryKeys";
+import { Testimonials } from "../../constants/data/Testimonials";
 
 const HomePage = () => {
 	const { getProducts, getCategories } = useApi();
@@ -31,16 +32,6 @@ const HomePage = () => {
 		queryFn: getCategories,
 	});
 
-	function generateRandomTestimonials(count: number) {
-		const testimonials = Array.from({ length: count }, () => ({
-			name: faker.name.fullName(),
-			details: faker.lorem.sentence(),
-			imgSrc: "",
-		}));
-
-		return testimonials;
-	}
-
 	function generateRandomLandingImages(count: number) {
 		const landingImages = Array.from({ length: count }, () => ({
 			imgSrc: faker.image.urlPicsumPhotos(),
@@ -52,7 +43,6 @@ const HomePage = () => {
 	const TopOffersFoodItems = Products?.data;
 	const BestSellersFoodItems = Products?.data;
 	const Categories = Category?.data;
-	const Testimonials = generateRandomTestimonials(6);
 	const LandingImages = generateRandomLandingImages(4);
 
 	if (isLoading) {

@@ -13,18 +13,18 @@ const TestimonialCard = ({
 		<div
 			className={`${
 				isActive
-					? "w-[350px] min-h-[350px] lg:w-[450px] lg:h-[450px] bg-gray-400 px-[61px] py-[52px] shadow-lg"
-					: "bg-gray-200 w-[300] h-[250] py-5"
+					? "w-[300px] min-h-[300px] lg:w-[400px] lg:h-[450px] bg-gray-400 px-10 py-12 shadow-lg"
+					: "bg-gray-200 w-[200] h-[150] py-5 px-5"
 			}  flex flex-col gap-2.5 items-center rounded-xl`}>
 			<div
 				className={`${
-					isActive ? "w-[200px] h-[200px]" : "w-[100px] h-[100px]"
+					isActive ? "w-[150px] h-[150px]" : "w-[100px] h-[100px]"
 				} rounded-full bg-gray-600 object-cover`}>
 				<img
 					src={imgSrc ?? "https://via.placeholder.com/200"}
 					alt=""
 					className={`${
-						isActive ? "w-[200px] h-[200px]" : "w-[100px] h-[100px]"
+						isActive ? "w-[150px] h-[150px]" : "w-[100px] h-[100px]"
 					} rounded-full  object-cover`}
 				/>
 			</div>

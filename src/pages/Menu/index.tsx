@@ -32,7 +32,7 @@ const Menu = () => {
 	const navigate = useNavigate();
 
 	function handleClick(name: string) {
-		navigate(`/category/${name}`);
+		navigate(`/menu/${name}`);
 	}
 	const { data: MenuItems, isLoading } = useQuery({
 		queryKey: QueryKeys.Categories,

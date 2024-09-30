@@ -49,11 +49,11 @@ const Testimonials = ({
 		<div
 			className="flex flex-col justify-center items-center
    p-5 transition-all duration-700 rounded-md mx-auto">
-			<div className="flex flex-col md:flex-row items-center justify-center transition-all duration-500 gap-5 md:gap-0">
+			<div className="w-2/3 flex flex-col md:flex-row items-center justify-center transition-all duration-500 gap-5 md:gap-0">
 				<div
 					className={
 						!isMobileDevice()
-							? "w-1/3 translate-x-5 opacity-75 cursor-pointer hover:scale-110 transition-all duration-200"
+							? "translate-x-5 opacity-75 cursor-pointer hover:scale-110 transition-all duration-200"
 							: ""
 					}
 					onClick={leftShiftHandler}>
@@ -66,7 +66,7 @@ const Testimonials = ({
 				<div
 					className={
 						!isMobile
-							? "w-1/3 -translate-x-5 opacity-75 cursor-pointer hover:scale-110 transition-all duration-200"
+							? "-translate-x-5 opacity-75 cursor-pointer hover:scale-110 transition-all duration-200"
 							: ""
 					}
 					onClick={rightShiftHandler}>
