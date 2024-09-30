@@ -2,13 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useFieldArray, useForm } from "react-hook-form";
 import InputField from "../../component/Input/InputField";
 import FileUpload from "../../component/Input/FileUpload";
-import { Button, Form, Spin, Upload, UploadFile, message } from "antd";
+import { Button, Form, Spin, message } from "antd";
 import useApi from "../../api/useApi";
 import { ICategory, ICreateCategory } from "../../@types/interface";
 import { useNavigate, useParams } from "react-router";
 import QueryKeys from "../../constants/QueryKeys";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import { useCallback, useEffect } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+import MiniFileUpload from "../../component/Input/MiniFileUpload";
 
 const CreateOrEditCategory = () => {
 	const {
@@ -23,7 +24,7 @@ const CreateOrEditCategory = () => {
 
 	const queryClient = useQueryClient();
 
-	const { control, handleSubmit, reset, getValues } = useForm<ICreateCategory>({
+	const { control, handleSubmit, reset } = useForm<ICreateCategory>({
 		defaultValues: {
 			name: "",
 			image: "",
@@ -96,24 +97,6 @@ const CreateOrEditCategory = () => {
 		createNewProduct(filteredData(data));
 	};
 
-	const fileList: (i: number) => UploadFile[] = useCallback(
-		(i) => {
-			const fieldImages = getValues(`subCategories.${i}.images`);
-
-			if (!fieldImages) return [];
-			return [
-				{
-					uid: fieldImages._id,
-					name: fieldImages.name,
-					status: "done",
-					url: fieldImages.url,
-					response: { data: fieldImages },
-				},
-			];
-		},
-		[getValues]
-	);
-
 	function resetData(data: ApiResponse<ICategory>) {
 		reset({
 			name: data.data.name,
@@ -174,21 +157,15 @@ const CreateOrEditCategory = () => {
 											extraStyles="w-1/3"
 										/>
 										<div className="w-1/3">
-											<Form.Item>
-												<Upload
-													withCredentials={true}
-													name="file"
-													listType="text"
-													className="flex items-center gap-4 w-full"
-													defaultFileList={fileList(index)}>
-													<Button
-														type="primary"
-														icon={<UploadOutlined />}
-														className="h-10 w-full">
-														Upload
-													</Button>
-												</Upload>
-											</Form.Item>
+											<MiniFileUpload
+												control={control}
+												name={`subCategories.${index}.images`}
+												deleteUrl={(fileId: string) =>
+													id
+														? deleteCategoryImage(id, fileId)
+														: deleteImage(fileId)
+												}
+											/>
 										</div>
 										<Form.Item>
 											<Button
