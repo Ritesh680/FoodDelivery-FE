@@ -72,7 +72,7 @@ const AdminOrders = () => {
 					{
 						title: "Name",
 						key: "user",
-						render: (item) => item.name,
+						render: (item) => item?.name,
 						dataIndex: "user",
 					},
 					{
@@ -82,7 +82,7 @@ const AdminOrders = () => {
 						render: (item: IOrderData["products"]) =>
 							item
 								.map((product) => {
-									return product.product.name + " (" + product.quantity + ")";
+									return product.product?.name + " (" + product.quantity + ")";
 								})
 								.join(", "),
 					},

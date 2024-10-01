@@ -14,7 +14,12 @@ const Profile = () => {
 					userDetail?.user?.role == "admin"
 						? "Update Landing Page"
 						: "My Order",
-				action: () => navigate("/admin/landing-page"),
+				action: () =>
+					navigate(
+						userDetail?.user?.role == "admin"
+							? "/admin/landing-page"
+							: "/orders"
+					),
 			},
 			{ label: "Billing Address", action: () => navigate("/billing-address") },
 			{ label: "About Us", action: () => navigate("/about") },

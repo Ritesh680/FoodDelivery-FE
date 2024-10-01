@@ -7,11 +7,14 @@ import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
 import ImageSlider from "../../component/Carousel/Carousel";
 import useApi from "../../api/useApi";
 import { useQuery } from "react-query";
-import { Spin } from "antd";
+import { Carousel, Spin } from "antd";
 import { useMemo, useState } from "react";
 import Modal from "../../component/Modal";
 import QueryKeys from "../../constants/QueryKeys";
 import { Testimonials } from "../../constants/data/Testimonials";
+import useInnerWidth from "../../hooks/useInnerWidth";
+
+import TestimonialCard from "../../component/Testimonial/TestimonialCard";
 
 const HomePage = () => {
 	const { getProducts, getCategories, getLandingPageData } = useApi();
@@ -33,7 +36,9 @@ const HomePage = () => {
 	});
 
 	const TopOffersFoodItems = Products?.data;
-	const BestSellersFoodItems = Products?.data;
+	const BestSellersFoodItems = Products?.data.filter(
+		(data) => data.isBestSeller
+	);
 	const Categories = Category?.data;
 
 	const LandingImages = useMemo(() => {
@@ -42,6 +47,8 @@ const HomePage = () => {
 			imgSrc: image.url,
 		}));
 	}, [LandingPageData.data?.data, LandingPageData.isLoading]);
+
+	const isMobile = useInnerWidth();
 
 	if (isLoading) {
 		return <Spin fullscreen size="large" />;
@@ -121,11 +128,26 @@ const HomePage = () => {
 					</div>
 				</ContentWrapper>
 
-				<div className="py-10 bg-[#FEFDE7]">
+				<div className="pt-10 pb-5 bg-[#FEFDE7]">
 					<ContentWrapper title="What our Customer say's">
-						<div className="flex justify-center items-center">
-							<TestimonialSlider testimonials={Testimonials} />
-						</div>
+						{isMobile ? (
+							<div className="w-full px-5 mx-3 h-[500px]">
+								<Carousel dotPosition={"bottom"} autoplay autoplaySpeed={5000}>
+									{Testimonials.map((item) => (
+										<TestimonialCard
+											name={item.name}
+											imgSrc={item.imgSrc}
+											details={item.details}
+											isActive={true}
+										/>
+									))}
+								</Carousel>
+							</div>
+						) : (
+							<div className="flex justify-center items-center">
+								<TestimonialSlider testimonials={Testimonials} />
+							</div>
+						)}
 					</ContentWrapper>
 				</div>
 			</div>

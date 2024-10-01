@@ -13,7 +13,7 @@ const TestimonialCard = ({
 		<div
 			className={`${
 				isActive
-					? "w-[300px] min-h-[300px] lg:w-[400px] lg:h-[450px] bg-gray-400 px-10 py-12 shadow-lg"
+					? "w-[95%] sm:w-[400px] sm:h-[450px] bg-gray-400 px-10 py-12 shadow-lg"
 					: "bg-gray-200 w-[200] h-[150] py-5 px-5"
 			}  flex flex-col gap-2.5 items-center rounded-xl`}>
 			<div
@@ -30,12 +30,11 @@ const TestimonialCard = ({
 			</div>
 
 			<div className="flex flex-col items-center gap-5">
-				<span className="text-center text-white font-semibold text-xl">
-					{name ?? "Name"}
+				<span className="text-center text-white font-semibold text-xl text-nowrap truncate">
+					{name}
 				</span>
 				<span className="text-center text-white text-base min-h-24 overflow-clip">
-					{details ??
-						"Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit a"}
+					{details.split("").slice(0, 150).join("")}...
 				</span>
 			</div>
 		</div>

@@ -10,6 +10,7 @@ import { ICreateProduct, IProduct } from "../../@types/interface";
 import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
 import QueryKeys from "../../constants/QueryKeys";
+import Checkbox from "../../component/Checkbox";
 
 const CreateOrEditProduct = () => {
 	const {
@@ -35,6 +36,7 @@ const CreateOrEditProduct = () => {
 			image: [],
 			discountedPrice: null,
 			quantity: 0,
+			isBestSeller: false,
 		},
 	});
 
@@ -52,6 +54,7 @@ const CreateOrEditProduct = () => {
 				? parseFloat(data.discountedPrice.toString())
 				: null,
 			quantity: data.quantity ? parseInt(data.quantity.toString()) : 0,
+			isBestSeller: data.isBestSeller,
 		};
 	};
 
@@ -129,6 +132,7 @@ const CreateOrEditProduct = () => {
 			discountedPrice: data.data.discountedPrice,
 			quantity: data.data.quantity,
 			subCategory: data.data.subCategory,
+			isBestSeller: data.data.isBestSeller,
 		});
 	}
 
@@ -221,6 +225,13 @@ const CreateOrEditProduct = () => {
 									placeholder="Enter description of product"
 								/>
 							</div>
+
+							<Checkbox
+								control={control}
+								name="isBestSeller"
+								label="Is Best Seller"
+								defaultValue={false}
+							/>
 						</div>
 					</div>
 

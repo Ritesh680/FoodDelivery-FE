@@ -44,6 +44,7 @@ const CreateOrEditCategory = () => {
 			name: data.name,
 			image: data.images?.fileId ?? "",
 			subCategories: data.subCategories?.map((sub) => ({
+				_id: sub._id,
 				name: sub.name,
 				image: sub.images?.fileId ?? "",
 			})),
@@ -103,6 +104,7 @@ const CreateOrEditCategory = () => {
 			images: data.data.image,
 			subCategories: data.data.subcategories?.length
 				? data.data.subcategories?.map((sub) => ({
+						_id: sub._id,
 						name: sub.name,
 						images: sub.image,
 				  }))

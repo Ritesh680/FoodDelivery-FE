@@ -25,9 +25,11 @@ export interface ICreateProduct {
 	images?: ImageGetResponse[];
 	discountedPrice: number | null;
 	quantity: number;
+	isBestSeller: boolean;
 }
 
 export interface SubCategories {
+	_id?: string;
 	name: string;
 	image: string;
 	images?: ImageGetResponse;
