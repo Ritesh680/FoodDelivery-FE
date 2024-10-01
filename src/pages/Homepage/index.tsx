@@ -15,6 +15,13 @@ import { Testimonials } from "../../constants/data/Testimonials";
 import useInnerWidth from "../../hooks/useInnerWidth";
 
 import TestimonialCard from "../../component/Testimonial/TestimonialCard";
+import {
+	ChickenSVG,
+	CowSVG,
+	FishSVG,
+	FrozenFoodSVG,
+	PigSVG,
+} from "../../assets/icons";
 
 const HomePage = () => {
 	const { getProducts, getCategories, getLandingPageData } = useApi();
@@ -48,8 +55,15 @@ const HomePage = () => {
 		}));
 	}, [LandingPageData.data?.data, LandingPageData.isLoading]);
 
-	const isMobile = useInnerWidth();
+	const { isMobileDevice } = useInnerWidth();
 
+	const FOOD_CATEGORIES = [
+		{ label: "100% Grass-Fed Buff", svg: CowSVG },
+		{ label: "Pasture Raised Chicken", svg: ChickenSVG },
+		{ label: "Heritage Pork", svg: PigSVG },
+		{ label: "Wild caught Sea Foods", svg: FishSVG },
+		{ label: "Frozen Foods", svg: FrozenFoodSVG },
+	];
 	if (isLoading) {
 		return <Spin fullscreen size="large" />;
 	}
@@ -76,9 +90,13 @@ const HomePage = () => {
 					}
 				/>
 
-				<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll">
-					{[...Array(8)].map((_, index) => (
-						<FoodCategoryContainer key={index} />
+				<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll items-start lg:items-center lg:px-[188px]">
+					{FOOD_CATEGORIES.map((item, index) => (
+						<FoodCategoryContainer
+							key={index}
+							name={item.label}
+							icon={{ svg: item.svg }}
+						/>
 					))}
 				</div>
 
@@ -130,7 +148,7 @@ const HomePage = () => {
 
 				<div className="pt-10 pb-5 bg-[#FEFDE7]">
 					<ContentWrapper title="What our Customer say's">
-						{isMobile ? (
+						{isMobileDevice ? (
 							<div className="w-full px-5 mx-3 h-[500px]">
 								<Carousel dotPosition={"bottom"} autoplay autoplaySpeed={5000}>
 									{Testimonials.map((item) => (
