@@ -4,8 +4,9 @@ import useApi from "../../api/useApi";
 import InputField from "../../component/Input/InputField";
 import { Button, Spin } from "antd";
 import { useEffect } from "react";
-import { useMutation, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
+import { useNavigate } from "react-router";
 
 interface LandingPageData {
 	images: { _id: string }[];
@@ -18,7 +19,16 @@ const AddHomepageData = () => {
 		createLandingPageData,
 		updateLandingPageData,
 	} = useApi();
-	const { control, handleSubmit, setValue, watch } = useForm<LandingPageData>();
+	const navigate = useNavigate();
+	const {
+		control,
+		handleSubmit,
+		setValue,
+		watch,
+		formState: { errors },
+	} = useForm<LandingPageData>();
+
+	const queryClient = new QueryClient();
 	const {
 		append: appendBanner,
 		fields: banners,
@@ -26,6 +36,7 @@ const AddHomepageData = () => {
 	} = useFieldArray({
 		control,
 		name: "banner",
+		rules: { required: "Add At least one banner" },
 	});
 
 	function addBanner() {
@@ -51,14 +62,22 @@ const AddHomepageData = () => {
 	const CreateLandingPage = useMutation({
 		mutationFn: (data: LandingPageData) =>
 			createLandingPageData(formatData(data)),
+		onSuccess: () => {
+			navigate("/");
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.LandingPage] });
+		},
 	});
 	const UpdateLandingPage = useMutation({
 		mutationFn: (data: LandingPageData) =>
 			updateLandingPageData(formatData(data)),
+		onSuccess: () => {
+			navigate("/");
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.LandingPage] });
+		},
 	});
 
 	const onSubmit = (data: LandingPageData) => {
-		if (apiData?.data) {
+		if (apiData?.data && apiData.data.length) {
 			UpdateLandingPage.mutate(data);
 			return;
 		}
@@ -118,6 +137,11 @@ const AddHomepageData = () => {
 							</Button>
 						</div>
 					))}
+					{errors.banner && (
+						<p className="text-red-500 text-xs">
+							{errors.banner?.root?.message ?? "error"}
+						</p>
+					)}
 					<Button type="default" onClick={addBanner} className="w-fit">
 						Add
 					</Button>

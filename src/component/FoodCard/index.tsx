@@ -49,7 +49,7 @@ const FoodCard = ({
 
 	const discountPercent = useMemo(() => {
 		if (!discountedPrice) return 0;
-		return calculateDiscount(discountedPrice ?? 0, originalPrice ?? 0);
+		return calculateDiscount(originalPrice ?? 0, discountedPrice ?? 0);
 	}, [originalPrice, discountedPrice]);
 
 	const isDiscounted = useMemo(() => {
@@ -59,7 +59,7 @@ const FoodCard = ({
 
 	function calculateDiscount(originalPrice: number, discountedPrice: number) {
 		return Math.round(
-			((discountedPrice - originalPrice) / originalPrice) * 100
+			((originalPrice - discountedPrice) / originalPrice) * 100
 		);
 	}
 

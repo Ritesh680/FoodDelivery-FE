@@ -41,6 +41,18 @@ const ProductDetail = () => {
 			? data?.data?.cart?.find((item) => item?.product === id)?.quantity ?? 0
 			: 0;
 	}, [data?.data?.cart, id, authenticated]);
+
+	const discount = useMemo(() => {
+		const product = data?.data;
+		if (product) {
+			const discount =
+				(((product.price ?? 0) - (product.discountedPrice ?? 0)) /
+					(product.price ?? 1)) *
+				100;
+			return Math.round(discount);
+		}
+		return 0;
+	}, [data?.data]);
 	return (
 		<>
 			{isLoading ? (
@@ -74,7 +86,7 @@ const ProductDetail = () => {
 									</div>
 
 									<span className="text-[7px] sm:text-base text-[#29A157] font-inter">
-										7% OFF
+										{discount}% OFF
 									</span>
 								</div>
 
