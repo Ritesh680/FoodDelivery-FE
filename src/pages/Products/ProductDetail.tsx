@@ -36,6 +36,11 @@ const ProductDetail = () => {
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 		},
 	});
+
+	function handleBuyNow() {
+		navigate("/checkout" + `?buyNow=true&productId=${id}`);
+	}
+
 	const itemsInCart = useMemo(() => {
 		return authenticated
 			? data?.data?.cart?.find((item) => item?.product === id)?.quantity ?? 0
@@ -136,6 +141,7 @@ const ProductDetail = () => {
 								<Button
 									type="default"
 									size={isMobileDevice ? "small" : "large"}
+									onClick={handleBuyNow}
 									className="bg-yellow-500 sm:w-full sm:text-lg sm:font-bold text-white">
 									Buy Now
 								</Button>

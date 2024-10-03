@@ -20,7 +20,7 @@ const CategoryItems = () => {
 	const filteredProducts = useMemo(() => {
 		const products = CategoryData.data?.data.products;
 		if (selectedSubCategory === "all") return products;
-		products?.filter((item) => item.subCategory === selectedSubCategory);
+		return products?.filter((item) => item.subCategory === selectedSubCategory);
 	}, [selectedSubCategory, CategoryData.data?.data.products]);
 
 	if (CategoryData.isLoading) return <Spin />;
@@ -42,7 +42,7 @@ const CategoryItems = () => {
 				</div>
 
 				{CategoryData.data?.data.subcategories.length ? (
-					<div className="flex gap-[60px] py-[50px]">
+					<div className="flex gap-[60px] py-[50px] overflow-x-scroll">
 						<div
 							className={`flex flex-col gap-2 py-5 cursor-pointer ${
 								selectedSubCategory == "all" ? " border-b-2 border-red-500" : ""
@@ -51,7 +51,7 @@ const CategoryItems = () => {
 							<img
 								src={CategoryData.data?.data.image?.url}
 								alt={"all"}
-								className="w-[100px] h-[100px] rounded-full"
+								className="min-w-[100px] sm:w-[100px] h-[100px] rounded-full object-cover"
 							/>
 							<span className="text-base font-semibold text-center">All</span>
 						</div>
@@ -67,7 +67,7 @@ const CategoryItems = () => {
 								<img
 									src={item.image.url}
 									alt={item.name}
-									className="w-[100px] h-[100px] rounded-full"
+									className="min-w-[100px] max-w-[100px] h-[100px] rounded-full object-cover"
 								/>
 								<span className="text-base font-semibold text-center">
 									{item.name}
@@ -79,7 +79,7 @@ const CategoryItems = () => {
 					<></>
 				)}
 			</div>
-			<div className="flex flex-wrap gap-5 px-10 sm:px-20">
+			<div className="flex flex-wrap gap-5 px-5 sm:px-20 pb-5">
 				{filteredProducts?.map((item) => (
 					<FoodCard
 						key={item._id}

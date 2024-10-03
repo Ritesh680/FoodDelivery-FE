@@ -9,6 +9,7 @@ import { RootState } from "../../store";
 import useApi from "../../api/useApi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
+import { useSearchParams } from "react-router-dom";
 
 interface IShippingDetails {
 	firstName: string;
@@ -22,11 +23,19 @@ interface IShippingDetails {
 
 const CheckoutPage = () => {
 	const [loading, setLoading] = useState(true);
-	const { confirmOrder, getOrders } = useApi();
+	const { confirmOrder, getOrders, getProductById } = useApi();
 	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
 	const navigate = useNavigate();
 
+	const [searchParams] = useSearchParams();
+
 	const queryClient = useQueryClient();
+
+	const isBuyNow = useMemo(() => searchParams.get("buyNow"), [searchParams]);
+	const productId = useMemo(
+		() => searchParams.get("productId"),
+		[searchParams]
+	);
 
 	const cart = useSelector((state: RootState) => state.cart.cart);
 	const cartItems = useMemo(
@@ -48,6 +57,14 @@ const CheckoutPage = () => {
 			})),
 		};
 	};
+
+	const { data: productData } = useQuery({
+		queryKey: [QueryKeys.SingleProduct, productId],
+		queryFn: () => getProductById(productId!),
+		enabled: !!productId,
+	});
+	console.log({ productData });
+
 	useQuery({
 		queryKey: [QueryKeys.Cart],
 		queryFn: getOrders,
@@ -83,12 +100,15 @@ const CheckoutPage = () => {
 	}, [cartItems]);
 
 	useEffect(() => {
+		if (isBuyNow) {
+			return setLoading(false);
+		}
 		if (!subtotal) {
 			navigate("/cart");
 		} else {
 			setLoading(false);
 		}
-	}, [subtotal, deliveryCharge, navigate]);
+	}, [subtotal, deliveryCharge, navigate, isBuyNow]);
 	return (
 		<>
 			{loading ? (
