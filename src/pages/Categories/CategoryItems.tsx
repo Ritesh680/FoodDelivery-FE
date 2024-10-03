@@ -49,7 +49,7 @@ const CategoryItems = () => {
 							}`}
 							onClick={() => setSelectedSubCategory("all")}>
 							<img
-								src={CategoryData.data?.data.image?.url}
+								src={CategoryData.data?.data?.image?.url}
 								alt={"all"}
 								className="min-w-[100px] sm:w-[100px] h-[100px] rounded-full object-cover"
 							/>
@@ -65,7 +65,7 @@ const CategoryItems = () => {
 								}`}
 								onClick={() => setSelectedSubCategory(item._id)}>
 								<img
-									src={item.image.url}
+									src={item.image?.url}
 									alt={item.name}
 									className="min-w-[100px] max-w-[100px] h-[100px] rounded-full object-cover"
 								/>
