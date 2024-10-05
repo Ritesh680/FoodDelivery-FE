@@ -1,6 +1,6 @@
 import {
 	OrderedListOutlined,
-	SettingTwoTone,
+	SettingOutlined,
 	UsergroupAddOutlined,
 } from "@ant-design/icons";
 import { MenuIcon, OffersIcon } from "../assets/icons";
@@ -72,13 +72,13 @@ const AdminRoutes = [
 		name: "Settings",
 		route: ROUTES.SETTINGS,
 		content: Profile,
-		icon: SettingTwoTone,
+		icon: SettingOutlined,
 	},
 	{
 		name: "Landing Page",
 		route: ROUTES.LANDING_PAGE,
 		content: AddHomepageData,
-		icon: SettingTwoTone,
+		icon: SettingOutlined,
 		hidden: true,
 	},
 ];

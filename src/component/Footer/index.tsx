@@ -6,41 +6,29 @@ import {
 	PhoneIcon,
 	WhatsAppIcon,
 } from "../../assets/icons";
+import { ICategory } from "../../@types/interface";
 
-const Footer = () => {
+const Footer = ({ categories }: { categories: ICategory[] }) => {
 	const FooterContentLinks = [
 		{
 			title: "Quick Links",
-			lists: [
-				{ label: "All Categories", href: "/categories" },
-				{ label: "Chicken", href: "/chicken" },
-				{ label: "Mutton", href: "/mutton" },
-				{ label: "Buff", href: "/buff" },
-				{ label: "Pork", href: "/pork" },
-				{ label: "Sea Foods", href: "/seafoods" },
-				{ label: "Frozen Foods", href: "/frozenfoods" },
-			],
+			lists: [{ label: "All Categories", href: "/menu" }].concat(
+				categories?.slice(0, 6)?.map((category) => ({
+					label: category.name,
+					href: `/menu/${category._id}`,
+				})) || []
+			),
 		},
-		// {
-		// 	title: "Corporate",
-		// 	lists: [
-		// 		{ label: "About Us", href: "/aboutus" },
-		// 		{ label: "Restaurant Partners", href: "/restaurantpartners" },
-		// 		{ label: "Wholesale Inquiries", href: "/wholesaleinquiries" },
-		// 		{ label: "Affiliated Program", href: "/affialiated" },
-		// 		{ label: "Careers", href: "/careers" },
-		// 		{ label: "Accessibility Statement", href: "/accessibilitystatement" },
-		// 	],
-		// },
+
 		{
 			title: "Customer's Service",
 			lists: [
-				{ label: "FAQ's", href: "/faqs" },
-				{ label: "Shipping & Delivery", href: "/shippingdelivery" },
-				{ label: "Order Tracking", href: "/ordertracking" },
-				{ label: "Refund and Return policy", href: "/refundandreturnpolicy" },
-				{ label: "Guarantee", href: "/guarantee" },
-				{ label: "Contact Us", href: "/contactus" },
+				{ label: "FAQ's", href: "#" },
+				{ label: "Shipping & Delivery", href: "#" },
+				{ label: "Order Tracking", href: "#" },
+				{ label: "Refund and Return policy", href: "#" },
+				{ label: "Guarantee", href: "#" },
+				{ label: "Contact Us", href: "#" },
 			],
 		},
 	];

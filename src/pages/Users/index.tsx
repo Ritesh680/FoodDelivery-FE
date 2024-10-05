@@ -1,13 +1,11 @@
 import QueryTable from "../../component/StaticTable/QueryTable";
 import useApi from "../../api/useApi";
 import { IUserResponse } from "../../@types/interface";
-import { Button } from "antd";
-import { useNavigate } from "react-router";
+
 import useInnerWidth from "../../hooks/useInnerWidth";
 
 const UserList = () => {
 	const { getAllUsers } = useApi();
-	const navigate = useNavigate();
 	const { isMobileDevice } = useInnerWidth();
 	return (
 		<QueryTable<ApiResponse<IUserResponse[]>, IUserResponse>
@@ -38,23 +36,23 @@ const UserList = () => {
 					dataIndex: "provider",
 				},
 
-				{
-					key: "_id",
-					title: "Action",
-					dataIndex: "_id",
-					render: (item) => {
-						return (
-							<div className="flex items-center gap-4">
-								<Button
-									type="default"
-									htmlType="button"
-									onClick={() => navigate(`/admin/products/edit/${item}`)}>
-									{"->"}
-								</Button>
-							</div>
-						);
-					},
-				},
+				// {
+				// 	key: "_id",
+				// 	title: "Action",
+				// 	dataIndex: "_id",
+				// 	render: (item) => {
+				// 		return (
+				// 			<div className="flex items-center gap-4">
+				// 				<Button
+				// 					type="default"
+				// 					htmlType="button"
+				// 					onClick={() => navigate(`/admin/products/edit/${item}`)}>
+				// 					<InfoCircleOutlined />
+				// 				</Button>
+				// 			</div>
+				// 		);
+				// 	},
+				// },
 			]}
 		/>
 	);

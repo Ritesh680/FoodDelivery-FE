@@ -1,4 +1,7 @@
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Menu, MenuProps } from "antd";
+
 import DropdownComponent from "../../Dropdown";
 import {
 	CartIcon,
@@ -7,155 +10,139 @@ import {
 	OffersIcon,
 	UserIcon,
 } from "../../../assets/icons";
-import { useCallback, useMemo, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import AdminRoutes from "../../../routes/AdminRoutes";
 import useApi from "../../../api/useApi";
 import AutoComplete from "../../AutoComplete";
-import { Button, Dropdown, MenuProps } from "antd";
-import Location from "../../Location";
+import { ICategory } from "../../../@types/interface";
 
-type Icon = React.FunctionComponent<
-	React.SVGProps<SVGSVGElement> & {
-		title?: string | undefined;
-	}
->;
+type MenuItem = Required<MenuProps>["items"][number];
 
-interface NavIconWithComponent {
-	name?: never;
-	icon?: never;
-	component: React.ReactNode;
-	onclick?: never;
-}
-interface NavIconWithNavigate {
-	name: string;
-	icon: Icon;
-	component?: never;
-	onclick: () => void;
-}
-
-type NavItems = NavIconWithComponent | NavIconWithNavigate;
-
-const Navbar = () => {
-	const [showLocation, setShowLocation] = useState(false);
+const Navbar = ({ categories }: { categories: ICategory[] }) => {
 	const { authenticated, userDetail } = useAuth();
 
 	const { getProducts } = useApi();
 	const navigate = useNavigate();
 
-	const toggleLocation = useCallback(() => {
-		setShowLocation((prev) => !prev);
-	}, []);
-
-	const MenuItems: MenuProps["items"] = useMemo(
+	const MenuItems: MenuItem[] = useMemo(
 		() => [
 			{
-				key: "menu1",
-				label: <Link to="/category/chicken">Menu</Link>,
+				key: "menu",
+				icon: <MenuIcon />,
+				label: "Menu",
+				children: categories.map((category) => ({
+					key: category._id,
+					label: <Link to={`/menu/${category._id}`}>{category.name}</Link>,
+					children: category.subcategories.length
+						? category.subcategories?.map((subCategory) => ({
+								key: subCategory._id,
+								label: (
+									<Link to={`/menu/${category._id}?sub=${subCategory.name}`}>
+										{subCategory.name}
+									</Link>
+								),
+						  }))
+						: undefined,
+				})),
 			},
-			{ key: "menu2", label: <Link to="/category/momo">Momo</Link> },
-			{ key: "menu3", label: <Link to="/category/burger">Burger</Link> },
-			{ key: "menu4", label: <Link to="/category/pizza">Pizza</Link> },
+			{
+				key: "offers",
+				icon: <OffersIcon />,
+				label: " Offers",
+				children: [
+					{
+						key: "offers1",
+						label: <Link to="/offers?category=top">Top Offers</Link>,
+					},
+					{
+						key: "offers2",
+						label: <Link to="/offers?category=dashain">Dashain Offers</Link>,
+					},
+					{
+						key: "offers3",
+						label: <Link to="/offers?category=daily">Daily Offers</Link>,
+					},
+					{
+						key: "offers4",
+						label: <Link to="/offers?category=seasonal">Seasonal Offers</Link>,
+					},
+				],
+			},
+
+			// {
+			// 	key: "location",
+			// 	icon: <LocationIcon />,
+			// 	label: "Location",
+
+			// 	children: [
+			// 		{ key: "locationExpand", label: <Location />, selectable: true },
+			// 	],
+			// },
+			{
+				key: "cart",
+				icon: <CartIcon />,
+				label: "Cart",
+				onClick: () => navigate("/cart"),
+			},
+			{
+				key: "login",
+				icon: <UserIcon />,
+				label: authenticated ? "Profile" : "Login",
+				onClick: () => navigate(authenticated ? "profile" : "/login"),
+			},
 		],
-		[]
+		[categories, navigate, authenticated]
 	);
 
-	const OffersItems: MenuProps["items"] = useMemo(
-		() => [
-			{
-				key: "offers1",
-				label: <Link to="/offers?category=top">Top Offers</Link>,
-				className: "py-[26.5px]",
-			},
-			{
-				key: "offers2",
-				label: <Link to="/offers?category=dashain">Dashain Offers</Link>,
-				className: "py-[26.5px]",
-			},
-			{
-				key: "offers3",
-				label: <Link to="/offers?category=daily">Daily Offers</Link>,
-				className: "py-[26.5px]",
-			},
-			{
-				key: "offers4",
-				label: <Link to="/offers?category=seasonal">Seasonal Offers</Link>,
-				className: "py-[26.5px]",
-			},
-		],
-		[]
-	);
+	// const NavItems: NavItems[] = useMemo(
+	// 	() => [
+	// 		{
+	// 			component: (
+	// 				<Menu
+	// 					items={MenuItems}
+	// 					mode="horizontal"
+	// 					className="border-0 hover:border-none"
+	// 					openKeys={openKeys}
+	// 				/>
+	// 			),
+	// 		},
 
-	const NavItems: NavItems[] = useMemo(
-		() => [
-			{
-				component: (
-					<Dropdown menu={{ items: MenuItems }}>
-						<Button className="border-0 shadow-none w-full">
-							<MenuIcon /> Menu
-						</Button>
-					</Dropdown>
-				),
-			},
-			{
-				component: (
-					<Dropdown menu={{ items: OffersItems }}>
-						<Button className="border-0 shadow-none w-full">
-							<OffersIcon /> Offers
-						</Button>
-					</Dropdown>
-				),
-			},
-			{
-				component: (
-					<div className="relative w-full">
-						<Button
-							className="border-0 shadow-none w-full"
-							onClick={toggleLocation}>
-							<LocationIcon /> Location
-						</Button>
+	// 		// {
+	// 		// 	component: (
+	// 		// 		<div className="relative w-full">
+	// 		// 			<Button
+	// 		// 				className="border-0 shadow-none w-full"
+	// 		// 				onClick={toggleLocation}>
+	// 		// 				<LocationIcon /> Location
+	// 		// 			</Button>
 
-						{showLocation ? (
-							<div
-								className={`absolute right-0 top-10 bg-white z-50 rounded shadow-2xl ${
-									showLocation ? "block" : "hidden"
-								}`}>
-								<Location />
-							</div>
-						) : null}
-					</div>
-				),
-			},
-			{ name: "Login", icon: UserIcon, onclick: () => navigate("/login") },
-			{ name: "Cart", icon: CartIcon, onclick: () => navigate("/cart") },
-		],
-		[MenuItems, OffersItems, toggleLocation, showLocation, navigate]
-	);
+	// 		// 			{showLocation ? (
+	// 		// 				<div
+	// 		// 					className={`absolute right-0 top-10 bg-white z-50 rounded shadow-2xl ${
+	// 		// 						showLocation ? "block" : "hidden"
+	// 		// 					}`}>
+	// 		// 					<Location />
+	// 		// 				</div>
+	// 		// 			) : null}
+	// 		// 		</div>
+	// 		// 	),
+	// 		// },
+	// 	],
+	// 	[MenuItems]
+	// );
 
-	const List: NavItems[] = useMemo(() => {
+	const List: MenuItem[] = useMemo(() => {
 		if (userDetail?.user?.role === "admin") {
 			return AdminRoutes.filter((item) => !item.hidden).map((route) => ({
-				name: route.name,
-				icon: route.icon as Icon,
-				onclick: () => navigate(`/admin/${route.route}`),
+				label: route.name,
+				key: route.route,
+				icon: <route.icon />,
+				onClick: () => navigate(`/admin/${route.route}`),
 			}));
 		} else {
-			return NavItems;
+			return MenuItems;
 		}
-	}, [userDetail?.user?.role, navigate, NavItems]);
-
-	const NavItemList = useMemo(() => {
-		return [...List].map((item) =>
-			item.name === "Login" && authenticated
-				? {
-						...item,
-						href: "/profile",
-						name: "Profile",
-						onclick: () => navigate("/profile"),
-				  }
-				: item
-		);
-	}, [authenticated, List, navigate]);
+	}, [userDetail?.user?.role, navigate, MenuItems]);
 
 	return (
 		<nav
@@ -198,31 +185,12 @@ const Navbar = () => {
 				</svg>
 			</label>
 			<input className="hidden" type="checkbox" id="menu-toggle" />
-			<div
-				className="hidden absolute lg:relative top-14 lg:top-0 right-0 xl:flex lg:items-center lg:w-auto w-full bg-white shadow-2xl lg:shadow-none p-2 rounded-b-lg z-50"
-				id="menu">
-				<nav>
-					<ul className="text-xl text-center items-center pt-4 gap-x-8 lg:text-lg lg:flex lg:pt-0">
-						{NavItemList.map((item, index) => (
-							<li
-								key={index}
-								className="flex gap-4 items-center py-2 lg:py-0 w-full sm:hover:border lg:hover:border-none">
-								{item.component ? (
-									item.component
-								) : (
-									<Button
-										className="text-sm flex items-center gap-2 hover:scale-y-105 border-none shadow-none w-full"
-										onClick={item.onclick}>
-										{item.icon && <item.icon />}
-										{item.name}
-									</Button>
-								)}
-							</li>
-						))}
-						{/* //FIXME: ERROR WHILE CLOSING THE DROPDOWN */}
-					</ul>
-				</nav>
-			</div>
+
+			<Menu
+				items={List}
+				mode="horizontal"
+				className="hidden lg:flex flex-grow justify-end border-0 gap-2"
+			/>
 		</nav>
 	);
 };
