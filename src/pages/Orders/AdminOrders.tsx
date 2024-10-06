@@ -153,7 +153,7 @@ const AdminOrders = () => {
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							(new Date(a.createdAt) as any) - (new Date(b.createdAt) as any),
 						render: (item) => {
-							return new Date(item).toDateString();
+							return new Date(item).toLocaleString();
 						},
 					},
 				]}
