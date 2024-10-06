@@ -7,6 +7,7 @@ import {
 	WhatsAppIcon,
 } from "../../assets/icons";
 import { ICategory } from "../../@types/interface";
+import { STATIC_DATA } from "../../constants";
 
 const Footer = ({ categories }: { categories: ICategory[] }) => {
 	const FooterContentLinks = [
@@ -44,42 +45,42 @@ const Footer = ({ categories }: { categories: ICategory[] }) => {
 						<ul className="flex flex-col gap-[2px] sm:gap-2.5">
 							<li className="text-left">
 								<a
-									href="tel:9800000000"
+									href={`tel:${STATIC_DATA.PHONE_NUMBER}`}
 									className="text-[8px] sm:text-sm flex gap-2 items-center leading-[21px]">
-									<PhoneIcon /> 9800000000, 071-567894
+									<PhoneIcon /> {STATIC_DATA.PHONE_NUMBER}
 								</a>
 							</li>
 							<li className="text-left">
 								<a
-									href="maps:Putalibazar, kathmandu, Nepal"
+									href={`maps:${STATIC_DATA.ADDRESS}`}
 									className="flex gap-2 items-center text-[8px] sm:text-sm leading-[21px]">
-									<LocationIcon /> Putalibazar, kathmandu, Nepal
+									<LocationIcon /> {STATIC_DATA.ADDRESS}
 								</a>
 							</li>
 							<li className="text-left">
 								<a
-									href="mailto:chickenNepal@gmail.com"
+									href={`mailto:${STATIC_DATA.EMAIL}`}
 									className="flex gap-2 items-center text-[8px] sm:text-sm leading-[21px]">
-									<MailIcon /> chickenNepal@gmail.com
+									<MailIcon /> {STATIC_DATA.EMAIL}
 								</a>
 							</li>
 
 							<li className="text-left">
 								<div className="flex items-center gap-4">
 									<a
-										href="https://www.facebook.com"
+										href={STATIC_DATA.FACEBOOK}
 										target="_blank"
 										rel="noreferrer">
 										<FacebookIcon className="text-[20px] sm:text-[26px] hover:scale-105" />
 									</a>
 									<a
-										href="https://web.whatsapp.com"
+										href={STATIC_DATA.WHATSAPP}
 										target="_blank"
 										rel="noreferrer">
 										<WhatsAppIcon className="text-[20px] sm:text-[26px] hover:scale-105" />
 									</a>
 									<a
-										href="https://www.instagram.com"
+										href={STATIC_DATA.INSTAGRAM}
 										target="_blank"
 										rel="noreferrer">
 										<InstagramIcon className="text-[20px] sm:text-[26px] hover:scale-105" />
@@ -93,7 +94,7 @@ const Footer = ({ categories }: { categories: ICategory[] }) => {
 								Operating Hours
 							</h4>
 							<p className="text-left text-[8px] sm:text-sm">
-								Everyday: 8am - 9pm
+								Everyday: {STATIC_DATA.OPENING_HOURS}
 							</p>
 						</div>
 					</div>

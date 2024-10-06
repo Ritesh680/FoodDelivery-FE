@@ -182,6 +182,16 @@ const Cart = () => {
 		);
 	}, [cartItems]);
 
+	const discount = useMemo(() => {
+		return cartItems?.data.products.reduce(
+			(acc, curr) =>
+				acc +
+				(curr.product.price! - (curr.product.discountedPrice ?? 0)) *
+					curr.quantity,
+			0
+		);
+	}, [cartItems]);
+
 	const deliveryCharge = useMemo(() => {
 		const totalWeight = cartItems?.data?.products?.reduce(
 			(acc, curr) => acc + curr.quantity,
@@ -228,6 +238,7 @@ const Cart = () => {
 										</h3>
 										<div className="flex justify-between items-center">
 											<p className="text-[10px] font-semibold">
+												Rs{" "}
 												{isItemDeleting || isCartUpdating ? (
 													<Spin />
 												) : (
@@ -241,7 +252,7 @@ const Cart = () => {
 											Discount
 										</h3>
 										<div className="flex justify-between items-center">
-											<p className="text-[10px] font-semibold">0</p>
+											<p className="text-[10px] font-semibold">Rs {discount}</p>
 										</div>
 									</div>
 									<div className="flex w-full justify-between items-center">
@@ -262,7 +273,10 @@ const Cart = () => {
 										</h3>
 										<div className="flex justify-between items-center">
 											<p className="text-[10px] font-bold">
-												Rs {itemSubtotal ? itemSubtotal + deliveryCharge : 0}
+												Rs{" "}
+												{itemSubtotal
+													? itemSubtotal - (discount ?? 0) + deliveryCharge
+													: 0}
 											</p>
 										</div>
 									</div>

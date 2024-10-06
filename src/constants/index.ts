@@ -49,3 +49,13 @@ export const REGEX_PHONE_NUMBER =
 
 export const REGEX_EMAIL =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export const STATIC_DATA = {
+	PHONE_NUMBER: "+977-9844378959",
+	ADDRESS: "New Baneshwor, Kathmandu, Nepal",
+	EMAIL: "pokharelroshan13@gmail.com",
+	FACEBOOK: "https://www.facebook.com/chickendeliveryktm?mibextid=LQQJ4d",
+	WHATSAPP: "https://web.whatsapp.com",
+	INSTAGRAM: "https://www.instagram.com",
+	OPENING_HOURS: "8am - 9pm",
+};

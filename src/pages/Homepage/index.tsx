@@ -22,11 +22,15 @@ import {
 	FrozenFoodSVG,
 	PigSVG,
 } from "../../assets/icons";
+import ViewMore from "../../component/ViewMore";
+import { useNavigate } from "react-router";
 
 const HomePage = () => {
-	const { getProducts, getCategories, getLandingPageData } = useApi();
+	const { getProducts, getCategories, getLandingPageData, getOffersProducts } =
+		useApi();
 
 	const [showOfferBanner, setShowOfferBanner] = useState(false);
+	const navigate = useNavigate();
 
 	const LandingPageData = useQuery({
 		queryKey: [QueryKeys.LandingPage],
@@ -41,8 +45,12 @@ const HomePage = () => {
 		queryKey: QueryKeys.Categories,
 		queryFn: getCategories,
 	});
+	const { data: OffersProducts } = useQuery({
+		queryKey: QueryKeys.Offers,
+		queryFn: getOffersProducts,
+	});
+	const TopOffersFoodItems = OffersProducts?.data;
 
-	const TopOffersFoodItems = Products?.data;
 	const BestSellersFoodItems = Products?.data.filter(
 		(data) => data.isBestSeller
 	);
@@ -100,9 +108,24 @@ const HomePage = () => {
 					))}
 				</div>
 
+				<ContentWrapper title="Shop By Category">
+					<div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
+						{Categories?.map((item, index) => (
+							<div key={index} className="flex flex-col items-center gap-2">
+								<img
+									src={item.image?.url ?? "https://placehold.co/400"}
+									alt={item.name}
+									className="!w-[72px] !h-[72px] rounded-xl object-cover"
+								/>
+								<span className="text-base">{item.name}</span>
+							</div>
+						))}
+					</div>
+				</ContentWrapper>
+
 				<ContentWrapper title="Top Offers">
-					<div className="flex ps-4 gap-4 overflow-x-scroll w-full">
-						{TopOffersFoodItems?.map((item, index) => (
+					<div className="flex gap-4 overflow-x-scroll w-full">
+						{TopOffersFoodItems?.slice(0, 9)?.map((item, index) => (
 							<FoodCard
 								key={index}
 								id={item._id}
@@ -113,11 +136,16 @@ const HomePage = () => {
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
 						))}
+						{(TopOffersFoodItems?.length ?? 0) >= 10 ? (
+							<ViewMore handleClick={() => navigate("/offers")} />
+						) : (
+							""
+						)}
 					</div>
 				</ContentWrapper>
 
 				<ContentWrapper title="Best Sellers">
-					<div className="flex w-full p-4 gap-[15px] overflow-x-scroll">
+					<div className="flex w-full gap-[15px] overflow-x-scroll">
 						{BestSellersFoodItems?.map((item, index) => (
 							<FoodCard
 								key={index}
@@ -129,20 +157,11 @@ const HomePage = () => {
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
 						))}
-					</div>
-				</ContentWrapper>
-
-				<ContentWrapper title="Explore By Category">
-					<div className="grid grid-cols-2 lg:grid-cols-3 gap-10 px-4">
-						{Categories?.map((item, index) => (
-							<FoodCard
-								id={item._id}
-								key={index}
-								withDetails={false}
-								foodName={item.name}
-								foodImage={item.image?.url || ""}
-							/>
-						))}
+						{(BestSellersFoodItems?.length ?? 0) >= 10 ? (
+							<ViewMore handleClick={() => navigate("/best-seller")} />
+						) : (
+							""
+						)}
 					</div>
 				</ContentWrapper>
 

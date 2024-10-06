@@ -63,7 +63,6 @@ const CheckoutPage = () => {
 		queryFn: () => getProductById(productId!),
 		enabled: !!productId,
 	});
-	console.log({ productData });
 
 	useQuery({
 		queryKey: [QueryKeys.Cart],
@@ -86,11 +85,15 @@ const CheckoutPage = () => {
 	};
 
 	const subtotal = useMemo(() => {
+		if (isBuyNow && productData) {
+			const { price, discountedPrice } = productData.data;
+			return (discountedPrice || price) ?? 0;
+		}
 		const total = cartItems.reduce((acc, item) => {
 			return acc + item.price * item.quantity;
 		}, 0);
 		return total ?? null;
-	}, [cartItems]);
+	}, [cartItems, isBuyNow, productData]);
 
 	const deliveryCharge = useMemo(() => {
 		const totalQuantity = cartItems.reduce((acc, item) => {
@@ -236,6 +239,13 @@ const CheckoutPage = () => {
 											</p>
 										</div>
 									</div>
+
+									<Divider />
+
+									<p className="text-red-500">
+										<strong>Note: </strong> Item will be delivered within 6
+										hours
+									</p>
 								</div>
 							</div>
 							<button

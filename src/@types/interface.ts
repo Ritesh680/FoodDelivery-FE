@@ -125,6 +125,7 @@ export interface IOrderData {
 	paymentStatus: string;
 	contact: string;
 	orderQuantity: number;
+	createdAt: Date;
 }
 export interface MyOrders {
 	cancelledProducts: (IProduct & { orderQuantity: number })[];

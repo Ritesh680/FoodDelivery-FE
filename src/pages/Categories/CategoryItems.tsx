@@ -17,11 +17,22 @@ const CategoryItems = () => {
 		enabled: !!id,
 	});
 
+	const products = useMemo(() => {
+		return CategoryData.data?.data?.products?.sort((prodA, prodB) => {
+			const { price: priceA, discountedPrice: disA } = prodA;
+			const { price: priceB, discountedPrice: disB } = prodB;
+
+			const discountPercentA = ((priceA! - (disA ?? 0)) / priceA!) * 100;
+			const discountPercentB = ((priceB! - (disB ?? 0)) / priceB!) * 100;
+
+			return discountPercentB - discountPercentA;
+		});
+	}, [CategoryData.data?.data.products]);
+
 	const filteredProducts = useMemo(() => {
-		const products = CategoryData.data?.data.products;
 		if (selectedSubCategory === "all") return products;
 		return products?.filter((item) => item.subCategory === selectedSubCategory);
-	}, [selectedSubCategory, CategoryData.data?.data.products]);
+	}, [selectedSubCategory, products]);
 
 	if (CategoryData.isLoading) return <Spin />;
 
@@ -42,7 +53,7 @@ const CategoryItems = () => {
 				</div>
 
 				{CategoryData.data?.data.subcategories.length ? (
-					<div className="flex gap-[60px] py-[50px] overflow-x-scroll">
+					<div className="flex gap-[60px]  overflow-x-scroll">
 						<div
 							className={`flex flex-col gap-2 py-5 cursor-pointer ${
 								selectedSubCategory == "all" ? " border-b-2 border-red-500" : ""
@@ -79,7 +90,10 @@ const CategoryItems = () => {
 					<></>
 				)}
 			</div>
-			<div className="flex flex-wrap gap-5 px-5 sm:px-20 pb-5">
+			<span className="text-base py-2 rounded-xl px-5 sm:px-20 -mt-5 sm:-mt-10 border-b">
+				{filteredProducts?.length} items
+			</span>
+			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5 sm:px-20 pb-5">
 				{filteredProducts?.map((item) => (
 					<FoodCard
 						key={item._id}

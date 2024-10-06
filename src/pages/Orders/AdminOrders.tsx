@@ -90,9 +90,18 @@ const AdminOrders = () => {
 						title: "Status",
 						key: "status",
 						dataIndex: "status",
+
 						render: (item, record) => (
 							<Select
+								variant="filled"
 								value={item?.toUpperCase()}
+								className={`${
+									item.toUpperCase() == "COMPLETED"
+										? "bg-green-500"
+										: item.toUpperCase() == "CANCELLED"
+										? "bg-red-500"
+										: "bg-yellow-500"
+								} text-white outline-none`}
 								onChange={(e) => handleStatusChange(record._id, e as string)}
 								loading={
 									Status.isLoading && Status.variables?.id === record._id
@@ -113,7 +122,13 @@ const AdminOrders = () => {
 						dataIndex: "paymentStatus",
 						render: (item, record) => (
 							<Select
+								variant="filled"
 								value={item?.toUpperCase()}
+								className={`${
+									item.toUpperCase() == "PAID"
+										? "bg-green-500"
+										: "bg-yellow-500"
+								} text-white outline-none min-w-[100px]`}
 								onChange={(e) =>
 									handlePaymentStatusChange(record._id, e as string)
 								}
@@ -129,6 +144,17 @@ const AdminOrders = () => {
 						title: "Contact Number",
 						key: "contact",
 						dataIndex: "contact",
+					},
+					{
+						title: "Order Date",
+						key: "createdAt",
+						dataIndex: "createdAt",
+						sorter: (a, b) =>
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							(new Date(a.createdAt) as any) - (new Date(b.createdAt) as any),
+						render: (item) => {
+							return new Date(item).toDateString();
+						},
 					},
 				]}
 			/>

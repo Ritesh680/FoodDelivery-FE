@@ -160,10 +160,10 @@ const ProductDetail = () => {
 						Products?.data &&
 						Products.data?.length > 1 && (
 							<div className="flex flex-col gap-6">
-								<span className="text-xs sm:text-2xl font-bold px-5">
+								<span className="text-xs sm:text-2xl font-bold px-5 sm:px-16">
 									You might also like
 								</span>
-								<div className="flex ps-4 gap-4 overflow-x-scroll w-full">
+								<div className="flex px-5 sm:px-16 gap-4 overflow-x-scroll w-full">
 									{Products?.data
 										?.filter((data) => data._id !== id)
 										.map((item, index) => (
@@ -172,7 +172,7 @@ const ProductDetail = () => {
 												key={index}
 												withDetails
 												originalPrice={item.price ?? 0}
-												discountedPrice={item.price ?? 0}
+												discountedPrice={item.discountedPrice ?? 0}
 												foodName={item.name}
 												foodImage={item.image?.[0]?.url ?? ""}
 											/>
