@@ -10,6 +10,7 @@ import useApi from "../../api/useApi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
 import { useSearchParams } from "react-router-dom";
+import { REGEX_EMAIL, REGEX_PHONE_NUMBER } from "../../constants";
 
 interface IShippingDetails {
 	firstName: string;
@@ -146,14 +147,26 @@ const CheckoutPage = () => {
 									name="phone"
 									label="Phone"
 									placeholder="Phone number"
-									rules={{ required: "Phone is required" }}
+									rules={{
+										required: "Phone is required",
+										pattern: {
+											value: REGEX_PHONE_NUMBER,
+											message: "Invalid Phone Number",
+										},
+									}}
 								/>
 								<InputField
 									control={control}
 									name="email"
 									label="Email"
 									placeholder="Email"
-									rules={{ required: "Email is required" }}
+									rules={{
+										required: "Email is required",
+										pattern: {
+											value: REGEX_EMAIL,
+											message: "Invalid Email Format",
+										},
+									}}
 								/>
 								<InputField
 									control={control}
