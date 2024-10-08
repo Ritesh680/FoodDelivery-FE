@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { Button, Card, Divider, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { DataUpdateFunction } from "react-query/types/core/utils";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,7 +10,7 @@ import MobileContent from "../../component/Layout/MobileContent";
 import useApi from "../../api/useApi";
 
 import { DeleteIcon } from "../../assets/icons";
-import { ICartResponse, ImageGetResponse } from "../../@types/interface";
+import { ImageGetResponse } from "../../@types/interface";
 import PopupButton from "../../component/ConfirmButton";
 import QueryKeys from "../../constants/QueryKeys";
 import {
@@ -52,21 +52,6 @@ const Cart = () => {
 		mutationFn: (data: { productId: string; quantity: number }) =>
 			addToCart(data.productId, data.quantity),
 		onSuccess: (res) => {
-			queryClient.setQueryData<
-				DataUpdateFunction<
-					ApiResponse<ICartResponse>,
-					ApiResponse<ICartResponse>
-				>
-			>(QueryKeys.Cart, (data: ApiResponse<ICartResponse>) => {
-				const products = data?.data?.products?.map((item) => {
-					if (item.product?._id === res.data[0].product?._id) {
-						return { ...item, quantity: res.data[0].product.quantity };
-					}
-					return item;
-				});
-				return { ...data, data: { products } };
-			});
-
 			dispatch(
 				UPDATE_CART({
 					productId: res.data[0].product._id,

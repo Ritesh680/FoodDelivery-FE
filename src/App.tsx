@@ -22,9 +22,7 @@ function App() {
 		queryKey: [QueryKeys.Cart],
 		queryFn: getCart,
 		onSuccess: (data) => {
-			if (!data.data.products) {
-				dispatch(clearCart());
-			}
+			dispatch(clearCart());
 
 			return data.data?.products
 				? data.data.products.map((item) =>

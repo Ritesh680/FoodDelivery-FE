@@ -13,6 +13,7 @@ import Meta from "antd/es/card/Meta";
 
 import useApi from "../../api/useApi";
 import { updateCart } from "../../slice/cartSlice";
+import QueryKeys from "../../constants/QueryKeys";
 
 interface FoodCardWithDetails {
 	id: string;
@@ -66,7 +67,7 @@ const FoodCard = ({
 	const AddItemToCart = useMutation({
 		mutationFn: (productId: string) => addToCart(productId),
 		onSuccess: (res) => {
-			queryClient.invalidateQueries({ queryKey: ["Cart"] });
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 			message.success("Item added to cart");
 			dispatch(
 				updateCart({
