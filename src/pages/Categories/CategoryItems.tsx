@@ -1,11 +1,11 @@
-import { Breadcrumb, Spin } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
+import { Breadcrumb, Spin } from "antd";
 import useApi from "../../api/useApi";
 import { useNavigate, useParams } from "react-router";
 import FoodCard from "../../component/FoodCard";
 import QueryKeys from "../../constants/QueryKeys";
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 const CategoryItems = () => {
 	const { getCategoryById } = useApi();

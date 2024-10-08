@@ -40,6 +40,7 @@ function App() {
 				: null;
 		},
 	});
+
 	return (
 		<BrowserRouter>
 			<Routes>

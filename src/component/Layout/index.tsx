@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "react-query";
 import { Outlet, useLocation } from "react-router-dom";
 import { Layout as AntdLayout, Spin } from "antd";
@@ -26,6 +26,14 @@ const Layout = () => {
 		() => NAVBAR_HIDDEN_PAGES.includes(location.pathname),
 		[location.pathname]
 	);
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}
+
+	useEffect(() => {
+		scrollToTop();
+	}, [location]);
 
 	if (Categories.isLoading) return <Spin fullscreen />;
 	return (

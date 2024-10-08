@@ -52,13 +52,15 @@ const Cart = () => {
 		mutationFn: (data: { productId: string; quantity: number }) =>
 			addToCart(data.productId, data.quantity),
 		onSuccess: (res) => {
+			const { product } = res.data[0];
+
 			dispatch(
 				UPDATE_CART({
-					productId: res.data[0].product._id,
-					quantity: res.data[0].product.quantity,
-					price: res.data[0].product.price,
-					name: res.data[0].product.name,
-					discountedPrice: res.data[0].product.discountedPrice,
+					productId: product._id,
+					quantity: product.quantity,
+					price: product.price,
+					name: product.name,
+					discountedPrice: product.discountedPrice,
 				})
 			);
 		},
