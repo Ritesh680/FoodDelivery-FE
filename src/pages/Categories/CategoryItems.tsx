@@ -1,15 +1,18 @@
 import { Breadcrumb, Spin } from "antd";
 import { useQuery } from "react-query";
 import useApi from "../../api/useApi";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import FoodCard from "../../component/FoodCard";
 import QueryKeys from "../../constants/QueryKeys";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const CategoryItems = () => {
 	const { getCategoryById } = useApi();
 	const [selectedSubCategory, setSelectedSubCategory] = useState("all");
 	const { id } = useParams();
+	const [searchParams] = useSearchParams();
+	const navigate = useNavigate();
 
 	const CategoryData = useQuery({
 		queryKey: [QueryKeys.Categories, id],
@@ -33,6 +36,20 @@ const CategoryItems = () => {
 		if (selectedSubCategory === "all") return products;
 		return products?.filter((item) => item.subCategory === selectedSubCategory);
 	}, [selectedSubCategory, products]);
+
+	useEffect(() => {
+		const sub = searchParams.get("sub");
+		if (sub) {
+			const subCategory = CategoryData.data?.data.subcategories.find(
+				(cat) => cat.name.toLowerCase() === sub.toLowerCase()
+			);
+			if (subCategory) {
+				setSelectedSubCategory(subCategory._id);
+			} else {
+				navigate(`/menu/${id}`, { replace: true });
+			}
+		}
+	}, [CategoryData.data?.data.subcategories, id, navigate, searchParams]);
 
 	if (CategoryData.isLoading) return <Spin />;
 

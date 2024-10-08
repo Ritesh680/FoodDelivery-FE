@@ -24,6 +24,7 @@ import {
 } from "../../assets/icons";
 import ViewMore from "../../component/ViewMore";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
 	const { getProducts, getCategories, getLandingPageData, getOffersProducts } =
@@ -111,14 +112,16 @@ const HomePage = () => {
 				<ContentWrapper title="Shop By Category">
 					<div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
 						{Categories?.map((item, index) => (
-							<div key={index} className="flex flex-col items-center gap-2">
-								<img
-									src={item.image?.url ?? "https://placehold.co/400"}
-									alt={item.name}
-									className="!w-[72px] !h-[72px] rounded-xl object-cover"
-								/>
-								<span className="text-base">{item.name}</span>
-							</div>
+							<Link key={index} to={`/menu/${item._id}`}>
+								<div className="flex flex-col items-center gap-2">
+									<img
+										src={item.image?.url ?? "https://placehold.co/400"}
+										alt={item.name}
+										className="!w-[72px] !h-[72px] rounded-xl object-cover"
+									/>
+									<span className="text-base">{item.name}</span>
+								</div>
+							</Link>
 						))}
 					</div>
 				</ContentWrapper>
