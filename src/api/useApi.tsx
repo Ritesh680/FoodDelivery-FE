@@ -107,6 +107,8 @@ export default function useApi() {
 	) => Promise<ApiResponse<IProduct[]>> = async () => {
 		return axiosRequest<ApiResponse<IProduct[]>>("GET", "/product/offers");
 	};
+	const getBestSellerProducts = async () =>
+		axiosRequest<ApiResponse<IProduct[]>>("GET", "/product/best-seller");
 	const getProductById = async (id: string) => {
 		return axiosRequest<ApiResponse<IProduct>>("GET", `/product/${id}`);
 	};
@@ -255,6 +257,7 @@ export default function useApi() {
 		createProduct,
 		getProducts,
 		getOffersProducts,
+		getBestSellerProducts,
 		getProductById,
 		editProduct,
 		deleteProduct,

@@ -93,7 +93,7 @@ const CategoryItems = () => {
 			<span className="text-base py-2 rounded-xl px-5 sm:px-20 -mt-5 sm:-mt-10 border-b">
 				{filteredProducts?.length} items
 			</span>
-			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5 sm:px-20 pb-5">
+			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5 sm:px-20 pb-5 mx-auto">
 				{filteredProducts?.map((item) => (
 					<FoodCard
 						key={item._id}

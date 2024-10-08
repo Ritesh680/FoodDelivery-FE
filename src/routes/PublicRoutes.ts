@@ -9,6 +9,7 @@ import Menu from "../pages/Menu";
 import Offers from "../pages/Offers";
 import VerifyOtp from "../pages/Login/VerifyOtp";
 import CategoryItems from "../pages/Categories/CategoryItems";
+import BestSeller from "../pages/BestSeller";
 
 const PublicRoutes = [
 	{
@@ -36,6 +37,7 @@ const PublicRoutes = [
 		content: Register,
 	},
 	{ name: "Verify OTP", route: ROUTES.VERIFY, content: VerifyOtp },
+	{ name: "Best Seller", route: ROUTES.BEST_SELLER, content: BestSeller },
 	{
 		name: "Terms and Condition",
 		route: ROUTES.TERMS_AND_CONDITION,

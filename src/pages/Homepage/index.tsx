@@ -170,8 +170,9 @@ const HomePage = () => {
 						{isMobileDevice ? (
 							<div className="w-full px-5 mx-3 h-[500px]">
 								<Carousel dotPosition={"bottom"} autoplay autoplaySpeed={5000}>
-									{Testimonials.map((item) => (
+									{Testimonials.map((item, i) => (
 										<TestimonialCard
+											key={item.imgSrc + i}
 											name={item.name}
 											imgSrc={item.imgSrc}
 											details={item.details}

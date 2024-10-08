@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ImageGetResponse } from "../@types/interface";
 
 interface CartItem {
 	cart: CartPayload[];
@@ -8,6 +9,12 @@ interface CartPayload {
 	productId: string;
 	quantity: number;
 	price: number;
+	name: string;
+	discountedPrice: number;
+	image?: ImageGetResponse[];
+}
+interface DeleteCartPayload {
+	productId: string;
 }
 export const cartSlice = createSlice({
 	name: "cart",
@@ -29,12 +36,15 @@ export const cartSlice = createSlice({
 				state.cart.push(action.payload);
 			}
 		},
-		removeFromCart: (state, action: { payload: CartPayload }) => {
+		removeFromCart: (state, action: { payload: DeleteCartPayload }) => {
 			state.cart = state.cart.filter(
 				(item) => item.productId !== action.payload.productId
 			);
 		},
+		clearCart: (state) => {
+			state.cart = [];
+		},
 	},
 });
 
-export const { updateCart, removeFromCart } = cartSlice.actions;
+export const { updateCart, removeFromCart, clearCart } = cartSlice.actions;

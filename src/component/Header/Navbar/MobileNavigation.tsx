@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 import { MobileNavItems } from "../../../constants";
 import useAuth from "../../../hooks/useAuth";
 import AdminRoutes from "../../../routes/AdminRoutes";
+import { Avatar, Badge } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 function MobileNavigation() {
 	const [activeTab, setActiveTab] = useState(getCurrentLocation() ?? "home");
@@ -47,6 +50,13 @@ function MobileNavigation() {
 		);
 	}, [authenticated, List]);
 
+	const cart = useSelector((state: RootState) => state.cart.cart);
+
+	const cartItemsCount = useMemo(
+		() => cart.reduce((acc, curr) => acc + curr.quantity, 0),
+		[cart]
+	);
+
 	return (
 		<div className="flex flex-col z-[99]">
 			<div className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg z-[99] mt-20">
@@ -62,15 +72,42 @@ function MobileNavigation() {
 							onClick={() =>
 								handleTabChange(item.name.toLowerCase(), item.href)
 							}>
-							{
-								<item.icon
-									className={
-										activeTab === item.name.toLowerCase()
-											? "text-red-500"
-											: "text-gray-500"
+							{item.name.toLowerCase() == "cart" ? (
+								<Badge count={cartItemsCount}>
+									<Avatar
+										icon={
+											<item.icon
+												className={
+													activeTab === item.name.toLowerCase()
+														? "text-red-500"
+														: "text-gray-500"
+												}
+											/>
+										}
+										className="bg-transparent">
+										{/* <item.icon
+											className={
+												activeTab === item.name.toLowerCase()
+													? "text-red-500"
+													: "text-gray-500"
+											}
+										/> */}
+									</Avatar>
+								</Badge>
+							) : (
+								<Avatar
+									icon={
+										<item.icon
+											className={
+												activeTab === item.name.toLowerCase()
+													? "text-red-500"
+													: "text-gray-500"
+											}
+										/>
 									}
+									className="bg-transparent"
 								/>
-							}
+							)}
 							<div className="text-sm">{item.name}</div>
 						</button>
 					))}

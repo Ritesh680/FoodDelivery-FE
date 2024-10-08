@@ -7,8 +7,41 @@ import AdminRoutes from "./routes/AdminRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
 import Success from "./pages/Checkout/Success";
+import { useQuery } from "react-query";
+import QueryKeys from "./constants/QueryKeys";
+import useApi from "./api/useApi";
+import { useDispatch } from "react-redux";
+import { clearCart, updateCart } from "./slice/cartSlice";
 
 function App() {
+	const { getCart } = useApi();
+	const dispatch = useDispatch();
+
+	//FIXME: THIS IS DONE BECAUSE OF HURRY. NEED TO MANAGE THIS PROPERLY
+	useQuery({
+		queryKey: [QueryKeys.Cart],
+		queryFn: getCart,
+		onSuccess: (data) => {
+			if (!data.data.products) {
+				dispatch(clearCart());
+			}
+
+			return data.data?.products
+				? data.data.products.map((item) =>
+						dispatch(
+							updateCart({
+								productId: item.product._id,
+								quantity: item.quantity,
+								price: item.product.price ?? 0,
+								discountedPrice: item.product.discountedPrice ?? 0,
+								name: item.product.name,
+								image: item.product.image,
+							})
+						)
+				  )
+				: null;
+		},
+	});
 	return (
 		<BrowserRouter>
 			<Routes>

@@ -35,6 +35,7 @@ export const ROUTES = {
 	CHECKOUT: "checkout",
 	TERMS_AND_CONDITION: "terms-and-conditions",
 	LANDING_PAGE: "landing-page",
+	BEST_SELLER: "best-seller",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

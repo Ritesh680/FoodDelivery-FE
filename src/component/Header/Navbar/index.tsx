@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, MenuProps } from "antd";
+import { Badge, Menu, MenuProps } from "antd";
 
 import DropdownComponent from "../../Dropdown";
 import {
@@ -15,6 +15,8 @@ import AdminRoutes from "../../../routes/AdminRoutes";
 import useApi from "../../../api/useApi";
 import AutoComplete from "../../AutoComplete";
 import { ICategory } from "../../../@types/interface";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -23,6 +25,11 @@ const Navbar = ({ categories }: { categories: ICategory[] }) => {
 
 	const { getProducts } = useApi();
 	const navigate = useNavigate();
+	const cart = useSelector((state: RootState) => state.cart.cart);
+	const cartItemsCount = useMemo(
+		() => cart.reduce((acc, curr) => acc + curr.quantity, 0),
+		[cart]
+	);
 
 	const MenuItems: MenuItem[] = useMemo(
 		() => [
@@ -81,7 +88,14 @@ const Navbar = ({ categories }: { categories: ICategory[] }) => {
 			{
 				key: "cart",
 				icon: <CartIcon />,
-				label: "Cart",
+				label: (
+					<>
+						<span>Cart</span>
+						<Badge
+							count={cartItemsCount}
+							className="absolute top-3 -1right-1"></Badge>
+					</>
+				),
 				onClick: () => navigate("/cart"),
 			},
 			{
@@ -91,7 +105,7 @@ const Navbar = ({ categories }: { categories: ICategory[] }) => {
 				onClick: () => navigate(authenticated ? "profile" : "/login"),
 			},
 		],
-		[categories, navigate, authenticated]
+		[categories, cartItemsCount, authenticated, navigate]
 	);
 
 	// const NavItems: NavItems[] = useMemo(

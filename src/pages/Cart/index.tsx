@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { Button, Card, Divider, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { DataUpdateFunction } from "react-query/types/core/utils";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import MobileContent from "../../component/Layout/MobileContent";
 import useApi from "../../api/useApi";
@@ -13,22 +13,36 @@ import { DeleteIcon } from "../../assets/icons";
 import { ICartResponse, ImageGetResponse } from "../../@types/interface";
 import PopupButton from "../../component/ConfirmButton";
 import QueryKeys from "../../constants/QueryKeys";
-import { updateCart as UPDATE_CART } from "../../slice/cartSlice";
+import {
+	updateCart as UPDATE_CART,
+	removeFromCart,
+} from "../../slice/cartSlice";
+import { RootState } from "../../store";
 
 const Cart = () => {
-	const { getCart, deleteCart, addToCart } = useApi();
+	const { deleteCart, addToCart } = useApi();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const { mutate: removeItemFromCart, isLoading: isItemDeleting } = useMutation(
-		{
-			mutationFn: (productId: string) => deleteCart(productId),
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
-			},
-		}
-	);
+	const cart = useSelector((state: RootState) => state.cart.cart);
+
+	const {
+		mutate: removeItemFromCart,
+		isLoading: isItemDeleting,
+		variables: deleteProductVariable,
+	} = useMutation({
+		mutationFn: (productId: string) => deleteCart(productId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+
+			dispatch(
+				removeFromCart({
+					productId: deleteProductVariable!,
+				})
+			);
+		},
+	});
 
 	const {
 		mutate,
@@ -44,7 +58,7 @@ const Cart = () => {
 					ApiResponse<ICartResponse>
 				>
 			>(QueryKeys.Cart, (data: ApiResponse<ICartResponse>) => {
-				const products = data?.data?.products.map((item) => {
+				const products = data?.data?.products?.map((item) => {
 					if (item.product?._id === res.data[0].product?._id) {
 						return { ...item, quantity: res.data[0].product.quantity };
 					}
@@ -58,35 +72,20 @@ const Cart = () => {
 					productId: res.data[0].product._id,
 					quantity: res.data[0].product.quantity,
 					price: res.data[0].product.price,
+					name: res.data[0].product.name,
+					discountedPrice: res.data[0].product.discountedPrice,
 				})
 			);
 		},
 	});
+
 	function updateCart(productId: string, quantity: number) {
 		mutate({ productId, quantity });
 	}
 
-	const {
-		data: cartItems,
-		isLoading,
-		isFetching,
-	} = useQuery({
-		queryKey: QueryKeys.Cart,
-		queryFn: getCart,
-		onSuccess: (data) => {
-			return data.data?.products
-				? data.data.products.map((item) =>
-						dispatch(
-							UPDATE_CART({
-								productId: item.product._id,
-								quantity: item.quantity,
-								price: item.product.discountedPrice ?? item.product.price ?? 0,
-							})
-						)
-				  )
-				: null;
-		},
-	});
+	function deleteProduct(productId: string) {
+		removeItemFromCart(productId);
+	}
 
 	const AddRemoveButton = ({
 		onRemove,
@@ -176,29 +175,24 @@ const Cart = () => {
 	};
 
 	const itemSubtotal = useMemo(() => {
-		return cartItems?.data?.products?.reduce(
-			(acc, curr) => acc + (curr.product?.price ?? 0) * curr.quantity,
+		return cart.reduce(
+			(acc, curr) => acc + (curr?.price ?? 0) * curr.quantity,
 			0
 		);
-	}, [cartItems]);
+	}, [cart]);
 
 	const discount = useMemo(() => {
-		return cartItems?.data.products.reduce(
+		return cart.reduce(
 			(acc, curr) =>
-				acc +
-				(curr.product.price! - (curr.product.discountedPrice ?? 0)) *
-					curr.quantity,
+				acc + (curr.price! - (curr.discountedPrice ?? 0)) * curr.quantity,
 			0
 		);
-	}, [cartItems]);
+	}, [cart]);
 
 	const deliveryCharge = useMemo(() => {
-		const totalWeight = cartItems?.data?.products?.reduce(
-			(acc, curr) => acc + curr.quantity,
-			0
-		);
+		const totalWeight = cart.reduce((acc, curr) => acc + curr.quantity, 0);
 		return totalWeight ? (totalWeight >= 5 ? 0 : 100) : 0;
-	}, [cartItems]);
+	}, [cart]);
 
 	function navigateToCheckout() {
 		navigate(
@@ -208,28 +202,29 @@ const Cart = () => {
 	}
 	return (
 		<>
-			{isLoading || isItemDeleting || isFetching ? (
+			{isItemDeleting ? (
 				<Spin fullscreen />
 			) : (
 				<MobileContent title="Shopping Cart">
-					{cartItems?.data.products ? (
+					{cart.length ? (
 						<div className="flex flex-col">
-							{cartItems?.data?.products?.map((item) => (
+							{cart.map((item) => (
 								<CartCard
-									key={item.product._id}
-									{...item.product}
+									key={item.productId}
+									_id={item.productId}
+									name={item.name}
+									price={item.price}
+									image={item.image ?? []}
 									quantity={item.quantity}
-									onDelete={() => removeItemFromCart(item.product._id)}
-									onAdd={() => updateCart(item.product._id, item.quantity + 1)}
-									onRemove={() =>
-										updateCart(item.product._id, item.quantity - 1)
-									}
+									onDelete={() => deleteProduct(item.productId)}
+									onAdd={() => updateCart(item.productId, item.quantity + 1)}
+									onRemove={() => updateCart(item.productId, item.quantity - 1)}
 								/>
 							))}
 
 							<div className="flex flex-col py-5 gap-1">
 								<span className="text-[8px] text-[#C50202] leading-[10px] mx-auto">
-									Free shipping on order obove 5kg
+									Free shipping on order above 5kg
 								</span>
 								<div className="flex flex-col px-5 gap-2.5">
 									<div className="flex w-full justify-between items-center">

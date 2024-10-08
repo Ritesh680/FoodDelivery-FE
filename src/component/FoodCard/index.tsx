@@ -70,10 +70,12 @@ const FoodCard = ({
 			message.success("Item added to cart");
 			dispatch(
 				updateCart({
-					productId: id,
+					productId: res.data[0].product._id,
 					quantity: res.data[0].product.quantity,
-					price:
-						res.data[0]?.product.discountedPrice ?? res.data[0].product.price,
+					price: res.data[0].product.price,
+					discountedPrice: res.data[0]?.product.discountedPrice ?? 0,
+					name: res.data[0].product.name,
+					image: res.data[0].product.image,
 				})
 			);
 		},

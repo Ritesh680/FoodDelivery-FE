@@ -8,6 +8,8 @@ import FoodCard from "../../component/FoodCard";
 import { useMemo } from "react";
 import useAuth from "../../hooks/useAuth";
 import QueryKeys from "../../constants/QueryKeys";
+import { useDispatch } from "react-redux";
+import { updateCart as UPDATE_CART } from "../../slice/cartSlice";
 
 const ProductDetail = () => {
 	const { authenticated } = useAuth();
@@ -16,6 +18,8 @@ const ProductDetail = () => {
 	const { isMobileDevice } = useInnerWidth();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+
+	const dispatch = useDispatch();
 
 	const { data, isLoading } = useQuery({
 		queryKey: [QueryKeys.SingleProduct, id],
@@ -31,9 +35,18 @@ const ProductDetail = () => {
 	const AddItemToCart = useMutation({
 		mutationFn: (data: { productId: string; quantity: number }) =>
 			addToCart(data.productId, data.quantity),
-		onSuccess: () => {
+		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.SingleProduct] });
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+			dispatch(
+				UPDATE_CART({
+					productId: res.data[0].product._id,
+					quantity: res.data[0].product.quantity,
+					price: res.data[0].product.price,
+					discountedPrice: res.data[0].product.discountedPrice,
+					name: res.data[0].product.name,
+				})
+			);
 		},
 	});
 

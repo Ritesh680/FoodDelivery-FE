@@ -104,6 +104,7 @@ export interface AddToCartResponse {
 		price: number;
 		discountedPrice: number;
 		quantity: number;
+		image: ImageGetResponse[];
 	};
 	_id: string;
 }

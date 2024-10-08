@@ -106,8 +106,8 @@ const Footer = ({ categories }: { categories: ICategory[] }) => {
 								{content.title}
 							</h3>
 							<ul className="flex flex-col gap-[2px] sm:gap-2.5">
-								{content.lists.map((list) => (
-									<li key={list.href} className="text-left">
+								{content.lists.map((list, i) => (
+									<li key={list.href + i} className="text-left">
 										<a
 											href={list.href}
 											className="flex text-[8px] sm:text-sm leading-[21px]">
