@@ -36,6 +36,8 @@ export const ROUTES = {
 	TERMS_AND_CONDITION: "terms-and-conditions",
 	LANDING_PAGE: "landing-page",
 	BEST_SELLER: "best-seller",
+	FORGOT_PASSWORD: "forgot-password",
+	RESET_PASSWORD: "reset-password/:token",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

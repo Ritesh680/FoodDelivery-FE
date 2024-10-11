@@ -75,8 +75,20 @@ export default function useApi() {
 		return axiosRequest<ApiResponse<any>>("POST", "/user", data);
 	};
 
+	const resetPassword = async (id: string, data: { password: string }) => {
+		return axiosRequest<ApiResponse<IUser>>(
+			"post",
+			`/auth/reset-password/${id}`,
+			data
+		);
+	};
+
 	const verifyOtp = async (data: { otp: number }) => {
 		return axiosRequest("post", "/auth/verify", data);
+	};
+
+	const forgotPassword = async (data: { email: string }) => {
+		return axiosRequest("post", "/auth/forgot-password", data);
 	};
 
 	const updateProfile = async (id: string, data: RegisterData) => {
@@ -251,6 +263,8 @@ export default function useApi() {
 	return {
 		register,
 		verifyOtp,
+		resetPassword,
+		forgotPassword,
 		updateProfile,
 		login,
 		logout,

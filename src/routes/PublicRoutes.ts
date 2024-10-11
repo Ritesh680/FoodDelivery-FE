@@ -10,6 +10,8 @@ import Offers from "../pages/Offers";
 import VerifyOtp from "../pages/Login/VerifyOtp";
 import CategoryItems from "../pages/Categories/CategoryItems";
 import BestSeller from "../pages/BestSeller";
+import ForgotPassword from "../pages/Login/ForgotPassword";
+import ResetPassword from "../pages/Login/ResetPassword";
 
 const PublicRoutes = [
 	{
@@ -42,6 +44,16 @@ const PublicRoutes = [
 		name: "Terms and Condition",
 		route: ROUTES.TERMS_AND_CONDITION,
 		content: PrivacyPolicy,
+	},
+	{
+		name: "Forgot Password",
+		route: ROUTES.FORGOT_PASSWORD,
+		content: ForgotPassword,
+	},
+	{
+		name: "Reset Password",
+		route: ROUTES.RESET_PASSWORD,
+		content: ResetPassword,
 	},
 ];
 export default PublicRoutes;

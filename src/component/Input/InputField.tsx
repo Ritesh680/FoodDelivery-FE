@@ -12,6 +12,7 @@ interface InputFieldProps<T extends FieldValues> extends UseControllerProps<T> {
 	label?: string;
 	showErrorMessage?: boolean;
 	extraStyles?: string;
+	customError?: string;
 }
 const InputField = <T extends FieldValues>({
 	name,
@@ -24,6 +25,7 @@ const InputField = <T extends FieldValues>({
 	showErrorMessage = true,
 	disabled,
 	extraStyles,
+	customError,
 }: InputFieldProps<T>) => {
 	const {
 		field,
@@ -67,6 +69,9 @@ const InputField = <T extends FieldValues>({
 			/>
 			{showErrorMessage && error && (
 				<p className="text-red-500 text-xxs lg:text-xs">{error?.message}</p>
+			)}
+			{customError && (
+				<p className="text-red-500 text-xxs lg:text-xs">{customError}</p>
 			)}
 		</Form.Item>
 	);

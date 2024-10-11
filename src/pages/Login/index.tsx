@@ -8,6 +8,7 @@ import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import useApi from "../../api/useApi";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 interface ILoginProps {
 	email: string;
@@ -92,6 +93,12 @@ const Login = () => {
 					Login
 				</Button>
 			</form>
+
+			<Link
+				to={"/forgot-password"}
+				className="text-blue-500 text-xs sm:text-sm">
+				Forgot Password?
+			</Link>
 			<div className="flex gap-9 mt-7">
 				<Button onClick={loginWithGoogle} htmlType="button">
 					<GoogleLogo className="text-xl" />

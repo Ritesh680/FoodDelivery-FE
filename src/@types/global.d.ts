@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 export {};
 declare global {
 	interface ApiResponse<T> {
@@ -12,4 +14,8 @@ declare global {
 		nextPage: number;
 		lastPage: number;
 	}
+	type ErrorObject = {
+		message: string;
+	};
+	type ApiError = AxiosError<ErrorObject>;
 }
