@@ -1,7 +1,7 @@
 import MobileContent from "../../component/Layout/MobileContent";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import InputField from "../../component/Input/InputField";
-import { Divider, Form, Radio, Spin } from "antd";
+import { Divider, Spin } from "antd";
 import { useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -19,13 +19,12 @@ interface IShippingDetails {
 	phone: string;
 	city: string;
 	street: string;
-	payment: string;
 }
 
 const CheckoutPage = () => {
 	const [loading, setLoading] = useState(true);
-	const { confirmOrder, getOrders, getProductById } = useApi();
-	const { control, handleSubmit, formState } = useForm<IShippingDetails>();
+	const { confirmOrder, getProductById } = useApi();
+	const { control, handleSubmit } = useForm<IShippingDetails>();
 	const navigate = useNavigate();
 
 	const [searchParams] = useSearchParams();
@@ -45,6 +44,7 @@ const CheckoutPage = () => {
 				id: item.productId,
 				quantity: item.quantity,
 				price: item.price,
+				discountedPrice: item.discountedPrice,
 			})),
 		[cart]
 	);
@@ -65,18 +65,21 @@ const CheckoutPage = () => {
 		enabled: !!productId,
 	});
 
-	useQuery({
-		queryKey: [QueryKeys.Cart],
-		queryFn: getOrders,
-	});
-
 	const Checkout = useMutation({
 		mutationFn: (data: IShippingDetails) => confirmOrder(formatData(data)),
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 			navigate(
 				{ pathname: "/orders/success" },
-				{ state: { message: "Order placed successfully", data: res.data } }
+				{
+					state: {
+						message: "Order placed successfully",
+						data: {
+							orderId: res.data._id,
+							price: subtotal + deliveryCharge - discount,
+						},
+					},
+				}
 			);
 		},
 	});
@@ -101,6 +104,14 @@ const CheckoutPage = () => {
 			return acc + item.quantity;
 		}, 0);
 		return totalQuantity >= 5 ? 0 : 100;
+	}, [cartItems]);
+
+	const discount = useMemo(() => {
+		return cartItems.reduce(
+			(acc, curr) =>
+				acc + (curr.price! - (curr.discountedPrice ?? 0)) * curr.quantity,
+			0
+		);
 	}, [cartItems]);
 
 	useEffect(() => {
@@ -183,7 +194,7 @@ const CheckoutPage = () => {
 									rules={{ required: "Street is required" }}
 								/>
 
-								<Form.Item
+								{/* <Form.Item
 									label="Payment method"
 									className="text-xxs lg:text-lg"
 									required>
@@ -202,7 +213,7 @@ const CheckoutPage = () => {
 										errors={[formState.errors["payment"]?.message]}
 										className="text-[8px] text-red-500"
 									/>
-								</Form.Item>
+								</Form.Item> */}
 							</div>
 							<div className="flex flex-col py-5 gap-1 lg:w-1/3">
 								<span className="text-[8px] text-[#C50202] leading-[10px] mx-auto lg:hidden">
@@ -218,16 +229,18 @@ const CheckoutPage = () => {
 										</h3>
 										<div className="flex justify-between items-center">
 											<p className="text-[10px] font-semibold lg:text-lg lg:font-normal">
-												{subtotal}
+												Rs {subtotal}
 											</p>
 										</div>
 									</div>
-									<div className="flex w-full justify-between items-center lg:hidden">
+									<div className="flex w-full justify-between items-center">
 										<h3 className="text-[10px] font-semibold leading-3 lg:text-lg">
 											Discount
 										</h3>
 										<div className="flex justify-between items-center">
-											<p className="text-[10px] font-semibold lg:text-lg">0</p>
+											<p className="text-[10px] font-semibold lg:text-lg">
+												Rs {discount}
+											</p>
 										</div>
 									</div>
 									<div className="flex w-full justify-between items-center">
@@ -248,7 +261,7 @@ const CheckoutPage = () => {
 										</h3>
 										<div className="flex justify-between items-center">
 											<p className="text-[10px] font-bold lg:text-lg">
-												Rs {subtotal + deliveryCharge}
+												Rs {subtotal - discount + deliveryCharge}
 											</p>
 										</div>
 									</div>
@@ -264,7 +277,7 @@ const CheckoutPage = () => {
 							<button
 								className="bg-[#C50202] text-white py-1 lg:py-2 rounded w-full text-[10px] font-bold lg:w-1/2 text-sm"
 								type="submit">
-								Confirm Order
+								Go To Payment
 							</button>
 						</form>
 					</div>

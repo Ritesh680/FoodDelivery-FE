@@ -58,7 +58,7 @@ export const STATIC_DATA = {
 	ADDRESS: "New Baneshwor, Kathmandu, Nepal",
 	EMAIL: "pokharelroshan13@gmail.com",
 	FACEBOOK: "https://www.facebook.com/chickendeliveryktm?mibextid=LQQJ4d",
-	WHATSAPP: "https://web.whatsapp.com",
+	WHATSAPP: "https://wa.me/9779844378959",
 	INSTAGRAM: "https://www.instagram.com",
 	OPENING_HOURS: "8am - 9pm",
 };

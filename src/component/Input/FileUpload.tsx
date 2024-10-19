@@ -11,6 +11,8 @@ import { ImageGetResponse } from "../../@types/interface";
 
 const { Dragger } = Upload;
 
+const acceptedFileTypes = ["image/jpg","image/jpeg","image/png","image/webp"]
+
 interface IFileUploadProps<T extends FieldValues>
 	extends UseControllerProps<T> {
 	label?: string;
@@ -53,9 +55,9 @@ const FileUpload = <T extends FieldValues>({
 		multiple: isMultiple,
 		action: import.meta.env.VITE_BASE_URL + "/file/upload",
 		withCredentials: true,
-		accept: ".jpeg,.png",
+		accept: ".jpg,.jpeg,.png,.webp",
 		beforeUpload(file) {
-			if (file.type !== "image/jpeg" && file.type !== "image/png") {
+			if (!acceptedFileTypes.includes(file.type)) {
 				message.error("Only jpeg and png files are allowed");
 				return Upload.LIST_IGNORE;
 			}

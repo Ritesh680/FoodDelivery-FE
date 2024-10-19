@@ -66,7 +66,6 @@ interface ICreateOrder {
 	phone: string;
 	city: string;
 	street: string;
-	payment: string;
 }
 export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();

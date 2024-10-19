@@ -64,7 +64,7 @@ function MobileNavigation() {
 					{NavItems.map((item, index) => (
 						<button
 							key={index}
-							className={`flex-1 py-2 text-center flex flex-col gap-1 items-center ${
+							className={`flex-1 text-center flex flex-col gap-1 items-center ${
 								activeTab === item.name.toLowerCase()
 									? "text-red-500"
 									: "text-gray-500"
