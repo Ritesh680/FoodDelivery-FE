@@ -69,6 +69,7 @@ const CheckoutPage = () => {
 		mutationFn: (data: IShippingDetails) => confirmOrder(formatData(data)),
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+			queryClient.invalidateQueries({ queryKey: [QueryKeys.SingleProduct] });
 			navigate(
 				{ pathname: "/orders/success" },
 				{

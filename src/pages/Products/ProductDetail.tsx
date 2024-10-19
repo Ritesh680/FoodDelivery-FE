@@ -5,21 +5,33 @@ import useApi from "../../api/useApi";
 import ButtonGroup from "antd/es/button/button-group";
 import useInnerWidth from "../../hooks/useInnerWidth";
 import FoodCard from "../../component/FoodCard";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import QueryKeys from "../../constants/QueryKeys";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCart as UPDATE_CART } from "../../slice/cartSlice";
+import { RootState } from "../../store";
 
 const ProductDetail = () => {
-	const { authenticated } = useAuth();
-	const { id } = useParams();
-	const { getProductById, addToCart, getProducts } = useApi();
-	const { isMobileDevice } = useInnerWidth();
+	const [count, setCount] = useState(0);
+
 	const navigate = useNavigate();
+	const { id } = useParams();
 	const queryClient = useQueryClient();
 
+	const { authenticated } = useAuth();
+	const { isMobileDevice } = useInnerWidth();
+	const { getProductById, addToCart, getProducts } = useApi();
+
 	const dispatch = useDispatch();
+	const cartItems = useSelector((state: RootState) => state.cart.cart);
+
+	function addCount() {
+		setCount(count + 1);
+	}
+	function reductCount() {
+		setCount(count - 1);
+	}
 
 	const { data, isLoading } = useQuery({
 		queryKey: [QueryKeys.SingleProduct, id],
@@ -27,17 +39,32 @@ const ProductDetail = () => {
 		enabled: !!id,
 	});
 
+	const ItemsInStock: number = useMemo(() => {
+		if (isLoading || !data) return 0;
+		const quantityInCart = cartItems.find(
+			(item) => item.productId == data.data._id
+		)?.quantity;
+		if (!quantityInCart) return data.data.quantity;
+
+		return data.data.quantity - quantityInCart;
+	}, [cartItems, data, isLoading]);
+
 	const { data: Products, isLoading: isProductsLoading } = useQuery({
 		queryKey: QueryKeys.Products,
 		queryFn: getProducts,
 	});
 
+	const itemsInCart = useMemo(() => {
+		return authenticated
+			? data?.data?.cart?.find((item) => item?.product === id)?.quantity ?? 0
+			: 0;
+	}, [data?.data?.cart, id, authenticated]);
+
 	const AddItemToCart = useMutation({
-		mutationFn: (data: { productId: string; quantity: number }) =>
-			addToCart(data.productId, data.quantity),
+		mutationFn: () => addToCart(data?.data._id ?? "", itemsInCart + count),
 		onSuccess: (res) => {
-			queryClient.invalidateQueries({ queryKey: [QueryKeys.SingleProduct] });
 			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+			setCount(0);
 			dispatch(
 				UPDATE_CART({
 					productId: res.data[0].product._id,
@@ -53,12 +80,9 @@ const ProductDetail = () => {
 	function handleBuyNow() {
 		navigate("/checkout" + `?buyNow=true&productId=${id}`);
 	}
-
-	const itemsInCart = useMemo(() => {
-		return authenticated
-			? data?.data?.cart?.find((item) => item?.product === id)?.quantity ?? 0
-			: 0;
-	}, [data?.data?.cart, id, authenticated]);
+	function handleAddToCart() {
+		AddItemToCart.mutate();
+	}
 
 	const discount = useMemo(() => {
 		const product = data?.data;
@@ -71,6 +95,7 @@ const ProductDetail = () => {
 		}
 		return 0;
 	}, [data?.data]);
+
 	return (
 		<>
 			{isLoading ? (
@@ -92,6 +117,16 @@ const ProductDetail = () => {
 								{data?.data.description}
 							</p>
 
+							<p className={`text-red-500`}>
+								{ItemsInStock ? (
+									<>
+										IN STOCK :
+										<span className="font-bold">{ItemsInStock} kg</span>
+									</>
+								) : (
+									"OUT OF STOCK"
+								)}
+							</p>
 							<div className="flex sm:flex-col justify-between items-start">
 								<div className="flex sm:gap-3 flex-col">
 									<div className="flex gap-1 sm:gap-5 items-center">
@@ -118,31 +153,22 @@ const ProductDetail = () => {
 												type="default"
 												size="small"
 												className="bg-gray-300"
-												onClick={() =>
-													AddItemToCart.mutate({
-														productId: id ?? "",
-														quantity: itemsInCart - 1,
-													})
-												}
-												disabled={itemsInCart === 0}>
+												onClick={reductCount}
+												disabled={count === 0}>
 												-
 											</Button>
 											<Button
 												type="default"
 												size="small"
 												loading={AddItemToCart.isLoading}>
-												{itemsInCart}
+												{count}
 											</Button>
 											<Button
 												type="default"
 												size="small"
 												className="bg-gray-300"
-												onClick={() =>
-													AddItemToCart.mutate({
-														productId: id ?? "",
-														quantity: itemsInCart + 1,
-													})
-												}>
+												onClick={addCount}
+												disabled={count === ItemsInStock}>
 												+
 											</Button>
 										</ButtonGroup>
@@ -161,7 +187,7 @@ const ProductDetail = () => {
 								<Button
 									type="primary"
 									size={isMobileDevice ? "small" : "large"}
-									onClick={() => navigate("/cart")}
+									onClick={handleAddToCart}
 									className="sm:w-full py-2.5 sm:text-lg sm:font-bold text-white">
 									Add to Cart
 								</Button>

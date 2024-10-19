@@ -27,22 +27,20 @@ const Cart = () => {
 
 	const cart = useSelector((state: RootState) => state.cart.cart);
 
-	const {
-		mutate: removeItemFromCart,
-		isLoading: isItemDeleting,
-		variables: deleteProductVariable,
-	} = useMutation({
-		mutationFn: (productId: string) => deleteCart(productId),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
+	const { mutate: removeItemFromCart, isLoading: isItemDeleting } = useMutation(
+		{
+			mutationFn: (productId: string) => deleteCart(productId),
+			onSuccess: (_data, variables) => {
+				queryClient.invalidateQueries({ queryKey: [QueryKeys.Cart] });
 
-			dispatch(
-				removeFromCart({
-					productId: deleteProductVariable!,
-				})
-			);
-		},
-	});
+				dispatch(
+					removeFromCart({
+						productId: variables,
+					})
+				);
+			},
+		}
+	);
 
 	const {
 		mutate,
