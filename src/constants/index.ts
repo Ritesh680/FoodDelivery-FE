@@ -38,6 +38,7 @@ export const ROUTES = {
 	BEST_SELLER: "best-seller",
 	FORGOT_PASSWORD: "forgot-password",
 	RESET_PASSWORD: "reset-password/:token",
+	ADDRESS: "billing-address",
 };
 export const NAVBAR_HIDDEN_PAGES = [
 	"/login",

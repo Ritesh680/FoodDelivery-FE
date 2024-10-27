@@ -1,4 +1,5 @@
 import { ROUTES } from "../constants";
+import Address from "../pages/Address";
 import Cart from "../pages/Cart";
 import CheckoutPage from "../pages/Checkout";
 import Orders from "../pages/Orders";
@@ -33,6 +34,11 @@ const AuthenticatedRoutes = [
 		name: "Checkout",
 		route: ROUTES.CHECKOUT,
 		content: CheckoutPage,
+	},
+	{
+		name: "Address",
+		route: ROUTES.ADDRESS,
+		content: Address,
 	},
 ];
 export default AuthenticatedRoutes;

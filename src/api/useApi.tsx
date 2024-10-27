@@ -67,6 +67,15 @@ interface ICreateOrder {
 	city: string;
 	street: string;
 }
+
+export interface IAddress {
+	_id: string;
+	address: string;
+	city: string;
+	state: string;
+	street: string;
+	defaultAddress: boolean;
+}
 export default function useApi() {
 	const { axiosRequest } = useAxiosRequest();
 
@@ -259,6 +268,26 @@ export default function useApi() {
 		return axiosRequest("POST", "/landingPage", data);
 	};
 
+	const getAllAddress = async (): Promise<ApiResponse<IAddress[]>> => {
+		return axiosRequest("GET", "/address");
+	};
+
+	const createAddress = async (data: any): Promise<ApiResponse<IAddress>> => {
+		return axiosRequest("POST", "/address", data);
+	};
+	const updateAddress = async (
+		id: string,
+		data: any
+	): Promise<ApiResponse<IAddress>> => {
+		return axiosRequest("PUT", `/address/${id}`, data);
+	};
+	const deleteAddress = async (id: string): Promise<ApiResponse<IAddress>> => {
+		return axiosRequest("DELETE", `/address/${id}`);
+	};
+	const setDefaultAddress = async (id: string) => {
+		return axiosRequest("POST", `/address/${id}/setAsPrimary`);
+	};
+
 	return {
 		register,
 		verifyOtp,
@@ -296,5 +325,10 @@ export default function useApi() {
 		getLandingPageData,
 		updateLandingPageData,
 		createLandingPageData,
+		createAddress,
+		updateAddress,
+		setDefaultAddress,
+		getAllAddress,
+		deleteAddress,
 	};
 }
