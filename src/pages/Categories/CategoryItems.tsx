@@ -117,6 +117,7 @@ const CategoryItems = () => {
 						id={item._id}
 						foodImage={item.image?.[0]?.url ?? ""}
 						foodName={item.name}
+						details={item.shortDescription}
 						withDetails
 						originalPrice={item.price ?? 0}
 						discountedPrice={item.discountedPrice ?? 0}

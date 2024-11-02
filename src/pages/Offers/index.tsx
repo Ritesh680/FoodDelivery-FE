@@ -26,6 +26,7 @@ const Offers = () => {
 								withDetails
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
+								details={item.shortDescription}
 								foodName={item.name}
 								foodImage={item?.image?.[0]?.url || ""}
 							/>

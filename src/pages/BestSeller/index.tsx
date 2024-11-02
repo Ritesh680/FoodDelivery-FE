@@ -24,6 +24,7 @@ const BestSeller = () => {
 								key={index}
 								id={item._id}
 								withDetails
+								details={item.shortDescription}
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}

@@ -64,8 +64,8 @@ const Address = () => {
 							return { ...data, defaultAddress: true };
 						}
 						return { ...data, defaultAddress: false };
-					});
-					return { ...copyArr, success: true };
+					}) as IAddress[];
+					return { ...copyArr, success: true } as ApiResponse<IAddress[]>;
 				}
 			);
 		},
@@ -83,7 +83,7 @@ const Address = () => {
 				(oldData) => {
 					const copyArr = { ...oldData };
 					if (showModal?.type === "create") {
-						copyArr.data?.push(_data);
+						copyArr.data?.push(data.data);
 					} else {
 						copyArr.data = copyArr.data?.map((d) => {
 							const { address, city, isDefault, state, street } = variables;
@@ -101,7 +101,7 @@ const Address = () => {
 						});
 					}
 
-					return copyArr;
+					return copyArr as ApiResponse<IAddress[]>;
 				}
 			);
 			setShowModal(undefined);
@@ -118,7 +118,7 @@ const Address = () => {
 					copyArr.data = copyArr.data?.filter((data) => {
 						return data._id !== showDeleteModal?.value;
 					});
-					return { ...copyArr, success: true };
+					return { ...copyArr, success: true } as ApiResponse<IAddress[]>;
 				}
 			);
 
