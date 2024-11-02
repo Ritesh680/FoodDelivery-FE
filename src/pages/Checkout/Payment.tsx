@@ -3,11 +3,7 @@ import { STATIC_DATA } from "../../constants";
 const Payment = ({ id }: { id: string }) => {
 	return (
 		<div className="flex flex-col items-center">
-			<img
-				src="https://cdn.pixabay.com/photo/2021/12/12/16/10/qr-6865526_1280.png"
-				alt="QR"
-				className="h-80"
-			/>
+			<img src="/PaymentQR.jpeg" alt="QR" className="h-80" />
 			<p>
 				Please send the receipt to this WhatsApp Number:{" "}
 				<a

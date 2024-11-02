@@ -173,7 +173,6 @@ const CheckoutPage = () => {
 									label="Email"
 									placeholder="Email"
 									rules={{
-										required: "Email is required",
 										pattern: {
 											value: REGEX_EMAIL,
 											message: "Invalid Email Format",
