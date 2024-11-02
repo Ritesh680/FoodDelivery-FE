@@ -5,7 +5,7 @@ import useApi from "../../api/useApi";
 import ButtonGroup from "antd/es/button/button-group";
 import useInnerWidth from "../../hooks/useInnerWidth";
 import FoodCard from "../../component/FoodCard";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import QueryKeys from "../../constants/QueryKeys";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +22,14 @@ const ProductDetail = () => {
 	const { authenticated } = useAuth();
 	const { isMobileDevice } = useInnerWidth();
 	const { getProductById, addToCart, getProducts } = useApi();
+	const [showDescription, setShowDescription] = useState(false);
 
 	const dispatch = useDispatch();
 	const cartItems = useSelector((state: RootState) => state.cart.cart);
+
+	function toggleDescription() {
+		setShowDescription(!showDescription);
+	}
 
 	function addCount() {
 		setCount(count + 1);
@@ -96,26 +101,52 @@ const ProductDetail = () => {
 		return 0;
 	}, [data?.data]);
 
+	useEffect(() => {
+		if (isLoading || !data?.data) return;
+
+		if (!data?.data?.shortDescription) {
+			setShowDescription(true);
+		}
+	}, [data?.data, data?.data?.shortDescription, isLoading]);
+
 	return (
 		<>
 			{isLoading ? (
 				<Spin fullscreen />
 			) : (
 				<div className="flex flex-col gap-6">
-					<div className="flex sm:flex-row flex-col gap-5 sm:gap-20 py-5 sm:items-center px-5 sm:px-20">
+					<div className="flex sm:flex-row flex-col gap-5 sm:gap-20 py-5 sm:items-start px-5 sm:px-20">
 						<Image
-							className="w-[335px] sm:w-[550px] h-[197px] sm:h-[422px] object cover rounded"
+							className="w-screen sm:!w-[550px] h-[197px] sm:!h-[422px] object cover rounded"
 							src={data?.data?.image?.[0]?.url}
 							fallback="https://via.placeholder.com/150"
 						/>
 
-						<div className="flex flex-col sm:flex-grow gap-[5px] sm:gap-5 px-2">
+						<div className="flex flex-col sm:flex-grow gap-[5px] sm:gap-5 px-2 py-2">
 							<h1 className="text-sm sm:text-2xl sm:font-bold">
 								{data?.data?.name}
 							</h1>
-							<p className="text-[7px] leading-3 sm:text-base font-normal">
-								{data?.data.description}
-							</p>
+
+							<div className="flex flex-col sm:gap-4">
+								<span className="text-[7px] leading-3 sm:text-base font-normal">
+									{data?.data.shortDescription}
+								</span>
+								{showDescription ? (
+									<span className="text-[7px] leading-3 sm:text-base font-normal flex">
+										{data?.data.description}
+									</span>
+								) : (
+									""
+								)}
+								<Button
+									type="link"
+									className={`${
+										data?.data.shortDescription ? "" : "hidden"
+									} text-[7px] sm:text-base text-[#29A157] font-inter w-fit p-0`}
+									onClick={toggleDescription}>
+									See {showDescription ? "less" : "More"}
+								</Button>
+							</div>
 
 							<p className={`text-red-500`}>
 								{ItemsInStock ? (
@@ -210,6 +241,7 @@ const ProductDetail = () => {
 												id={item._id}
 												key={index}
 												withDetails
+												details={item.shortDescription}
 												originalPrice={item.price ?? 0}
 												discountedPrice={item.discountedPrice ?? 0}
 												foodName={item.name}

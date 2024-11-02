@@ -54,6 +54,7 @@ const CreateOrEditProduct = () => {
 				? parseFloat(data.discountedPrice.toString())
 				: null,
 			quantity: data.quantity ? parseInt(data.quantity.toString()) : 0,
+			shortDescription: data.shortDescription,
 			isBestSeller: data.isBestSeller,
 		};
 	};
@@ -127,6 +128,7 @@ const CreateOrEditProduct = () => {
 			name: data.data.name,
 			price: data.data.price,
 			description: data.data.description,
+			shortDescription: data.data.shortDescription,
 			category: data.data.category,
 			images: data.data.image,
 			discountedPrice: data.data.discountedPrice,
@@ -216,6 +218,15 @@ const CreateOrEditProduct = () => {
 									})) ?? []
 								}
 							/>
+							<div className="sm:col-span-2">
+								<InputField
+									control={control}
+									label="Short Description"
+									name="shortDescription"
+									rules={{ required: "Description is required" }}
+									placeholder="Enter description of product"
+								/>
+							</div>
 							<div className="sm:col-span-2">
 								<TextArea
 									control={control}

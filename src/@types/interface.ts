@@ -18,6 +18,7 @@ interface IUser {
 export interface ICreateProduct {
 	name: string;
 	price: number | null;
+	shortDescription: string;
 	description: string;
 	category: string;
 	image: string[];

@@ -22,6 +22,7 @@ interface FoodCardWithDetails {
 	originalPrice: number;
 	discountedPrice?: number;
 	withDetails: true;
+	details: string;
 }
 interface FoodCardWithOutDetails {
 	id: string;
@@ -30,6 +31,7 @@ interface FoodCardWithOutDetails {
 	originalPrice?: number;
 	discountedPrice?: number;
 	withDetails: false;
+	details: string;
 }
 
 type FoodCardProps = FoodCardWithDetails | FoodCardWithOutDetails;
@@ -41,6 +43,7 @@ const FoodCard = ({
 	originalPrice,
 	discountedPrice,
 	withDetails,
+	details,
 }: FoodCardProps) => {
 	const { addToCart } = useApi();
 	const queryClient = useQueryClient();
@@ -124,12 +127,13 @@ const FoodCard = ({
 				}
 				className={`${
 					withDetails
-						? "w-[160px] h-[212px] sm:h-[363px] sm:w-[305px] cursor-pointer"
+						? "w-[160px] min-h-[212px] sm:h-[363px] sm:w-[305px] cursor-pointer"
 						: "w-full h-full"
 				} hover:shadow-lg`}>
 				{withDetails ? (
 					<div className="p-2">
 						<Meta className="text-[10px] font-semibold" title={foodName}></Meta>
+						<p className="text-[10px] truncate flex">{details}</p>
 						<div className="flex w-full justify-between items-end mt-1 sm:mt-2">
 							<div className="flex gap-2 sm:gap-5 items-center">
 								{isDiscounted ? (

@@ -136,6 +136,7 @@ const HomePage = () => {
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
 								foodName={item.name}
+								details={item.shortDescription}
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
 						))}
@@ -156,6 +157,7 @@ const HomePage = () => {
 								withDetails
 								originalPrice={item.price ?? 0}
 								discountedPrice={item.discountedPrice ?? 0}
+								details={item.shortDescription}
 								foodName={item.name}
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
