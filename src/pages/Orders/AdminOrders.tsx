@@ -87,6 +87,11 @@ const AdminOrders = () => {
 								.join(", "),
 					},
 					{
+						title: "Address",
+						dataIndex: "address",
+						key: "address",
+					},
+					{
 						title: "Status",
 						key: "status",
 						dataIndex: "status",
