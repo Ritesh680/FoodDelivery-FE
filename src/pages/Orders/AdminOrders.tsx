@@ -87,6 +87,12 @@ const AdminOrders = () => {
 								.join(", "),
 					},
 					{
+						title: "Total Price",
+						dataIndex: "totalPrice",
+						key: "totalPrice",
+						render: (item) => (item ? "Rs " + item : "-"),
+					},
+					{
 						title: "Address",
 						dataIndex: "address",
 						key: "address",

@@ -66,6 +66,7 @@ interface ICreateOrder {
 	phone: string;
 	city: string;
 	street: string;
+	total: number;
 }
 
 export interface IAddress {

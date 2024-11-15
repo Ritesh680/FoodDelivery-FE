@@ -59,6 +59,7 @@ const CheckoutPage = () => {
 						product: item.id,
 						quantity: item.quantity,
 				  })),
+			total: subtotal + deliveryCharge - discount,
 		};
 	};
 
