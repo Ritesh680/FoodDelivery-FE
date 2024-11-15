@@ -36,6 +36,7 @@ const CheckoutPage = () => {
 		() => searchParams.get("productId"),
 		[searchParams]
 	);
+	const quantity = useMemo(() => searchParams.get("quantity"), [searchParams]);
 
 	const cart = useSelector((state: RootState) => state.cart.cart);
 	const cartItems = useMemo(
@@ -52,10 +53,12 @@ const CheckoutPage = () => {
 	const formatData = (data: IShippingDetails) => {
 		return {
 			...data,
-			products: cartItems.map((item) => ({
-				product: item.id,
-				quantity: item.quantity,
-			})),
+			products: isBuyNow
+				? [{ product: productId!, quantity: quantity ? +quantity : 1 }]
+				: cartItems.map((item) => ({
+						product: item.id,
+						quantity: item.quantity,
+				  })),
 		};
 	};
 
@@ -90,30 +93,37 @@ const CheckoutPage = () => {
 	};
 
 	const subtotal = useMemo(() => {
-		if (isBuyNow && productData) {
-			const { price, discountedPrice } = productData.data;
-			return (discountedPrice || price) ?? 0;
+		if (isBuyNow && productData && quantity) {
+			const { price } = productData.data;
+			return (price ?? 0) * Number(quantity);
 		}
 		const total = cartItems.reduce((acc, item) => {
 			return acc + item.price * item.quantity;
 		}, 0);
 		return total ?? null;
-	}, [cartItems, isBuyNow, productData]);
+	}, [cartItems, isBuyNow, productData, quantity]);
 
 	const deliveryCharge = useMemo(() => {
+		if (isBuyNow && quantity) {
+			return Number(quantity) >= 5 ? 0 : 100;
+		}
 		const totalQuantity = cartItems.reduce((acc, item) => {
 			return acc + item.quantity;
 		}, 0);
 		return totalQuantity >= 5 ? 0 : 100;
-	}, [cartItems]);
+	}, [cartItems, isBuyNow, quantity]);
 
 	const discount = useMemo(() => {
+		if (isBuyNow && productData && quantity) {
+			const { price, discountedPrice } = productData.data;
+			return ((price ?? 0) - (discountedPrice ?? 0)) * Number(quantity);
+		}
 		return cartItems.reduce(
 			(acc, curr) =>
 				acc + (curr.price! - (curr.discountedPrice ?? 0)) * curr.quantity,
 			0
 		);
-	}, [cartItems]);
+	}, [cartItems, isBuyNow, productData, quantity]);
 
 	useEffect(() => {
 		if (isBuyNow) {

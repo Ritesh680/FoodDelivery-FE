@@ -83,7 +83,7 @@ const ProductDetail = () => {
 	});
 
 	function handleBuyNow() {
-		navigate("/checkout" + `?buyNow=true&productId=${id}`);
+		navigate("/checkout" + `?buyNow=true&productId=${id}&quantity=${count}`);
 	}
 	function handleAddToCart() {
 		AddItemToCart.mutate();
