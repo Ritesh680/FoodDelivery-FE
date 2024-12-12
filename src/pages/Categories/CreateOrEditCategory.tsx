@@ -10,6 +10,7 @@ import QueryKeys from "../../constants/QueryKeys";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import MiniFileUpload from "../../component/Input/MiniFileUpload";
+import PopupButton from "../../component/ConfirmButton";
 
 const CreateOrEditCategory = () => {
 	const {
@@ -18,6 +19,7 @@ const CreateOrEditCategory = () => {
 		getCategoryById,
 		deleteCategoryImage,
 		deleteImage,
+		deleteSubCategory,
 	} = useApi();
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -90,6 +92,21 @@ const CreateOrEditCategory = () => {
 		},
 	});
 
+	const { mutate: deleteSubcategory, isLoading: isDeletingSubcategory } =
+		useMutation({
+			mutationFn: (subCategoryId: string) => deleteSubCategory(subCategoryId),
+			onSuccess: () => {
+				message.success("Subcategory deleted");
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.SingleCategory, id],
+				});
+			},
+		});
+
+	function handleSubCategoryDelete(subCategoryId: string) {
+		deleteSubcategory(subCategoryId);
+	}
+
 	const onSubmit = (data: ICreateCategory) => {
 		if (id) {
 			editCurrentCategory(filteredData(data));
@@ -150,15 +167,15 @@ const CreateOrEditCategory = () => {
 								{fields.map((field, index) => (
 									<div
 										key={field.id}
-										className="grid grid-flow-col gap-5 items-end">
+										className="grid lg:grid-cols-5 grid-cols-2 gap-5 items-end">
 										<InputField
 											control={control}
 											name={`subCategories.${index}.name`}
 											rules={{ required: "Name is required" }}
 											placeholder="Enter name of subcategory"
-											extraStyles="w-1/3"
+											extraStyles="col-span-2"
 										/>
-										<div className="w-1/3">
+										<div className="lg:col-span-3">
 											<MiniFileUpload
 												control={control}
 												name={`subCategories.${index}.images`}
@@ -170,12 +187,28 @@ const CreateOrEditCategory = () => {
 											/>
 										</div>
 										<Form.Item>
-											<Button
-												htmlType="button"
-												onClick={() => remove(index)}
-												className="bg-red-500 text-white flex items-center justify-center h-10">
-												<DeleteOutlined className="text-base" />
-											</Button>
+											{field._id ? (
+												<PopupButton
+													title="Delete SubCategory"
+													description="Are you sure?"
+													isLoading={isDeletingSubcategory}
+													onConfirm={() =>
+														handleSubCategoryDelete(field._id as string)
+													}>
+													<Button
+														htmlType="button"
+														className="bg-red-500 text-white flex items-center justify-center h-10">
+														<DeleteOutlined className="text-base" />
+													</Button>
+												</PopupButton>
+											) : (
+												<Button
+													htmlType="button"
+													className="bg-red-500 text-white flex items-center justify-center h-10"
+													onClick={() => remove(index)}>
+													<DeleteOutlined className="text-base" />
+												</Button>
+											)}
 										</Form.Item>
 									</div>
 								))}

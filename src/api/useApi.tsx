@@ -183,6 +183,10 @@ export default function useApi() {
 		return axiosRequest("DELETE", `/category/${id}`);
 	};
 
+	const deleteSubCategory = async (subCategoryId: string) => {
+		return axiosRequest("DELETE", `category/subcategory/${subCategoryId}`);
+	};
+
 	const deleteImage = async (fileId: string) => {
 		return axiosRequest("DELETE", `/file/${fileId}`);
 	};
@@ -312,6 +316,7 @@ export default function useApi() {
 		editCategory,
 		deleteCategoryImage,
 		deleteCategory,
+		deleteSubCategory,
 		deleteImage,
 		addToCart,
 		getCart,
