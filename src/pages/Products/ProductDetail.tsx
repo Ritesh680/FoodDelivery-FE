@@ -117,7 +117,7 @@ const ProductDetail = () => {
 				<div className="flex flex-col gap-6">
 					<div className="flex sm:flex-row flex-col gap-5 sm:gap-20 py-5 sm:items-start px-5 sm:px-20">
 						<Image
-							className="w-screen sm:!w-[550px] h-[197px] sm:!h-[422px] object cover rounded"
+							className="w-screen sm:!min-w-[550px] max-w-[550px] h-[197px] sm:!h-[422px] object cover rounded"
 							src={data?.data?.image?.[0]?.url}
 							fallback="https://via.placeholder.com/150"
 						/>
