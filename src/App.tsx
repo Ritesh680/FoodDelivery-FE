@@ -12,15 +12,18 @@ import QueryKeys from "./constants/QueryKeys";
 import useApi from "./api/useApi";
 import { useDispatch } from "react-redux";
 import { clearCart, updateCart } from "./slice/cartSlice";
+import useAuth from "./hooks/useAuth";
 
 function App() {
 	const { getCart } = useApi();
+	const { authenticated } = useAuth();
 	const dispatch = useDispatch();
 
 	//FIXME: THIS IS DONE BECAUSE OF HURRY. NEED TO MANAGE THIS PROPERLY
 	useQuery({
 		queryKey: [QueryKeys.Cart],
 		queryFn: getCart,
+		enabled: authenticated,
 		onSuccess: (data) => {
 			dispatch(clearCart());
 
