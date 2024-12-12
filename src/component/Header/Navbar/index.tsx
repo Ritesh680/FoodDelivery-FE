@@ -173,7 +173,7 @@ const Navbar = ({ categories }: { categories: ICategory[] }) => {
 					<AutoComplete
 						queryFunction={getProducts}
 						queryKey="Products"
-						onSelect={(id: string) => navigate("/product/" + id)}
+						onSelect={(id: string) => navigate("/products/" + id)}
 					/>
 				</div>
 				<div className="sm:hidden">
