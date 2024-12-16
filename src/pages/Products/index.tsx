@@ -6,6 +6,7 @@ import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
 import { useMutation, useQueryClient } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
+import { IProduct } from "../../@types/interface";
 
 const ProductList = () => {
 	const { getProducts, deleteProduct } = useApi();
