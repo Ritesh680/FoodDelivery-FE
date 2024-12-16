@@ -26,6 +26,7 @@ const TestimonialCard = ({
 					className={`${
 						isActive ? "w-[150px] h-[150px]" : "w-[100px] h-[100px]"
 					} rounded-full  object-cover`}
+					loading="lazy"
 				/>
 			</div>
 

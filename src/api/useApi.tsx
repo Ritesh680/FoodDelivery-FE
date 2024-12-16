@@ -116,20 +116,31 @@ export default function useApi() {
 	const getProducts: (
 		context: QueryFunctionContext
 	) => Promise<ApiResponse<IProduct[]>> = async ({ queryKey }) => {
-		const [_key, params = ""] = queryKey;
+		const [_key, params = "", page = 1, pageSize = 12] = queryKey;
 
 		return axiosRequest<ApiResponse<IProduct[]>>(
 			"GET",
-			`/product/?search=${params}`
+			`/product/?search=${params}&page=${page}&pageSize=${pageSize}`
 		);
 	};
 	const getOffersProducts: (
 		context: QueryFunctionContext
-	) => Promise<ApiResponse<IProduct[]>> = async () => {
-		return axiosRequest<ApiResponse<IProduct[]>>("GET", "/product/offers");
+	) => Promise<ApiResponse<IProduct[]>> = async ({ queryKey }) => {
+		const [_key, page = 1] = queryKey;
+		return axiosRequest<ApiResponse<IProduct[]>>(
+			"GET",
+			`/product/offers?page=${page}&pageSize=12`
+		);
 	};
-	const getBestSellerProducts = async () =>
-		axiosRequest<ApiResponse<IProduct[]>>("GET", "/product/best-seller");
+	const getBestSellerProducts: (
+		context: QueryFunctionContext
+	) => Promise<ApiResponse<IProduct[]>> = async ({ queryKey }) => {
+		const [_key, page = 1] = queryKey;
+		return axiosRequest<ApiResponse<IProduct[]>>(
+			"GET",
+			`/product/best-seller?page=${page}&pageSize=12`
+		);
+	};
 	const getProductById = async (id: string) => {
 		return axiosRequest<ApiResponse<IProduct>>("GET", `/product/${id}`);
 	};
@@ -163,8 +174,11 @@ export default function useApi() {
 		);
 	};
 
-	const getCategoryById = async (id: string) => {
-		return axiosRequest<ApiResponse<ICategory>>("GET", `/category/${id}`);
+	const getCategoryById = async (id: string, sub = "all", productPage = 1) => {
+		return axiosRequest<ApiResponse<ICategory>>(
+			"GET",
+			`/category/${id}?sub=${sub}&productPage=${productPage}&productSize=12`
+		);
 	};
 
 	const createCategory = async (data: ICreateCategory) => {

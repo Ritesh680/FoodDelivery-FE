@@ -105,6 +105,7 @@ const FoodCard = ({
 					<Image
 						src={foodImage}
 						alt={foodName}
+						loading="eager"
 						preview={
 							withDetails
 								? false

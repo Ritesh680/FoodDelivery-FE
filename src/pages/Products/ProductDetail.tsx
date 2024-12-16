@@ -55,7 +55,7 @@ const ProductDetail = () => {
 	}, [cartItems, data, isLoading]);
 
 	const { data: Products, isLoading: isProductsLoading } = useQuery({
-		queryKey: QueryKeys.Products,
+		queryKey: [QueryKeys.Products, "", 1, 7],
 		queryFn: getProducts,
 	});
 

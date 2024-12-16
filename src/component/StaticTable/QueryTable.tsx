@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TableColumnsType } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import StaticTable from ".";
 import { QueryFunctionContext, useQuery } from "react-query";
 
@@ -30,13 +30,14 @@ const QueryTable = <
 	title,
 	actions,
 }: IQueryTableProps<TData, T>) => {
+	const [page, setPage] = useState(1);
 	const { data, isLoading, isFetching } = useQuery({
-		queryKey: [queryKey],
+		queryKey: [queryKey, "", page],
 		queryFn: queryFunction,
 	});
 	const tableData = data && data?.data;
 
-	// const metaInformation = data && data?.metaData;
+	const metaInformation = data && data?.metaData;
 	return (
 		<StaticTable
 			title={title}
@@ -45,6 +46,9 @@ const QueryTable = <
 			tableHeaders={tableHeaders}
 			isLoading={isLoading}
 			isFetching={isFetching}
+			meta={metaInformation}
+			page={page}
+			setPage={setPage}
 		/>
 	);
 };

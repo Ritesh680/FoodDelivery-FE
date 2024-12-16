@@ -13,5 +13,6 @@ const QueryKeys = {
 	AdminOrders: "adminOrders",
 	LandingPage: "LandingPage",
 	Address: "address",
+	bestSeller: "bestSeller",
 };
 export default QueryKeys;

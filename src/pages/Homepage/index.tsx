@@ -2,18 +2,16 @@ import Banner from "../../component/Banner";
 import ContentWrapper from "../../component/ContentHeader/ContentWrapper";
 import FoodCard from "../../component/FoodCard";
 import FoodCategoryContainer from "../../component/FoodCategoryContainer";
-
 import TestimonialSlider from "../../component/Testimonial/TestimonialSlider";
 import ImageSlider from "../../component/Carousel/Carousel";
 import useApi from "../../api/useApi";
-import { useQuery } from "react-query";
-import { Carousel, Spin } from "antd";
+import { useQueries } from "react-query";
+import { Carousel } from "antd";
 import { useMemo, useState } from "react";
 import Modal from "../../component/Modal";
 import QueryKeys from "../../constants/QueryKeys";
 import { Testimonials } from "../../constants/data/Testimonials";
 import useInnerWidth from "../../hooks/useInnerWidth";
-
 import TestimonialCard from "../../component/Testimonial/TestimonialCard";
 import {
 	ChickenSVG,
@@ -27,34 +25,42 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-	const { getProducts, getCategories, getLandingPageData, getOffersProducts } =
-		useApi();
+	const {
+		getCategories,
+		getLandingPageData,
+		getOffersProducts,
+		getBestSellerProducts,
+	} = useApi();
 
 	const [showOfferBanner, setShowOfferBanner] = useState(false);
 	const navigate = useNavigate();
 
-	const LandingPageData = useQuery({
-		queryKey: [QueryKeys.LandingPage],
-		queryFn: getLandingPageData,
-	});
+	const [
+		LandingPageData,
+		{ data: Category },
+		{ data: OffersProducts },
+		{ data: BestSellerProducts },
+	] = useQueries([
+		{
+			queryKey: [QueryKeys.LandingPage],
+			queryFn: getLandingPageData,
+		},
+		{
+			queryKey: QueryKeys.Categories,
+			queryFn: getCategories,
+		},
+		{
+			queryKey: QueryKeys.Offers,
+			queryFn: getOffersProducts,
+		},
+		{
+			queryKey: [QueryKeys.bestSeller, 1],
+			queryFn: getBestSellerProducts,
+		},
+	]);
 
-	const { data: Products, isLoading } = useQuery({
-		queryKey: QueryKeys.Products,
-		queryFn: getProducts,
-	});
-	const { data: Category } = useQuery({
-		queryKey: QueryKeys.Categories,
-		queryFn: getCategories,
-	});
-	const { data: OffersProducts } = useQuery({
-		queryKey: QueryKeys.Offers,
-		queryFn: getOffersProducts,
-	});
 	const TopOffersFoodItems = OffersProducts?.data;
 
-	const BestSellersFoodItems = Products?.data.filter(
-		(data) => data.isBestSeller
-	);
 	const Categories = Category?.data;
 
 	const LandingImages = useMemo(() => {
@@ -73,9 +79,6 @@ const HomePage = () => {
 		{ label: "Wild caught Sea Foods", svg: FishSVG },
 		{ label: "Frozen Foods", svg: FrozenFoodSVG },
 	];
-	if (isLoading) {
-		return <Spin fullscreen size="large" />;
-	}
 
 	return (
 		<>
@@ -118,6 +121,7 @@ const HomePage = () => {
 										src={item.image?.url ?? "https://placehold.co/400"}
 										alt={item.name}
 										className="!w-[72px] !h-[72px] rounded-xl object-cover"
+										loading="lazy"
 									/>
 									<span className="text-base">{item.name}</span>
 								</div>
@@ -150,7 +154,7 @@ const HomePage = () => {
 
 				<ContentWrapper title="Best Sellers">
 					<div className="flex w-full gap-[15px] overflow-x-scroll">
-						{BestSellersFoodItems?.map((item, index) => (
+						{BestSellerProducts?.data?.map((item, index) => (
 							<FoodCard
 								key={index}
 								id={item._id}
@@ -162,7 +166,7 @@ const HomePage = () => {
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
 						))}
-						{(BestSellersFoodItems?.length ?? 0) >= 10 ? (
+						{(BestSellerProducts?.data?.length ?? 0) >= 10 ? (
 							<ViewMore handleClick={() => navigate("/best-seller")} />
 						) : (
 							""

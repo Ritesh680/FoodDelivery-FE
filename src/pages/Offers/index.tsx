@@ -2,13 +2,15 @@ import { useQuery } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
 import useApi from "../../api/useApi";
 import FoodCard from "../../component/FoodCard";
-import { Spin } from "antd";
+import { Pagination, Spin } from "antd";
 import ContentWrapper from "../../component/ContentHeader/ContentWrapper";
+import { useState } from "react";
 
 const Offers = () => {
 	const { getOffersProducts } = useApi();
+	const [page, setPage] = useState(1);
 	const { data: OffersProducts, isLoading } = useQuery({
-		queryKey: QueryKeys.Offers,
+		queryKey: [QueryKeys.Offers, page],
 		queryFn: getOffersProducts,
 	});
 	const TopOffersFoodItems = OffersProducts?.data;
@@ -31,6 +33,14 @@ const Offers = () => {
 								foodImage={item?.image?.[0]?.url || ""}
 							/>
 						))}
+					</div>
+					<div>
+						<Pagination
+							total={OffersProducts?.metaData?.total}
+							current={page}
+							hideOnSinglePage
+							onChange={(val) => setPage(val)}
+						/>
 					</div>
 				</ContentWrapper>
 			)}

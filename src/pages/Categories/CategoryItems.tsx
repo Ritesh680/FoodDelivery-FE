@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Breadcrumb, Spin } from "antd";
+import { Breadcrumb, Pagination, Spin } from "antd";
 import useApi from "../../api/useApi";
 import { useNavigate, useParams } from "react-router";
 import FoodCard from "../../component/FoodCard";
@@ -13,10 +13,12 @@ const CategoryItems = () => {
 	const { id } = useParams();
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
+	const [page, setPage] = useState(1);
 
 	const CategoryData = useQuery({
-		queryKey: [QueryKeys.Categories, id],
-		queryFn: () => getCategoryById(id!),
+		queryKey: [QueryKeys.Categories, id, page, selectedSubCategory],
+		queryFn: () => getCategoryById(id!, selectedSubCategory, page),
+		onSuccess: () => setPage(1),
 		enabled: !!id,
 	});
 
@@ -31,11 +33,6 @@ const CategoryItems = () => {
 			return discountPercentB - discountPercentA;
 		});
 	}, [CategoryData.data?.data.products]);
-
-	const filteredProducts = useMemo(() => {
-		if (selectedSubCategory === "all") return products;
-		return products?.filter((item) => item.subCategory === selectedSubCategory);
-	}, [selectedSubCategory, products]);
 
 	useEffect(() => {
 		const sub = searchParams.get("sub");
@@ -108,10 +105,10 @@ const CategoryItems = () => {
 				)}
 			</div>
 			<span className="text-base py-2 rounded-xl px-5 sm:px-20 -mt-5 sm:-mt-10 border-b">
-				{filteredProducts?.length} items
+				{CategoryData.data?.metaData.total} items
 			</span>
 			<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5 sm:px-20 pb-5 mx-auto">
-				{filteredProducts?.map((item) => (
+				{products?.map((item) => (
 					<FoodCard
 						key={item._id}
 						id={item._id}
@@ -123,6 +120,14 @@ const CategoryItems = () => {
 						discountedPrice={item.discountedPrice ?? 0}
 					/>
 				))}
+			</div>
+
+			<div className="flex mx-auto pb-10">
+				<Pagination
+					current={page}
+					total={CategoryData.data?.metaData.total}
+					hideOnSinglePage
+					onChange={(page) => setPage(page)}></Pagination>
 			</div>
 		</div>
 	);

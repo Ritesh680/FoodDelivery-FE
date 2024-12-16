@@ -1,6 +1,5 @@
 import QueryTable from "../../component/StaticTable/QueryTable";
 import useApi from "../../api/useApi";
-import { IProduct } from "../../@types/interface";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router";
 import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
@@ -50,13 +49,19 @@ const ProductList = () => {
 					dataIndex: "name",
 					sortDirections: ["descend", "ascend"],
 					sorter: (a, b) => a.name.localeCompare(b.name),
+					render: (value) => <p className="w-40 truncate">{value}</p>,
 				},
-				{ key: "description", title: "Description", dataIndex: "description" },
+				{
+					key: "description",
+					title: "Description",
+					dataIndex: "description",
+					render: (value) => <p className="line-clamp-3">{value}</p>,
+				},
 				{
 					key: "category",
 					title: "Category",
 					dataIndex: "category",
-					render: (item) => item?.name,
+					render: (value) => <p className="w-28 truncate">{value.name}</p>,
 				},
 				{
 					key: "price",

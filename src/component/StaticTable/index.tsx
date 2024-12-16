@@ -16,6 +16,9 @@ interface IStaticTableProps<
 	actions?: React.ReactNode;
 	isLoading?: boolean;
 	isFetching?: boolean;
+	meta?: MetaObject;
+	page?: number;
+	setPage?: (page: number) => void;
 }
 
 const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
@@ -25,6 +28,9 @@ const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
 	actions,
 	isLoading,
 	isFetching,
+	meta,
+	page,
+	setPage,
 }: IStaticTableProps<T>) => {
 	const { isMobileDevice } = useInnerWidth();
 	return (
@@ -48,6 +54,11 @@ const StaticTable = <T extends { _id: string | number; [key: string]: any }>({
 				className="p-5 table-auto mb-10"
 				rowKey={(record) => record._id.toString()}
 				tableLayout="auto"
+				pagination={{
+					total: meta?.total,
+					current: page,
+					onChange: (page) => setPage?.(page),
+				}}
 			/>
 		</div>
 	);
