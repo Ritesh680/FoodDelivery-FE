@@ -2,6 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { GetProp, Spin, Upload, UploadProps, message } from "antd";
 import { useState } from "react";
 import { getCookie } from "../../utils/function";
+import Image from "../Image";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -78,7 +79,7 @@ const ProfileImageRender = ({
 				{loading ? (
 					<Spin />
 				) : imageUrl ? (
-					<img
+					<Image
 						src={imageUrl}
 						alt="Profile image"
 						className="w-full h-full  rounded-full object-cover"

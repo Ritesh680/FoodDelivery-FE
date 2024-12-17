@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel } from "antd";
+import Image from "../Image";
 
 interface ICarouselProps {
 	slideItems: { imgSrc: string }[];
@@ -10,16 +11,15 @@ const ImageSlider: React.FC<ICarouselProps> = ({ slideItems }) => {
 			{slideItems.length ? (
 				slideItems.map((item, index) => (
 					<div key={index}>
-						<img
-							key={item.imgSrc + index}
-							src={item.imgSrc ?? "https://placehold.co/600x400"}
+						<Image
+							src={item.imgSrc}
+							className={`w-full rounded-xl object-cover h-[170px] lg:h-[500px]`}
 							alt="Logo"
-							className="w-full rounded-xl object-cover h-[170px] lg:h-[500px]"
 						/>
 					</div>
 				))
 			) : (
-				<img
+				<Image
 					src={"https://placehold.co/600x400"}
 					alt="Logo"
 					className="w-full rounded-xl object-cover h-[170px] lg:h-[500px]"

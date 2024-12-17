@@ -7,6 +7,7 @@ import { DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import PopupButton from "../../component/ConfirmButton";
 import { useMutation, useQueryClient } from "react-query";
 import QueryKeys from "../../constants/QueryKeys";
+import Image from "../../component/Image";
 
 const CategoryList = () => {
 	const { getCategories, deleteCategory } = useApi();
@@ -58,14 +59,10 @@ const CategoryList = () => {
 					dataIndex: "image",
 					render: (item: ICategory["image"] | undefined) => {
 						return (
-							<img
+							<Image
 								src={item?.url}
 								alt="item"
 								className="w-20 h-20 object-cover rounded"
-								onError={(e) => {
-									e.currentTarget.src = "https://via.placeholder.com/150";
-								}}
-								loading="lazy"
 							/>
 						);
 					},

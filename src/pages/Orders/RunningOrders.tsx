@@ -1,4 +1,5 @@
 import { MyOrders } from "../../@types/interface";
+import Image from "../../component/Image";
 
 const RunningOrders = ({
 	orders,
@@ -18,7 +19,7 @@ const RunningOrders = ({
 	}) => {
 		return (
 			<div className="py-1 sm:py-3 flex gap-5 w-full px-1 sm:px-4 rounded-sm hover:shadow-lg cursor-pointer hover:scale-[101%]">
-				<img
+				<Image
 					src={foodImage}
 					alt={name}
 					className="w-14 h-12 sm:w-20 sm:h-20 rounded-xl"

@@ -18,6 +18,7 @@ import {
 	removeFromCart,
 } from "../../slice/cartSlice";
 import { RootState } from "../../store";
+import Image from "../../component/Image";
 
 const Cart = () => {
 	const { deleteCart, addToCart } = useApi();
@@ -128,7 +129,7 @@ const Cart = () => {
 		return (
 			<Card className="p-5 rounded-none">
 				<div className="flex gap-5 items-stretch">
-					<img
+					<Image
 						src={image?.[0]?.url}
 						alt="product"
 						className="h-[48px] w-[58px] rounded"

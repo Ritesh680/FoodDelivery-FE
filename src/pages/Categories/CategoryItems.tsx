@@ -6,6 +6,7 @@ import useApi from "../../api/useApi";
 import { useNavigate, useParams } from "react-router";
 import FoodCard from "../../component/FoodCard";
 import QueryKeys from "../../constants/QueryKeys";
+import Image from "../../component/Image";
 
 const CategoryItems = () => {
 	const { getCategoryById } = useApi();
@@ -73,7 +74,7 @@ const CategoryItems = () => {
 								selectedSubCategory == "all" ? " border-b-2 border-red-500" : ""
 							}`}
 							onClick={() => setSelectedSubCategory("all")}>
-							<img
+							<Image
 								src={CategoryData.data?.data?.image?.url}
 								alt={"all"}
 								className="min-w-[100px] sm:w-[100px] h-[100px] rounded-full object-cover"

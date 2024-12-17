@@ -1,3 +1,5 @@
+import Image from "../Image";
+
 const TestimonialCard = ({
 	imgSrc,
 	name,
@@ -20,13 +22,12 @@ const TestimonialCard = ({
 				className={`${
 					isActive ? "w-[150px] h-[150px]" : "w-[100px] h-[100px]"
 				} rounded-full bg-gray-600 object-cover`}>
-				<img
-					src={imgSrc ?? "https://via.placeholder.com/200"}
+				<Image
+					src={imgSrc}
 					alt=""
 					className={`${
 						isActive ? "w-[150px] h-[150px]" : "w-[100px] h-[100px]"
 					} rounded-full  object-cover`}
-					loading="lazy"
 				/>
 			</div>
 

@@ -4,6 +4,7 @@ import useApi from "../../api/useApi";
 import { Spin } from "antd";
 import { useNavigate } from "react-router";
 import QueryKeys from "../../constants/QueryKeys";
+import Image from "../../component/Image";
 
 const ItemCard = ({
 	name,
@@ -18,9 +19,9 @@ const ItemCard = ({
 		<div
 			className="flex justify-start gap-2.5 items-center p-5 bg-white [&:not(:last-child)]:border-b cursor-pointer hover:shadow-md"
 			onClick={handleClick}>
-			<img
+			<Image
 				src={imageUrl}
-				alt=""
+				alt={name}
 				className="w-10 h-10 rounded-full object-cover"
 			/>
 			<span className="text-sm">{name}</span>

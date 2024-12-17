@@ -1,19 +1,19 @@
 import React, { useMemo } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
-import { Card, Image, Spin, message } from "antd";
+import { Card, Spin, message } from "antd";
 import { useDispatch } from "react-redux";
-
+import "react-lazy-load-image-component/src/effects/blur.css";
 import {
 	CheckOutlined,
 	LoadingOutlined,
 	ShoppingCartOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
-
 import useApi from "../../api/useApi";
 import { updateCart } from "../../slice/cartSlice";
 import QueryKeys from "../../constants/QueryKeys";
+import Image from "../Image";
 
 interface FoodCardWithDetails {
 	id: string;
@@ -105,26 +105,31 @@ const FoodCard = ({
 					<Image
 						src={foodImage}
 						alt={foodName}
-						loading="eager"
-						preview={
-							withDetails
-								? false
-								: {
-										visible: false,
-										mask: (
-											<span className="text-sm sm:text-5xl font-bold">
-												{foodName}
-											</span>
-										),
-								  }
-						}
-						fallback="https://via.placeholder.com/150"
-						onError={(e) => {
-							e.currentTarget.src = "https://via.placeholder.com/150";
-						}}
-						previewPrefixCls="test"
 						className={`object-cover !h-32 lg:min-w-[305px] min-w-[160px] sm:!h-[236px] rounded-md`}
 					/>
+					// <Image
+					// 	src={foodImage}
+					// 	alt={foodName}
+					// 	loading="lazy"
+					// 	preview={
+					// 		withDetails
+					// 			? false
+					// 			: {
+					// 					visible: false,
+					// 					mask: (
+					// 						<span className="text-sm sm:text-5xl font-bold">
+					// 							{foodName}
+					// 						</span>
+					// 					),
+					// 			  }
+					// 	}
+					// 	fallback="https://via.placeholder.com/150"
+					// 	onError={(e) => {
+					// 		e.currentTarget.src = "https://via.placeholder.com/150";
+					// 	}}
+					// 	previewPrefixCls="test"
+					// 	className={`object-cover !h-32 lg:min-w-[305px] min-w-[160px] sm:!h-[236px] rounded-md`}
+					// />
 				}
 				className={`${
 					withDetails

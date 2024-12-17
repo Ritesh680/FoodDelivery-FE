@@ -23,6 +23,7 @@ import {
 import ViewMore from "../../component/ViewMore";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import Image from "../../component/Image";
 
 const HomePage = () => {
 	const {
@@ -117,11 +118,10 @@ const HomePage = () => {
 						{Categories?.map((item, index) => (
 							<Link key={index} to={`/menu/${item._id}`}>
 								<div className="flex flex-col items-center gap-2">
-									<img
-										src={item.image?.url ?? "https://placehold.co/400"}
+									<Image
+										src={item.image?.url}
 										alt={item.name}
 										className="!w-[72px] !h-[72px] rounded-xl object-cover"
-										loading="lazy"
 									/>
 									<span className="text-base">{item.name}</span>
 								</div>
