@@ -105,7 +105,7 @@ const FoodCard = ({
 					<Image
 						src={foodImage}
 						alt={foodName}
-						className={`object-cover !h-32 lg:min-w-[305px] min-w-[160px] sm:!h-[236px] rounded-md`}
+						className={`object-cover !h-32 lg:min-w-[305px] min-w-[160px] sm:!h-[236px] rounded-md w-full`}
 					/>
 					// <Image
 					// 	src={foodImage}
