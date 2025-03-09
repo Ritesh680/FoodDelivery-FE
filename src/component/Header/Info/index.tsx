@@ -6,7 +6,7 @@ const HeaderInfo = () => {
 		<div className="hidden text-white lg:flex flex-row bg-red-500 w-screen gap-4 justify-center h-6">
 			<div className="flex items-center gap-4 lg:border-r lg:px-5">
 				<PhoneIcon />
-				{STATIC_DATA.PHONE_NUMBER}
+				{STATIC_DATA.PHONE_NUMBER} / {STATIC_DATA.PHONE_NUMBER_2}
 			</div>
 			<div className="flex items-center gap-4">
 				<MailIcon />

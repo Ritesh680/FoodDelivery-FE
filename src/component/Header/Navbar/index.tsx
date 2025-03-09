@@ -17,6 +17,7 @@ import AutoComplete from "../../AutoComplete";
 import { ICategory } from "../../../@types/interface";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
+import Image from "../../Image";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -163,7 +164,7 @@ const Navbar = ({ categories }: { categories: ICategory[] }) => {
 			className={`relative lg:px-16 px-5 bg-white shadow-md sm:flex flex-wrap items-center justify-between lg:py-0 sm:py-2`}>
 			<div className="flex justify-between lg:justify-start gap-7 items-center">
 				<a href="/" className="">
-					<img
+					<Image
 						src="/logo.jpeg"
 						alt="Logo"
 						className="h-10 w-10 lg:h-[75px] lg:w-24 "

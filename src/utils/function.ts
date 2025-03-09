@@ -16,3 +16,11 @@ export function getCookie(name: string) {
 export function removeCookie(name: string) {
 	document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
+
+export const replaceSrc = (oldLink?: string) =>
+	oldLink && typeof oldLink === "string"
+		? oldLink.replace(
+				/backend.chickendeliverynepal.com/g,
+				"be.primecuts.com.np"
+		  )
+		: oldLink;

@@ -1,12 +1,13 @@
 import SearchBar from "../../Searchbar";
 import DropdownComponent from "../../Dropdown";
 import { LocationIcon } from "../../../assets/icons";
+import Image from "../../Image";
 
 const MobileNavHeader = () => {
 	return (
 		<div className="flex justify-between lg:justify-start gap-7 items-center">
 			<a href="/" className="">
-				<img
+				<Image
 					src="/logo.jpeg"
 					alt="Logo"
 					className="h-10 w-10 lg:h-[75px] lg:w-24 "

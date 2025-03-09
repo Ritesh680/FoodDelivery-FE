@@ -55,9 +55,10 @@ export const REGEX_EMAIL =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const STATIC_DATA = {
-	PHONE_NUMBER: "+977-9844378959",
+	PHONE_NUMBER: "+977-9802379770",
+	PHONE_NUMBER_2: "+977-9844378959",
 	ADDRESS: "New Baneshwor, Kathmandu, Nepal",
-	EMAIL: "pokharelroshan13@gmail.com",
+	EMAIL: "primecutspvtltd@gmail.com",
 	FACEBOOK: "https://www.facebook.com/chickendeliveryktm?mibextid=LQQJ4d",
 	WHATSAPP: "https://wa.me/9779844378959",
 	INSTAGRAM: "https://www.instagram.com",

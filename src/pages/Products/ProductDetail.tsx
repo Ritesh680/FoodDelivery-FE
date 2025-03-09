@@ -11,6 +11,7 @@ import QueryKeys from "../../constants/QueryKeys";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart as UPDATE_CART } from "../../slice/cartSlice";
 import { RootState } from "../../store";
+import { replaceSrc } from "../../utils/function";
 
 const ProductDetail = () => {
 	const [count, setCount] = useState(0);
@@ -118,8 +119,7 @@ const ProductDetail = () => {
 					<div className="flex sm:flex-row flex-col gap-5 sm:gap-20 py-5 sm:items-start px-5 sm:px-20">
 						<Image
 							className="w-screen sm:!min-w-[550px] max-w-[550px] h-[197px] sm:!h-[422px] object cover rounded"
-							src={data?.data?.image?.[0]?.url}
-							fallback="https://via.placeholder.com/150"
+							src={replaceSrc(data?.data?.image?.[0]?.url)}
 						/>
 
 						<div className="flex flex-col sm:flex-grow gap-[5px] sm:gap-5 px-2 py-2">

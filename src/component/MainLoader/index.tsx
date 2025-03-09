@@ -1,6 +1,7 @@
 // src/components/ProgressBar.tsx
 
 import React from "react";
+import Image from "../Image";
 
 interface ProgressBarProps {
 	progress: number; // Progress as a percentage (0 to 100)
@@ -12,7 +13,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
 			<div
 				className="absolute -top-10 left-0 w-10 h-10 bg-white"
 				style={{ left: `${progress - 3}%` }}>
-				<img src="/logo.jpeg" alt="logo image" className="h-10" />
+				<Image src="/logo.jpeg" alt="logo image" className="h-10" />
 			</div>
 			<div className="flex">
 				<div className="w-full bg-gray-200 rounded-full h-2.5">

@@ -6,12 +6,20 @@ import {
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Image = ({ ...props }: LazyLoadImageProps) => {
+	const replaceSrc = (oldLink?: string) =>
+		oldLink && typeof oldLink === "string"
+			? oldLink.replace(
+					/backend.chickendeliverynepal.com/g,
+					"be.primecuts.com.np"
+			  )
+			: oldLink;
+
 	return (
 		<LazyLoadImage
 			effect="blur"
 			loading="lazy"
 			onError={(e) => {
-				e.currentTarget.src = "https://via.placeholder.com/150";
+				e.currentTarget.src = "https://placehold.co/600x400";
 			}}
 			wrapperProps={{
 				// If you need to, you can tweak the effect transition using the wrapper style.
@@ -19,6 +27,7 @@ const Image = ({ ...props }: LazyLoadImageProps) => {
 			}}
 			useIntersectionObserver
 			{...props}
+			src={replaceSrc(props.src)}
 		/>
 	);
 };
