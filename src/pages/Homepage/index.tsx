@@ -114,8 +114,8 @@ const HomePage = () => {
 				</div>
 
 				<ContentWrapper title="Shop By Category">
-					<div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
-						{Categories?.map((item, index) => (
+					<div className="grid grid-cols-3 lg:grid-cols-6 gap-10 w-full">
+						{Categories?.slice(0, 6).map((item, index) => (
 							<Link key={index} to={`/menu/${item._id}`}>
 								<div className="flex flex-col items-center gap-2">
 									<Image

@@ -47,7 +47,8 @@ const Footer = ({ categories }: { categories: ICategory[] }) => {
 								<a
 									href={`tel:${STATIC_DATA.PHONE_NUMBER}`}
 									className="text-[8px] sm:text-sm flex gap-2 items-center leading-[21px]">
-									<PhoneIcon /> {STATIC_DATA.PHONE_NUMBER}
+									<PhoneIcon /> {STATIC_DATA.PHONE_NUMBER} /{" "}
+									{STATIC_DATA.PHONE_NUMBER_2}
 								</a>
 							</li>
 							<li className="text-left">
@@ -121,7 +122,8 @@ const Footer = ({ categories }: { categories: ICategory[] }) => {
 				</div>
 				<hr />
 				<div className="flex justify-center text-xs py-4">
-					&copy; 2021 Chicken Delivery Nepal. All Rights Reserved.
+					&copy; {new Date().getFullYear()} Chicken Delivery Nepal. All Rights
+					Reserved.
 				</div>
 			</div>
 		</footer>
