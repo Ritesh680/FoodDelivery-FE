@@ -81,6 +81,14 @@ const HomePage = () => {
 		{ label: "Frozen Foods", svg: FrozenFoodSVG },
 	];
 
+	const bannerData = useMemo(
+		() =>
+			LandingPageData.isLoading || !LandingPageData.data
+				? ["Please Add Banner Items"]
+				: LandingPageData.data.data[0]?.banner ?? ["Please Add Banner Items"],
+		[LandingPageData.data, LandingPageData.isLoading]
+	);
+
 	return (
 		<>
 			{showOfferBanner ? (
@@ -97,11 +105,7 @@ const HomePage = () => {
 					<ImageSlider slideItems={LandingImages ?? []} />
 				</div>
 
-				<Banner
-					bannerItems={
-						LandingPageData.data?.data[0]?.banner ?? ["Please Add Banner Items"]
-					}
-				/>
+				<Banner bannerItems={bannerData} />
 
 				<div className="flex lg:justify-between p-4 gap-[15px] bg-white lg:py-24 overflow-x-scroll items-start lg:items-center lg:px-[188px]">
 					{FOOD_CATEGORIES.map((item, index) => (

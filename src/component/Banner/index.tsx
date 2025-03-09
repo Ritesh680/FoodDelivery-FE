@@ -6,13 +6,13 @@ const Banner = ({ bannerItems }: { bannerItems: string[] }) => {
 	const [dummyBannerItems, setDummybannerItems] = useState(bannerItems);
 
 	useEffect(() => {
-		if (dummyBannerItems.length < 6) {
-			const newBannerItems = bannerItems.slice(0, 6 - dummyBannerItems.length);
-			const updatedDummyBannerItems = [...dummyBannerItems, ...newBannerItems];
+		if (bannerItems.length < 6) {
+			const newBannerItems = bannerItems.slice(0, 6 - bannerItems.length);
+			const updatedDummyBannerItems = [...bannerItems, ...newBannerItems];
 
 			setDummybannerItems(updatedDummyBannerItems);
 		}
-	}, [bannerItems, dummyBannerItems]);
+	}, [bannerItems]);
 
 	return (
 		<div className="bg-gradient-to-r from-[#FFD600] to-[#C50202] ] my-4 py-[20.5px] overflow-hidden">
